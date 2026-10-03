@@ -5,10 +5,10 @@ paths:
   artifacts_dir: artifacts
   reports_dir: reports
 data:
-  samples_per_template_label: 12
+  target_per_label: 170
   val_templates_per_misconception: 1
   test_templates_per_misconception: 1
-  min_total_samples: 1500
+  min_total_samples: 2000
   max_class_imbalance: 2.0
 baseline:
   word_ngram_max: 2

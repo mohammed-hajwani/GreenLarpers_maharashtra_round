@@ -17,7 +17,7 @@ class PathsConfig(BaseModel):
 
 
 class DataConfig(BaseModel):
-    samples_per_template_label: int
+    target_per_label: int
     val_templates_per_misconception: int
     test_templates_per_misconception: int
     min_total_samples: int
