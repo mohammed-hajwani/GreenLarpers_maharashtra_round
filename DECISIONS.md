@@ -31,3 +31,10 @@
 - A failed retest returns the state to `active` (or `relapsed` if it was resolved), so the next intervention escalates.
 - Retest due dates live in the `learner_state.retest_due` column, which keeps `LearnerRecord` as specified.
 - `scripts/simulate_learners.py` and loops L1, L2, L5, L6 are deferred for the slice.
+
+## Stage 8
+- The PRD's Practice, Diagnosis, Intervention and Reassessment pages are one guided Practice page whose sections appear in order, plus Profile and Demo mode pages.
+- Demo mode runs `content/demo_script.json` through the real pipeline. `scripts/record_demo.py` stores the outputs in `recorded_steps`, which are replayed when no model loads.
+- The demo input (kicked-ball question, "The push keeps acting on it so it keeps going.") was chosen because the baseline finds it genuinely ambiguous between M09 and M01 (0.58 vs 0.41).
+- Practice offers a free-text "ask your own question" box so judges can try inputs live.
+- Hub transformer loading in `models/loader.py` is a stub that always falls back to the committed baseline.

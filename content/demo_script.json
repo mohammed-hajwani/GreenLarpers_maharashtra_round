@@ -1,0 +1,497 @@
+{
+  "learner_id": "demo-learner",
+  "practice": {
+    "template_id": "m09_kicked_ball_02",
+    "params": {
+      "m": 0.45,
+      "v": 6
+    },
+    "answer": "2.7 N",
+    "working": "The push keeps acting on it so it keeps going."
+  },
+  "probe_answers": {
+    "p_cg2_01": "It slows down, because nothing is pushing it anymore",
+    "p_cg2_02": "Something must keep pushing it up or it would instantly stop",
+    "p_cg2_03": "West, opposite the motion"
+  },
+  "round_1_correct_kinds": [
+    "transfer",
+    "transfer"
+  ],
+  "round_2_all_correct": true,
+  "filler_practice": [
+    {
+      "template_id": "m07_flour_weight_02",
+      "params": {
+        "m": 2
+      },
+      "correct": true
+    },
+    {
+      "template_id": "m02_moon_hammer_02",
+      "params": {
+        "m": 1
+      },
+      "correct": true
+    },
+    {
+      "template_id": "m04_cyclist_02",
+      "params": {
+        "v": 6,
+        "t": 20
+      },
+      "correct": true
+    }
+  ],
+  "retest_correct": true,
+  "recorded_steps": [
+    {
+      "kind": "diagnosis",
+      "title": "1. Learner submits a wrong answer",
+      "data": {
+        "stem": "A 0.45 kg ball is kicked and then rolls along frictionless ground at 6 m/s after leaving the foot. What horizontal force acts on the ball while it rolls?",
+        "answer": "2.7 N",
+        "working": "The push keeps acting on it so it keeps going.",
+        "top_labels": [
+          [
+            "M09",
+            0.5826377299604748
+          ],
+          [
+            "M01",
+            0.4148390616135321
+          ],
+          [
+            "M07",
+            0.00034028338126889274
+          ]
+        ],
+        "is_correct": false,
+        "ambiguous": true,
+        "confusable_group": "CG2"
+      }
+    },
+    {
+      "kind": "probe",
+      "title": "2. Top labels are close, so a probe separates them",
+      "data": {
+        "stem": "A spacecraft drifts at constant velocity in deep space with its engines off. What happens next?",
+        "options": [
+          "It slows down, because nothing is pushing it anymore",
+          "It keeps going until the force it got from the engines runs out",
+          "It keeps going, and the net force on it points forward",
+          "It keeps going forever with zero net force"
+        ],
+        "answer": "It slows down, because nothing is pushing it anymore",
+        "before": [
+          [
+            "M09",
+            0.5826377299604748
+          ],
+          [
+            "M01",
+            0.4148390616135321
+          ],
+          [
+            "M07",
+            0.00034028338126889274
+          ]
+        ],
+        "top_labels": [
+          [
+            "M01",
+            0.8581254801929536
+          ],
+          [
+            "M09",
+            0.14179170786523912
+          ],
+          [
+            "M07",
+            8.28119418073865e-05
+          ]
+        ],
+        "is_correct": false,
+        "ambiguous": false,
+        "confusable_group": "CG2"
+      }
+    },
+    {
+      "kind": "intervention",
+      "title": "3. Targeted intervention",
+      "data": {
+        "misconception": "M01",
+        "strategy": "counterexample",
+        "text": "You answered \"2.7 N\" and wrote: \"The push keeps acting on it so it keeps going.\". Consider a hockey puck on perfectly frictionless ice: after the stick leaves it, nothing pushes it, yet it glides on at the same speed. Things slow down in everyday life only because friction and drag act backward. An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
+        "follow_up_prompt": "If friction disappeared completely, what force would a sliding box need to keep its speed?"
+      }
+    },
+    {
+      "kind": "assessment",
+      "title": "4. Reassessment: passes follow-ups, fails the trap",
+      "data": {
+        "items": [
+          {
+            "kind": "transfer",
+            "stem": "A 2 kg box slides on a frictionless floor at a steady 3 m/s. What net force acts on it?",
+            "answer": "0 N",
+            "correct": true
+          },
+          {
+            "kind": "transfer",
+            "stem": "An elevator moves upward at a constant 2 m/s. How does the cable tension compare with the elevator's weight?",
+            "answer": "Tension equals the weight",
+            "correct": true
+          },
+          {
+            "kind": "transfer",
+            "stem": "A skydiver falls at a constant terminal speed of 55 m/s. Which statement is true?",
+            "answer": "Gravity is bigger than air resistance",
+            "correct": false
+          },
+          {
+            "kind": "trap",
+            "stem": "A sled glides across smooth ice at a constant 4 m/s after the push ends. Which forces act horizontally?",
+            "answer": "A forward force that keeps it moving",
+            "correct": false
+          }
+        ],
+        "transfer": "2/3",
+        "trap_passed": false,
+        "state": "active",
+        "pending_retest_in": null
+      }
+    },
+    {
+      "kind": "intervention",
+      "title": "5. Escalation to a second strategy",
+      "data": {
+        "misconception": "M01",
+        "strategy": "fbd_walkthrough",
+        "text": "Let's draw the forces instead of guessing. List every object touching the moving body and the force each one exerts. At constant velocity the forward arrows and backward arrows must be the same length, because acceleration is zero and F_net = m a. Your answer \"2.7 N\" adds an extra forward arrow that nothing is providing. An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
+        "follow_up_prompt": "Sketch the forces on a car cruising at steady speed. Which arrows are equal?"
+      }
+    },
+    {
+      "kind": "assessment",
+      "title": "6. Reassessment: transfer and trap passed",
+      "data": {
+        "items": [
+          {
+            "kind": "transfer",
+            "stem": "A boat is pulled by a rope at constant velocity. The water drag is 300 N. What is the rope tension?",
+            "answer": "300 N",
+            "correct": true
+          },
+          {
+            "kind": "transfer",
+            "stem": "A 2 kg box slides on a frictionless floor at a steady 3 m/s. What net force acts on it?",
+            "answer": "0 N",
+            "correct": true
+          },
+          {
+            "kind": "transfer",
+            "stem": "An elevator moves upward at a constant 2 m/s. How does the cable tension compare with the elevator's weight?",
+            "answer": "Tension equals the weight",
+            "correct": true
+          },
+          {
+            "kind": "trap",
+            "stem": "A truck cruises at a steady 25 m/s on a level road. Is the engine's forward force bigger than the total resistance?",
+            "answer": "No, they are equal",
+            "correct": true
+          }
+        ],
+        "transfer": "3/3",
+        "trap_passed": true,
+        "state": "intervened",
+        "pending_retest_in": 3
+      }
+    },
+    {
+      "kind": "practice",
+      "title": "7. Other practice in between (spacing)",
+      "data": {
+        "rows": [
+          {
+            "stem": "What is the weight of a 2 kg bag of flour on Earth? Use g = 9.8.",
+            "answer": "19.6 N",
+            "correct": true
+          },
+          {
+            "stem": "An astronaut on the Moon drops a 1 kg hammer and a feather at the same time from the same height. What happens?",
+            "answer": "They land at the same time",
+            "correct": true
+          },
+          {
+            "stem": "A cyclist rides in a straight line at a constant 6 m/s for 20 s. What is the cyclist's acceleration?",
+            "answer": "0 m/s^2",
+            "correct": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "retest",
+      "title": "8. Delayed retest",
+      "data": {
+        "stem": "A rock drifts through deep space at 800 m/s with nothing near it. What force is needed to keep it at 800 m/s?",
+        "answer": "None",
+        "correct": true,
+        "state": "resolved"
+      }
+    },
+    {
+      "kind": "profile",
+      "title": "9. Learner profile",
+      "data": {
+        "rows": [
+          {
+            "misconception": "M01",
+            "label": "force_for_constant_velocity",
+            "state": "resolved",
+            "posterior_held": 0.205,
+            "attempts": 11,
+            "strategies_tried": "counterexample, fbd_walkthrough"
+          }
+        ],
+        "timeline": [
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "practice",
+            "ref_id": "m09_kicked_ball_02__m0.45_v6",
+            "misconception": "M09",
+            "correct": false,
+            "answer": "2.7 N",
+            "working": "The push keeps acting on it so it keeps going.",
+            "top": [
+              [
+                "M09",
+                0.5826377299604748
+              ],
+              [
+                "M01",
+                0.4148390616135321
+              ],
+              [
+                "M07",
+                0.00034028338126889274
+              ]
+            ]
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "probe",
+            "ref_id": "p_cg2_01",
+            "misconception": null,
+            "correct": null,
+            "answer": "It slows down, because nothing is pushing it anymore",
+            "top": [
+              [
+                "M01",
+                0.8581254801929536
+              ],
+              [
+                "M09",
+                0.14179170786523912
+              ],
+              [
+                "M07",
+                8.28119418073865e-05
+              ]
+            ]
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "state",
+            "ref_id": "M01",
+            "misconception": "M01",
+            "correct": null,
+            "state": "active"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "intervention",
+            "ref_id": "counterexample",
+            "misconception": "M01",
+            "correct": null,
+            "state": "intervened"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "transfer",
+            "ref_id": "i_m01_t1",
+            "misconception": "M01",
+            "correct": true,
+            "answer": "0 N"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "transfer",
+            "ref_id": "i_m01_t2",
+            "misconception": "M01",
+            "correct": true,
+            "answer": "Tension equals the weight"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "transfer",
+            "ref_id": "i_m01_t3",
+            "misconception": "M01",
+            "correct": false,
+            "answer": "Gravity is bigger than air resistance"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "trap",
+            "ref_id": "i_m01_trap1",
+            "misconception": "M01",
+            "correct": false,
+            "answer": "A forward force that keeps it moving"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "state",
+            "ref_id": "M01",
+            "misconception": "M01",
+            "correct": null,
+            "state": "active"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "intervention",
+            "ref_id": "fbd_walkthrough",
+            "misconception": "M01",
+            "correct": null,
+            "state": "intervened"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "transfer",
+            "ref_id": "i_m01_t4",
+            "misconception": "M01",
+            "correct": true,
+            "answer": "300 N"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "transfer",
+            "ref_id": "i_m01_t1",
+            "misconception": "M01",
+            "correct": true,
+            "answer": "0 N"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "transfer",
+            "ref_id": "i_m01_t2",
+            "misconception": "M01",
+            "correct": true,
+            "answer": "Tension equals the weight"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "trap",
+            "ref_id": "i_m01_trap2",
+            "misconception": "M01",
+            "correct": true,
+            "answer": "No, they are equal"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "state",
+            "ref_id": "M01",
+            "misconception": "M01",
+            "correct": null,
+            "state": "intervened"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "practice",
+            "ref_id": "m07_flour_weight_02__m2",
+            "misconception": null,
+            "correct": true,
+            "answer": "19.6 N",
+            "working": "",
+            "top": [
+              [
+                "none",
+                1.0
+              ],
+              [
+                "M01",
+                0.0
+              ],
+              [
+                "M03",
+                0.0
+              ]
+            ]
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "practice",
+            "ref_id": "m02_moon_hammer_02__m1",
+            "misconception": null,
+            "correct": true,
+            "answer": "They land at the same time",
+            "working": "",
+            "top": [
+              [
+                "none",
+                1.0
+              ],
+              [
+                "M01",
+                0.0
+              ],
+              [
+                "M03",
+                0.0
+              ]
+            ]
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "practice",
+            "ref_id": "m04_cyclist_02__t20_v6",
+            "misconception": null,
+            "correct": true,
+            "answer": "0 m/s^2",
+            "working": "",
+            "top": [
+              [
+                "none",
+                1.0
+              ],
+              [
+                "M01",
+                0.0
+              ],
+              [
+                "M03",
+                0.0
+              ]
+            ]
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "retest",
+            "ref_id": "i_m01_r1",
+            "misconception": "M01",
+            "correct": true,
+            "answer": "None"
+          },
+          {
+            "ts": "2026-10-03T11:36:42+00:00",
+            "kind": "state",
+            "ref_id": "M01",
+            "misconception": "M01",
+            "correct": null,
+            "state": "resolved"
+          }
+        ]
+      }
+    }
+  ]
+}
