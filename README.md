@@ -6,65 +6,134 @@ app_file: app.py
 pinned: false
 ---
 
-# Re:Learn
+# Re:Learn: an adaptive misconception tutor for introductory mechanics
 
-Re:Learn diagnoses the misconception behind a learner's answer in introductory mechanics, tells look-alike misconceptions apart with short probes, delivers a targeted intervention, and only marks a misconception resolved after transfer items, a trap item, and a delayed retest.
+## Problem
 
-Core loop: `submit → diagnose → (probe) → intervene → reassess → update learner model`.
+Most practice tools only grade answers right or wrong. A student who answers "a 2.7 N force keeps the ball rolling" is not just wrong: they hold a specific misconception, and the right help depends on which one. A single correct follow-up answer also does not prove the student has learned anything.
 
-## Status: mentoring slice
+## Solution
 
-This is a 5-hour vertical slice. The full loop works end to end with a TF-IDF baseline. The DistilBERT model, Hugging Face hosting, and efficiency loops come next. See `DECISIONS.md`.
+Re:Learn reads the question, the answer and the learner's own reasoning, and then:
 
-## Run locally
-
-```bash
-python -m venv .venv
-.venv/Scripts/python.exe -m pip install -r requirements.txt -e .
-.venv/Scripts/python.exe scripts/train.py
-.venv/Scripts/python.exe -m streamlit run app.py
-```
-
-Open the **Demo mode** page and press **Start demo**, then **Next step**. Health check: `?health=1`.
+1. **Diagnoses** which of 12 classic misconceptions is behind the answer, with a calibrated confidence.
+2. **Disambiguates** look-alike misconceptions with the diagnostic probe that has the highest expected information gain.
+3. **Intervenes** with an explanation targeted at that misconception, grounded in retrieved passages from the content.
+4. **Reassesses** with transfer items, a trap item and a delayed retest. A misconception is resolved only when all three pass; mastery scores never shortcut this rule.
+5. **Tracks** per-concept mastery as a Beta posterior, adapts difficulty, and logs every decision to an inspectable **AI Decision Trace**.
 
 ## Architecture
 
 ```
-content/ (taxonomy, 48 templates, probes, interventions, item bank)
+content/ (12 misconceptions, 7 concepts, 48 templates, 12 probes, 36 interventions, 66 items, 65 hand-written tests)
    │
-   ▼
-data/generator ──► 2270 synthetic samples ──► template-level split (train / val / test)
+   ▼ data/generator → clean → deduplicate → split by template (train / val / test)
    │
-   ▼
-models/baseline (TF-IDF word+char → logistic regression, temperature-scaled)
+   ▼ models/
+   │   baseline       TF-IDF (word + char) → logistic regression
+   │   v1_embedding   TF-IDF + MiniLM(answer) + MiniLM(working) → logistic regression
+   │   both: temperature-calibrated on validation, versioned with metadata.json
    │
-   ▼
-diagnosis/diagnoser ──► ambiguous within a confusable group? ──► diagnosis/disambiguator (Bayesian probe update)
+   ▼ diagnosis/  diagnoser (posterior, confidence, entropy, route: accept / probe / uncertain)
+   │             disambiguator (expected-information-gain probe choice, Bayesian update)
+   │             explain (TF-IDF contributions, nearest training examples, word occlusion)
    │
-   ▼
-intervention/selector → builder → checker   (escalates through strategies, flags for a human when exhausted)
+   ▼ intervention/  selector (escalation) → grounded builder (RAG + optional LLM) → checker
+   ▼ assessment/    planner (3 transfer + trap) → evaluator; delayed retest
+   ▼ learner/       misconception state machine + concept mastery (Beta) + SQLite store
+   ▼ adaptive/      difficulty engine (mastery bands + recent accuracy + severity + confidence)
+   ▼ progress/      simulated-learner progress predictor
+   ▼ trace.py       one decision-trace row per interaction
    │
-   ▼
-assessment/planner → evaluator  (3 transfer + 1 trap, then a delayed retest)
-   │
-   ▼
-learner/state + store (Beta posterior, state machine, SQLite)  ──►  pipeline.Tutor  ──►  Streamlit app
+   ▼ pipeline.Tutor ──► services/ ──► Streamlit UI
+                                      (Practice, Dashboard, Profile, Model Evaluation, Demo mode)
 ```
 
-## Results (held-out templates, baseline)
+## Models
 
-| Metric | Value |
+| Component | Method |
 |---|---|
-| Macro-F1, model only | 0.66 |
-| Macro-F1, with answer key for mcq and numeric | 0.85 |
-| Probing lift on the confusable subset (val / test) | +3.8 / +1.2 points |
-| Tests | 45 passing |
+| Baseline classifier | TF-IDF word 1-2 grams and char 3-5 grams, balanced logistic regression |
+| Advanced classifier (`v1_embedding`) | `sentence-transformers/all-MiniLM-L6-v2` embeddings of the answer and of the working, concatenated with TF-IDF features, then logistic regression. Picked on validation against MiniLM-only logistic regression and gradient boosting. |
+| Calibration | Temperature scaling on validation. ECE is reported before and after. |
+| Routing | accept at or above a threshold tuned on validation (v1 0.70, baseline 0.80); probe from 0.50; uncertain below 0.50 |
+| Adaptive probing | Picks the probe with the largest expected entropy drop, using each probe's stored expected answers with 10% answer noise; at most 2 probes |
+| Learner model | Per-concept Beta mastery with decay; per-misconception unseen / active / intervened / resolved / relapsed states, tied only to the resolution criteria |
+| Difficulty adaptation | Rule bands (below 0.40 easy, 0.40 to 0.70 medium, above 0.70 hard) adjusted by streaks, active misconceptions, uncertain diagnoses and the previous band. Deterministic. |
+| Progress prediction | Logistic regression trained on simulated learner trajectories. **Estimate based on simulated learners, not validated on real students.** |
+| RAG and LLM intervention | Cosine retrieval over 114 content passages. With `ANTHROPIC_API_KEY`, Claude rewrites the intervention from the retrieved passages, and the output must pass the checker; otherwise the app uses the template plus a retrieved passage. The LLM never classifies. |
 
-The confusion matrix is in `reports/confusion_matrix.png` and the full metrics are in `reports/metrics.json`.
+## Results
+
+All numbers come from `reports/metrics.json` (`make eval`). **Data provenance: synthetic.** There are 2296 template-generated samples, split by template into train 1097, val 568 and test 631; test templates never appear in training. A separate set of 65 hand-written items was written by the team in different phrasing (not real student data).
+
+Macro-F1 ("with answer key" also uses the question's answer key for MCQ and numeric items):
+
+| Model | Synthetic test, model only | Synthetic test, with key | Hand-written, model only | Hand-written, with key |
+|---|---|---|---|---|
+| Baseline | 0.683 | 0.867 | 0.775 | 0.831 |
+| v1 embedding hybrid | 0.632 | 0.775 | **0.831** | **0.846** |
+
+v1 was selected on validation (macro-F1 0.649 vs 0.574) and generalizes better to the new phrasing in the hand-written set. It is worse on the synthetic test split, and we report that rather than hide it.
+
+Calibration ECE (uncalibrated → calibrated): baseline test 0.195 → 0.117; v1 hand-written 0.179 → 0.116; v1 synthetic test 0.093 → 0.149 (worse).
+
+Probe selection on simulated learners (confusable subset, mean accuracy over 5 seeds):
+
+| Model / split | No probe | Random relevant probe | Information-gain probe |
+|---|---|---|---|
+| v1 / val | 0.628 | 0.831 | **0.876** |
+| v1 / test | 0.726 | **0.818** | 0.806 |
+| baseline / val | 0.831 | 0.963 | **0.965** |
+| baseline / test | 0.820 | 0.900 | **0.904** |
+
+Information gain beats random in 3 of 4 settings. Simulated learners answer by the same expected-answer map the likelihood uses, so these lifts are upper bounds.
+
+Progress predictor (1000 held-out simulated learners): reach mastery AUC 0.974 (base rate 0.684); misconception persists AUC 0.885 (base rate 0.096, so its 0.90 accuracy is no better than always predicting "no").
+
+Latency on a laptop CPU: diagnosis 0.03 s, explanation 0.06 s. Health check after a cold start of Streamlit: about 10 s.
 
 ## Limitations
 
-- All data is synthetic and template-generated, from one domain.
-- Test templates are unseen at training time, but the phrasing style is shared.
-- Probing lift is below the +10 point target, because most confusable-subset errors are cross-group.
-- Evaluation uses scripted and simulated learners, not real students.
+- All training data is synthetic, from one domain (introductory mechanics). The hand-written set is small (65 items) and was written by the team.
+- Probe, resolution and progress evaluations use simulated learners whose behavior matches the model's own assumptions. Nothing has been validated on real students.
+- Difficulty labels are judgment calls. Some concept bands have only one template (listed in `difficulty_coverage.gaps`).
+
+## Future work
+
+More subjects; real interaction data and classroom pilots; multilingual and voice input; larger fine-tuned transformers trained on real answers; long-term learner modeling across sessions.
+
+## Environment variables
+
+| Variable | Purpose |
+|---|---|
+| `RELEARN_DB` | SQLite path (default: OS temp dir `relearn.db`) |
+| `RELEARN_MODEL_CACHE` | Where the MiniLM encoder is cached (default `.cache/hf`) |
+| `RELEARN_FORCE_MODEL` | `baseline` or `none`, to test fallbacks |
+| `ANTHROPIC_API_KEY` | Optional; enables grounded LLM interventions |
+| `RELEARN_LLM_MODEL` | Optional Claude model override (default `claude-opus-5-5`) |
+| `HF_TOKEN` | Optional; for deploying the Space |
+
+## Train, evaluate and run
+
+```bash
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements.txt -e .
+make train
+make eval
+make test
+make app
+```
+
+On machines without `make`, run the scripts named in the `Makefile` directly. Open **Demo mode → Start demo → Show all** for the full scripted walkthrough. Health check: `/?health=1`.
+
+## Deploy to Hugging Face Spaces
+
+1. Create a Space (SDK Streamlit, CPU basic, public).
+2. Push this repository to it. The front matter at the top of this README configures the Space; `.streamlit/config.toml` disables the file watcher for a fast cold start.
+3. Optionally add `ANTHROPIC_API_KEY` as a Space secret.
+4. Open `https://<user>-<space>.hf.space/?health=1`. It should report `ok` and the active model.
+
+The MiniLM encoder (about 90 MB) downloads once on first start. If the Hub is unreachable the app falls back to the committed baseline, and if no model loads it falls back to a replay labeled as such.
+
+Live URL: not deployed yet.

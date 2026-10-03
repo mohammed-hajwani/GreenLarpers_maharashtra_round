@@ -11,9 +11,15 @@ data:
 
 train:
 	$(PY) scripts/train.py
+	$(PY) scripts/tune_thresholds.py
+	$(PY) scripts/train_progress.py
 
 eval:
 	$(PY) scripts/evaluate.py
+	$(PY) scripts/simulate_learners.py
+
+demo-record:
+	$(PY) scripts/record_demo.py
 
 test:
 	$(PY) -m pytest -q
@@ -24,10 +30,4 @@ gate:
 app:
 	$(PY) -m streamlit run app.py
 
-deploy-dry:
-	$(PY) scripts/deploy_space.py --dry-run
-
-smoke:
-	$(PY) scripts/smoke_remote.py --url $(URL)
-
-.PHONY: setup data train eval test gate app deploy-dry smoke
+.PHONY: setup data train eval demo-record test gate app
