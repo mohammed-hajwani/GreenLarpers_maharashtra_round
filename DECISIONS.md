@@ -24,3 +24,10 @@
 - Probing lift with PRD defaults (fitted temperature 0.6, tau 0.2, max_probes 2): +3.8 points on val and +1.2 on test. Most remaining confusable-subset errors are cross-group (for example `none` on explanation templates), which probing cannot fix. The +10 point gate is deferred to the transformer; the slice gate is that probing never lowers accuracy. tau was not tuned on test.
 - `select_strategy` takes the learner's `strategies_tried` list directly instead of looking up the store, which keeps it pure; it returns `flag_for_human` when strategies run out.
 - `check_intervention` ignores text inside double quotes (the learner's own words) when scanning for forbidden claims, and requires the stored `correct_concept` sentence to be present.
+
+## Stage 6+7
+- `learner.pass_beta_increment` is 2.0. With 1.0, a learner who fails one trap and then passes everything still has a posterior near 0.31, above the 0.25 resolution threshold, so they could never resolve.
+- A passing reassessment (at least 2 of 3 transfer and trap passed) keeps the state `intervened` and schedules a retest at `attempt_count + retest_gap`. Attempts that count toward the gap are practice, transfer, trap and retest answers.
+- A failed retest returns the state to `active` (or `relapsed` if it was resolved), so the next intervention escalates.
+- Retest due dates live in the `learner_state.retest_due` column, which keeps `LearnerRecord` as specified.
+- `scripts/simulate_learners.py` and loops L1, L2, L5, L6 are deferred for the slice.

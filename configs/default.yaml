@@ -43,7 +43,7 @@ assessment:
 learner:
   prior_alpha: 1.0
   prior_beta: 1.0
-  pass_beta_increment: 1.0
+  pass_beta_increment: 2.0
   fail_alpha_increment: 1.0
 app:
   db_env: RELEARN_DB
