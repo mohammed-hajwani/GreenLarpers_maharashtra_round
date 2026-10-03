@@ -45,8 +45,10 @@ content/ (12 misconceptions, 7 concepts, 48 templates, 12 probes, 36 interventio
    ▼ progress/      simulated-learner progress predictor
    ▼ trace.py       one decision-trace row per interaction
    │
-   ▼ pipeline.Tutor ──► services/ ──► Streamlit UI
-                                      (Practice, Dashboard, Profile, Model Evaluation, Demo mode)
+   ▼ pipeline.Tutor ──► services/ ──► learning/ (lesson engine) ──► Student view (default)
+                                 └────────────────────────────────► Insights view (?view=insights):
+                                      student decisions, AI practice console, dashboard,
+                                      profile, model evaluation, AI demo walkthrough
 ```
 
 ## Models
@@ -125,7 +127,9 @@ make test
 make app
 ```
 
-On machines without `make`, run the scripts named in the `Makefile` directly. Open **Demo mode → Start demo → Show all** for the full scripted walkthrough. Health check: `/?health=1`.
+On machines without `make`, run the scripts named in the `Makefile` directly.
+
+The app opens on the **student view**, a learning-first lesson flow: Check answer, Quick check, hints, Try again, Reveal answer, Try another question, and "One more to lock it in". Press **Start guided demo** for a scripted walkthrough. All AI internals (why panel, decision trace, strategy and sources, model evaluation, dashboards) are in the **Insights** view, linked from the footer ("Insights (for judges and teachers)") or opened with `/?view=insights`. Health check: `/?health=1`. The UI design is documented in `DESIGN.md`, and measured UI test results are in `TEST_READINGS.md`.
 
 ## Deploy to Hugging Face Spaces
 

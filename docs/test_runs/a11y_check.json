@@ -1,0 +1,17 @@
+{
+  "tab_focus": {
+    "tag": "BUTTON",
+    "text": "Continue learning",
+    "outline": "solid 3px"
+  },
+  "contrast_vs_background": {
+    ".rl-question": 17.38,
+    ".rl-subtitle": 9.55,
+    ".rl-progress-text": 9.55,
+    ".rl-footer": 5.43
+  },
+  "enter_submits_answer": true,
+  "live_region_text": "\u2717 Let's work through this.\n\nHere's a hint: Consider a hockey puck on perfectly frictionless ice: after the stick leaves it, nothing pushes it, yet it glides on at the same speed. Things slow down in everyday life only because friction and drag act backward.",
+  "icon_plus_text": true,
+  "reduced_motion_animation": "none"
+}

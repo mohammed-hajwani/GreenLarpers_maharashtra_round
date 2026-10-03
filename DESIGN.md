@@ -1,6 +1,6 @@
 # Re:Learn Design
 
-Status: draft written before implementation; finalized at the end of the UI overhaul to describe what was actually built.
+Status: implemented on branch `ui/student-learning-flow`; this document describes the shipped design. No Brilliant reference screenshot was provided in `docs/reference/`, so the design follows the written design language below. Measured results are in `TEST_READINGS.md`, and screenshots are in `docs/screenshots/w{375,768,1280}/`.
 
 ## 1. Design goal
 
@@ -48,6 +48,8 @@ The existing Streamlit font stack ("Source Sans", then system UI fallbacks).
 | Button text | 1.0 rem, 600 |
 | Progress text | 0.85 rem, 600, letter-spacing 0.02 em |
 
+Below 640 px the page title drops to 1.6 rem and question text to 1.2 rem.
+
 ## 5. Layout
 
 - **Lesson (landing) page:** a welcome header, a "Continue learning" card, a grid of concept cards (name, one-line subtitle, status: "Not started", "In progress", "Mastered" from the backend), a "Start guided demo" button, and a small footer link to Insights.
@@ -62,6 +64,9 @@ The existing Streamlit font stack ("Source Sans", then system UI fallbacks).
 
 ## 6. Learning flow
 
+The flow lives in `relearn/learning` (`LessonEngine`, `LessonFlow`), a plain module with no Streamlit imports; the UI only calls it. The project already had resolution logic (the misconception state machine) and concept mastery (a Beta posterior), so no new mastery logic was added; the lesson only reads backend state.
+
+
 Lesson → Question → Check Answer → feedback → explanation → practice → mastery.
 
 - **Check Answer** is the primary action, and is submitted with Enter or the button. Each attempt is logged by the existing pipeline.
@@ -71,7 +76,23 @@ Lesson → Question → Check Answer → feedback → explanation → practice �
 - **Reveal Answer:** hidden until pressed. It shows the answer and "Why it works", with no penalty. It is logged as a `reveal` attempt with `revealed = true` and gives no mastery evidence. It offers Try Another Question of This Type.
 - **Try Another Question of This Type:** same concept, preferring templates that contain the same tricky idea, never a question id already seen this session, with new parameters. If nothing is left, a friendly message and Continue.
 - **Mastery loop:** the existing misconception state machine and concept mastery are the only source of truth; there is no separate streak counter. The visit is capped at 6 answer checks per concept. After that the student sees "Let's come back to this later", a `review_flag` is logged, and the lesson continues.
-- **Progress:** "Question n of N" for the lesson (N = 5 practice questions) with dots.
+- **Progress:** "Question n of N" for the lesson (N = 5 practice questions) with dots. Lock-in items sit inside the current slot and are labelled "One more to lock it in · k of 4"; review items are labelled "Quick review".
+- **Hints:** level 1 is up to two sentences of the targeted explanation, with quoted learner text and the key-idea sentence removed. Level 2 (the second wrong attempt) appends "Key idea: …". The hint filter also drops any sentence containing a banned word. If the backend finds no specific tricky idea, a generic hint is used.
+- **Guided demo:** 16 scripted steps through the same engine (wrong answer, quick check, hint, try again, a more explicit hint, reveal, try another, correct, four lock-in questions, next question). The student controls are shown but disabled; a dashed banner says what "Next step" will do.
+
+## 6a. Components (`relearn/app/student`)
+
+| Component | Function |
+|---|---|
+| Theme | `components.inject_theme` (single stylesheet `theme.css`) |
+| LessonHeader | `components.lesson_header` |
+| ProgressIndicator | `components.progress_indicator` (`role="progressbar"`) |
+| QuestionCard and AnswerInput | `components.question_card`, `components.answer_input` (form, so Enter submits) |
+| AnswerFeedback | `components.answer_feedback`, `components.live_message` (polite live region) |
+| ExplanationCard | `components.explanation_card` |
+| RevealAnswerButton, TryAnotherQuestionButton, Continue, Try again (LessonNavigation) | `components.lesson_navigation` |
+| Concept cards (MasteryProgress) | `components.concept_card`, with status from `services.concept_status` |
+| Screens | `screens.render_landing`, `render_lesson`, `render_complete`, `render_guided`, `render_student` |
 
 ## 7. Removed from the student UI (moved to Insights)
 
@@ -93,6 +114,6 @@ Use "Nice work!", "You're getting it.", "Almost there.", "Let's try a similar on
 ## 9. Progress, responsiveness, accessibility, motion
 
 - **Progress:** a thin gradient bar plus "Question n of N" text and dots, all from flow state. "Mastered" appears only from backend state.
-- **Responsive:** a single column with max-width 760 px. At 375 px, 16 px gutters and stacked buttons. Touch targets are at least 44 px tall. No horizontal scroll at 375, 768 or 1280.
+- **Responsive:** a single column with max-width 760 px. At 375 px, 16 px gutters and stacked full-width buttons; Streamlit columns stack below 640 px. Touch targets are at least 44 px tall. No horizontal scroll at 375, 768 or 1280.
 - **Accessibility:** body text contrast at least 4.5:1 (table above); a visible 3 px focus ring in `--primary`; every action is a native button or form, so the keyboard reaches all of them; feedback is announced through a `role="status" aria-live="polite"` region; correct and wrong use an icon plus text, never colour alone; `prefers-reduced-motion` disables animation.
 - **Motion:** 180–260 ms ease-out fade and rise on cards and feedback; progress width transitions; hover lifts on concept cards.

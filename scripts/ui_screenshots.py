@@ -32,14 +32,14 @@ def click(page: Page, label: str) -> None:
 
 def measure(page: Page) -> dict:
     return page.evaluate(
-        """() => {
-        const visible = b => b.offsetParent !== null && b.innerText.trim();
-        const buttons = [...document.querySelectorAll('button')].filter(visible);
-        const size = b => ({t: b.innerText.trim().slice(0, 40), h: Math.round(b.getBoundingClientRect().height)});
-        const small = buttons.map(size).filter(x => x.h < 44);
-        const scroll = document.documentElement.scrollWidth > window.innerWidth;
-        return {horizontal_scroll: scroll, small_buttons: small, text: document.body.innerText};
-    }"""
+        "() => {"
+        "const visible = b => b.offsetParent !== null && b.innerText.trim();"
+        "const buttons = [...document.querySelectorAll('button')].filter(visible);"
+        "const size = b => ({t: b.innerText.trim().slice(0, 40), h: Math.round(b.getBoundingClientRect().height)});"
+        "const small = buttons.map(size).filter(x => x.h < 44);"
+        "const scroll = document.documentElement.scrollWidth > window.innerWidth;"
+        "return {horizontal_scroll: scroll, small_buttons: small, text: document.body.innerText};"
+        "}"
     )
 
 

@@ -80,24 +80,54 @@ def screening_cases() -> dict:
 
 
 def student_view_hits() -> dict:
-    t = next(t for t in load_content().templates if t.template_id == "m01_car_cruise_02")
-    q = make_question(t, {"v": 80})
     at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=180)
     at.run()
     landing = banned_hits(element_text(at))
-    if "question" in at.session_state and "phase" in at.session_state:
-        at.session_state["question"] = q
-        at.session_state["phase"] = "answer"
+    at.button(key="start-force_motion").click()
+    at.run()
+    flow = at.session_state["rl_flow"]
+    question = flow.item.question
+    if question.question_type.value == "mcq":
+        at.radio[0].set_value(next(o for o in question.options if o != question.correct_answer))
+    else:
+        at.text_input[0].input("100 N forward")
+    at.text_area[0].input("a force is needed to keep it moving forward")
+    next(b for b in at.button if b.label == "Check answer").click()
+    at.run()
+    while flow.phase == "quick_check":
+        at.radio[0].set_value(flow.pending["choice"].probe.options[0])
+        next(b for b in at.button if b.label == "Check answer").click()
         at.run()
-    radios = [r for r in at.radio if r.label in ("Your answer",)]
-    after_wrong = {}
-    if radios:
-        radios[0].set_value(q.options[0])
-        at.text_area[-1].input("The engine force must be bigger than friction or the car would stop.")
-        next(b for b in at.button if b.label in ("Submit", "Check answer")).click()
-        at.run()
-        after_wrong = banned_hits(element_text(at))
-    return {"landing": landing, "after_wrong_answer": after_wrong, "exceptions": len(at.exception)}
+    after_wrong = banned_hits(element_text(at))
+    at.button(key="nav-reveal").click()
+    at.run()
+    after_reveal = banned_hits(element_text(at))
+    return {
+        "landing": landing,
+        "after_wrong_answer": after_wrong,
+        "after_reveal": after_reveal,
+        "feedback_status": flow.feedback.status,
+        "exceptions": len(at.exception),
+    }
+
+
+def flow_repeats(tutor: Tutor) -> dict:
+    from relearn.learning.flow import LessonEngine
+
+    engine = LessonEngine(tutor)
+    flow = engine.start("F", "force_motion")
+    ids = [flow.item.question.question_id]
+    for _ in range(9):
+        engine.try_another(flow)
+        ids.append(flow.item.question.question_id)
+    content = load_content()
+    concepts = {
+        content.concept_of(
+            content.templates[[t.template_id for t in content.templates].index(i.split("__")[0])].primary
+        )
+        for i in ids
+    }
+    return {"questions_requested": 10, "unique_question_ids": len(set(ids)), "concepts": sorted(concepts)}
 
 
 def main() -> None:
@@ -106,6 +136,7 @@ def main() -> None:
         tutor = Tutor(LearnerStore(Path(tmp) / "r.db"))
         result = {
             "repeats": repeats_in_session(tutor, "R"),
+            "flow_try_another": flow_repeats(tutor),
             "screening_flags": screening_cases(),
             "student_view_banned_strings": student_view_hits(),
         }

@@ -1,0 +1,4 @@
+140 passed in 29.42s
+$ C:\Users\moham\bnb hackathon\.venv\Scripts\python.exe -m ruff check src scripts tests app.py
+$ C:\Users\moham\bnb hackathon\.venv\Scripts\python.exe -m pytest -q
+gate L passed
