@@ -44,7 +44,7 @@ interventions:
       template: "Draw two separate diagrams, one for each object. Put each third-law force on the object it acts on. You will see the pair never shares a diagram, so the two forces can never cancel. Your answer \"{learner_answer}\" puts both on one object. {correct_concept}"
       follow_up_prompt: "A horse pulls a cart. Draw the forces on the cart only."
     - strategy: counterexample
-      template: "If action and reaction cancelled, nothing could ever start moving: you push the ground, the ground pushes you, and you would stay still. But you walk every day. The ground's push acts on you, your push acts on the ground. {correct_concept}"
+      template: "Suppose the two forces of a third-law pair did wipe each other out: then nothing could ever start moving: you push the ground, the ground pushes you, and you would stay still. But you walk every day. The ground's push acts on you, your push acts on the ground. {correct_concept}"
       follow_up_prompt: "Which force actually moves you forward when you walk?"
     - strategy: analogy
       template: "Think of a handshake between two people: each person feels the other's grip. The grip you feel is on your hand, and the grip they feel is on theirs. Your working said \"{learner_working}\", but forces on different hands cannot cancel. {correct_concept}"

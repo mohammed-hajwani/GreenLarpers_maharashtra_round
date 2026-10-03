@@ -18,3 +18,9 @@
 - Per-label sample count is balanced by `data.target_per_label`: each template contributes ceil(target / templates_containing_label) samples per label, giving 2270 samples with imbalance 1.13.
 - Diagnosis uses the question's answer key for mcq and numeric questions: a matching answer forces `none`, a non-matching answer removes `none` from the distribution. Explanation questions rely on the model only. Metrics report both `model_only` and `with_answer_key`.
 - Baseline held-out test macro-F1: 0.66 model only, 0.85 with answer key. Temperature 0.6 fitted on validation by grid search over NLL.
+
+## Stage 4+5
+- Ambiguity compares top-1 with the strongest same-group label anywhere in the top-k, not only rank 2, because the closest same-group rival is often third behind `none`.
+- Probing lift with PRD defaults (fitted temperature 0.6, tau 0.2, max_probes 2): +3.8 points on val and +1.2 on test. Most remaining confusable-subset errors are cross-group (for example `none` on explanation templates), which probing cannot fix. The +10 point gate is deferred to the transformer; the slice gate is that probing never lowers accuracy. tau was not tuned on test.
+- `select_strategy` takes the learner's `strategies_tried` list directly instead of looking up the store, which keeps it pure; it returns `flag_for_human` when strategies run out.
+- `check_intervention` ignores text inside double quotes (the learner's own words) when scanning for forbidden claims, and requires the stored `correct_concept` sentence to be present.
