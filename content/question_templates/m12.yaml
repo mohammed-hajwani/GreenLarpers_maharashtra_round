@@ -1,0 +1,121 @@
+templates:
+  - template_id: m12_projectile_top_01
+    primary: M12
+    question_type: mcq
+    confusable_group: CG2
+    concept_tags: [net_force, projectile]
+    stem: "A ball is thrown at {theta} degrees above horizontal. At the top of its path it moves horizontally. What is the direction of the net force on it? Ignore air."
+    params:
+      theta: [30, 45, 60]
+    options:
+      - "Horizontal, along the motion"
+      - "Straight down"
+      - "Zero"
+      - "Upward"
+    correct:
+      answer: "Straight down"
+      working:
+        - "Only gravity acts, so the net force is straight down even while it moves sideways."
+        - "The net force is the weight, which points down regardless of the velocity."
+    wrong:
+      M12:
+        answer: "Horizontal, along the motion"
+        working:
+          - "The ball moves horizontally there, so the net force is horizontal too."
+          - "Net force points where the ball is going."
+          - "The force has to be in the direction of the velocity."
+        rationale: "Assumes net force follows the velocity."
+      M09:
+        answer: "Horizontal, along the motion"
+        working:
+          - "The throwing force is still in the ball, carrying it horizontally."
+          - "The force from the hand keeps pushing it forward."
+        rationale: "Believes the ball carries the force of the throw."
+  - template_id: m12_braking_car_02
+    primary: M12
+    question_type: numeric
+    confusable_group: CG2
+    concept_tags: [net_force, newton_second_law]
+    stem: "A {m} kg car moving east at {v} m/s brakes and slows down at {a} m/s^2. What is the net force on the car?"
+    params:
+      m: [800, 1000, 1200]
+      v: [15, 20, 25]
+      a: [2, 3, 4]
+    correct:
+      answer: "{m*a:.0f} N west"
+      working:
+        - "It is slowing down, so the acceleration and net force point west, opposite the velocity: F = m a."
+        - "Braking means the net force is backward, {m*a:.0f} N west."
+    wrong:
+      M12:
+        answer: "{m*a:.0f} N east"
+        working:
+          - "The car is moving east so the net force is east."
+          - "Net force always points the way the object moves."
+          - "The velocity is east, so the force is east too."
+        rationale: "Assumes the net force follows the velocity."
+      M01:
+        answer: "{m*a:.0f} N east"
+        working:
+          - "It is still moving east, so there must still be a forward force on it."
+          - "A force is needed to keep it going east, so the net force is east."
+        rationale: "Believes motion requires a forward force."
+  - template_id: m12_rising_ball_03
+    primary: M12
+    question_type: explanation
+    confusable_group: CG2
+    concept_tags: [net_force, projectile]
+    stem: "A ball is tossed straight up and is still rising at {v} m/s. What is the direction of the net force on it? Explain."
+    params:
+      v: [2, 4, 6, 8]
+    correct:
+      answer: "Downward."
+      working:
+        - "Only gravity acts, so the net force is down even though the ball moves up."
+        - "It is slowing down on the way up, so the net force points down."
+    wrong:
+      M12:
+        answer: "Upward, because it is moving up."
+        working:
+          - "It is going up so the net force is up."
+          - "The net force is always in the direction of motion."
+          - "The ball moves upward at {v} m/s so the force points upward."
+        rationale: "Assumes net force follows the velocity."
+      M09:
+        answer: "Upward, because it is moving up."
+        working:
+          - "The force from the hand is still pushing it up while it rises."
+          - "The throw gave it an upward force that has not run out yet."
+        rationale: "Believes the ball carries the force of the throw."
+  - template_id: m12_circle_track_04
+    primary: M12
+    question_type: mcq
+    confusable_group: CG2
+    concept_tags: [net_force, circular_motion]
+    stem: "A car moves counterclockwise around a circular track of radius {r} m at a constant {v} m/s. Which way does the net force point?"
+    params:
+      r: [50, 100, 200]
+      v: [10, 20, 30]
+    options:
+      - "Along the direction of travel"
+      - "Toward the center"
+      - "Away from the center"
+      - "There is no net force"
+    correct:
+      answer: "Toward the center"
+      working:
+        - "The direction of velocity keeps changing, so the net force points toward the center."
+        - "Circular motion at constant speed needs a centripetal net force toward the center."
+    wrong:
+      M12:
+        answer: "Along the direction of travel"
+        working:
+          - "The net force is in the direction the car is moving, tangent to the circle."
+          - "Net force points along the velocity, so it is along the track."
+        rationale: "Assumes net force follows the velocity."
+      M01:
+        answer: "Along the direction of travel"
+        working:
+          - "A forward force is needed to keep the car moving at {v} m/s."
+          - "Something must push it forward or it would stop."
+        rationale: "Believes motion needs a forward force."

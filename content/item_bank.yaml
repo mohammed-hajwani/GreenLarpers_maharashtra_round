@@ -1,0 +1,452 @@
+items:
+  - item_id: i_m01_t1
+    misconception: M01
+    kind: transfer
+    stem: "A 2 kg box slides on a frictionless floor at a steady 3 m/s. What net force acts on it?"
+    options: ["0 N", "6 N forward", "2 N forward", "It depends on how long it has been moving"]
+    correct_answer: "0 N"
+  - item_id: i_m01_t2
+    misconception: M01
+    kind: transfer
+    stem: "An elevator moves upward at a constant 2 m/s. How does the cable tension compare with the elevator's weight?"
+    options: ["Tension is greater than the weight", "Tension equals the weight", "Tension is less than the weight", "There is no tension"]
+    correct_answer: "Tension equals the weight"
+  - item_id: i_m01_t3
+    misconception: M01
+    kind: transfer
+    stem: "A skydiver falls at a constant terminal speed of 55 m/s. Which statement is true?"
+    options: ["Gravity is bigger than air resistance", "Air resistance balances gravity", "Air resistance is bigger than gravity", "No forces act"]
+    correct_answer: "Air resistance balances gravity"
+  - item_id: i_m01_t4
+    misconception: M01
+    kind: transfer
+    stem: "A boat is pulled by a rope at constant velocity. The water drag is 300 N. What is the rope tension?"
+    options: ["300 N", "More than 300 N", "Less than 300 N", "0 N"]
+    correct_answer: "300 N"
+  - item_id: i_m01_trap1
+    misconception: M01
+    kind: trap
+    stem: "A sled glides across smooth ice at a constant 4 m/s after the push ends. Which forces act horizontally?"
+    options: ["A forward force that keeps it moving", "No horizontal forces", "A backward force only", "A forward force bigger than friction"]
+    correct_answer: "No horizontal forces"
+    trap_answer_maps_to:
+      "A forward force that keeps it moving": M01
+      "A forward force bigger than friction": M01
+  - item_id: i_m01_trap2
+    misconception: M01
+    kind: trap
+    stem: "A truck cruises at a steady 25 m/s on a level road. Is the engine's forward force bigger than the total resistance?"
+    options: ["Yes, otherwise it would slow down", "No, they are equal", "No, resistance is bigger"]
+    correct_answer: "No, they are equal"
+    trap_answer_maps_to:
+      "Yes, otherwise it would slow down": M01
+  - item_id: i_m01_r1
+    misconception: M01
+    kind: retest
+    stem: "A rock drifts through deep space at 800 m/s with nothing near it. What force is needed to keep it at 800 m/s?"
+    options: ["None", "A force equal to its momentum", "A small forward force", "A force that grows over time"]
+    correct_answer: "None"
+    trap_answer_maps_to:
+      "A small forward force": M01
+  - item_id: i_m02_t1
+    misconception: M02
+    kind: transfer
+    stem: "A 1 kg and a 5 kg ball are dropped from a 20 m tower with no air resistance. Which lands first?"
+    options: ["The 5 kg ball", "The 1 kg ball", "They land together"]
+    correct_answer: "They land together"
+  - item_id: i_m02_t2
+    misconception: M02
+    kind: transfer
+    stem: "What is the acceleration of a 50 kg rock in free fall on Earth with no air?"
+    options: ["9.8 m/s^2", "490 m/s^2", "50 m/s^2", "0.2 m/s^2"]
+    correct_answer: "9.8 m/s^2"
+  - item_id: i_m02_t3
+    misconception: M02
+    kind: transfer
+    stem: "In a vacuum tube a coin and a feather are released together. What happens?"
+    options: ["The coin falls first", "They fall together", "The feather falls first"]
+    correct_answer: "They fall together"
+  - item_id: i_m02_trap1
+    misconception: M02
+    kind: trap
+    stem: "A bowling ball and a tennis ball are dropped from 2 m, where air resistance is negligible for both. Which hits first?"
+    options: ["The bowling ball, it is heavier", "They hit at almost the same time", "The tennis ball"]
+    correct_answer: "They hit at almost the same time"
+    trap_answer_maps_to:
+      "The bowling ball, it is heavier": M02
+  - item_id: i_m02_r1
+    misconception: M02
+    kind: retest
+    stem: "On the Moon, a 10 kg and a 1 kg rock are dropped from 3 m. How do their fall times compare?"
+    options: ["Equal", "The 10 kg rock is ten times faster", "The 1 kg rock is faster"]
+    correct_answer: "Equal"
+    trap_answer_maps_to:
+      "The 10 kg rock is ten times faster": M02
+  - item_id: i_m03_t1
+    misconception: M03
+    kind: transfer
+    stem: "A basketball is thrown straight up. At its highest point, what is its acceleration?"
+    options: ["0", "9.8 m/s^2 downward", "9.8 m/s^2 upward"]
+    correct_answer: "9.8 m/s^2 downward"
+  - item_id: i_m03_t2
+    misconception: M03
+    kind: transfer
+    stem: "A pendulum bob stops for an instant at the end of its swing. Is it accelerating at that instant?"
+    options: ["Yes", "No"]
+    correct_answer: "Yes"
+  - item_id: i_m03_t3
+    misconception: M03
+    kind: transfer
+    stem: "A ball rolls up a ramp, stops for an instant, then rolls back down. At the stop, the acceleration is:"
+    options: ["Zero", "Down the ramp", "Up the ramp"]
+    correct_answer: "Down the ramp"
+  - item_id: i_m03_trap1
+    misconception: M03
+    kind: trap
+    stem: "A coin is flipped straight up. At the very top, which is true?"
+    options: ["It is momentarily at rest, so its acceleration is zero", "Its velocity is zero and its acceleration is g down", "Its acceleration is upward"]
+    correct_answer: "Its velocity is zero and its acceleration is g down"
+    trap_answer_maps_to:
+      "It is momentarily at rest, so its acceleration is zero": M03
+  - item_id: i_m03_r1
+    misconception: M03
+    kind: retest
+    stem: "A juggler's ball reaches the top of its arc. What is the net force on it?"
+    options: ["Zero", "Its weight, downward"]
+    correct_answer: "Its weight, downward"
+    trap_answer_maps_to:
+      "Zero": M03
+  - item_id: i_m04_t1
+    misconception: M04
+    kind: transfer
+    stem: "A jet flies straight at a constant 250 m/s. What is its acceleration?"
+    options: ["250 m/s^2", "0 m/s^2", "9.8 m/s^2"]
+    correct_answer: "0 m/s^2"
+  - item_id: i_m04_t2
+    misconception: M04
+    kind: transfer
+    stem: "A sprinter goes from 0 to 8 m/s in 2 s. What is the average acceleration?"
+    options: ["8 m/s^2", "4 m/s^2", "16 m/s^2"]
+    correct_answer: "4 m/s^2"
+  - item_id: i_m04_t3
+    misconception: M04
+    kind: transfer
+    stem: "Object A moves at 20 m/s steadily. Object B moves at 2 m/s but speeding up. Which is accelerating?"
+    options: ["A", "B", "Both"]
+    correct_answer: "B"
+  - item_id: i_m04_trap1
+    misconception: M04
+    kind: trap
+    stem: "A train moves at a steady 80 m/s, much faster than a car that is speeding up from rest. Which has the bigger acceleration?"
+    options: ["The train, it is much faster", "The car"]
+    correct_answer: "The car"
+    trap_answer_maps_to:
+      "The train, it is much faster": M04
+  - item_id: i_m04_r1
+    misconception: M04
+    kind: retest
+    stem: "A bus slows from 15 m/s to 5 m/s in 5 s. What is the magnitude of its acceleration?"
+    options: ["5 m/s^2", "2 m/s^2", "15 m/s^2"]
+    correct_answer: "2 m/s^2"
+    trap_answer_maps_to:
+      "5 m/s^2": M04
+  - item_id: i_m05_t1
+    misconception: M05
+    kind: transfer
+    stem: "You stand on the floor. Earth pulls you down. What is the third-law partner force?"
+    options: ["The floor pushing you up", "You pulling Earth up", "You pushing the floor down"]
+    correct_answer: "You pulling Earth up"
+  - item_id: i_m05_t2
+    misconception: M05
+    kind: transfer
+    stem: "A rocket pushes exhaust gas backward. Why does the rocket accelerate forward?"
+    options: ["The gas pushes the rocket forward with an equal force", "The forces cancel, so it does not", "The rocket pushes on the air"]
+    correct_answer: "The gas pushes the rocket forward with an equal force"
+  - item_id: i_m05_t3
+    misconception: M05
+    kind: transfer
+    stem: "A swimmer pushes water backward. Do the swimmer's push and the water's push cancel?"
+    options: ["Yes", "No, they act on different objects"]
+    correct_answer: "No, they act on different objects"
+  - item_id: i_m05_trap1
+    misconception: M05
+    kind: trap
+    stem: "A child pulls a wagon forward. The wagon pulls back equally on the child. Can the wagon speed up?"
+    options: ["No, the forces cancel", "Yes, the forces act on different objects"]
+    correct_answer: "Yes, the forces act on different objects"
+    trap_answer_maps_to:
+      "No, the forces cancel": M05
+  - item_id: i_m05_r1
+    misconception: M05
+    kind: retest
+    stem: "A lamp hangs from a ceiling. Earth pulls the lamp down. Which force is its third-law partner?"
+    options: ["The cord pulling up on the lamp", "The lamp pulling up on Earth"]
+    correct_answer: "The lamp pulling up on Earth"
+    trap_answer_maps_to:
+      "The cord pulling up on the lamp": M05
+  - item_id: i_m06_t1
+    misconception: M06
+    kind: transfer
+    stem: "A 60 kg person stands in an elevator accelerating downward at 2 m/s^2. The normal force is:"
+    options: ["588 N", "468 N", "708 N"]
+    correct_answer: "468 N"
+  - item_id: i_m06_t2
+    misconception: M06
+    kind: transfer
+    stem: "A 4 kg block is on a 60 degree frictionless incline. The normal force is about:"
+    options: ["39 N", "20 N", "4 N"]
+    correct_answer: "20 N"
+  - item_id: i_m06_t3
+    misconception: M06
+    kind: transfer
+    stem: "You push down on a 2 kg book on a table with 10 N. The normal force is about:"
+    options: ["19.6 N", "29.6 N", "10 N"]
+    correct_answer: "29.6 N"
+  - item_id: i_m06_trap1
+    misconception: M06
+    kind: trap
+    stem: "A 10 kg suitcase rests on the floor while someone lifts its handle with 40 N. The normal force from the floor is:"
+    options: ["98 N, the same as its weight", "58 N", "138 N"]
+    correct_answer: "58 N"
+    trap_answer_maps_to:
+      "98 N, the same as its weight": M06
+  - item_id: i_m06_r1
+    misconception: M06
+    kind: retest
+    stem: "A 5 kg box sits on a 30 degree frictionless ramp. The normal force is about:"
+    options: ["49 N", "42 N", "25 N"]
+    correct_answer: "42 N"
+    trap_answer_maps_to:
+      "49 N": M06
+  - item_id: i_m07_t1
+    misconception: M07
+    kind: transfer
+    stem: "What is the weight of a 3 kg melon on Earth?"
+    options: ["3 kg", "29.4 N", "3 N"]
+    correct_answer: "29.4 N"
+  - item_id: i_m07_t2
+    misconception: M07
+    kind: transfer
+    stem: "A 50 kg astronaut travels to Mars. What is the astronaut's mass there?"
+    options: ["50 kg", "19 kg", "130 kg"]
+    correct_answer: "50 kg"
+  - item_id: i_m07_t3
+    misconception: M07
+    kind: transfer
+    stem: "Which unit is correct for weight?"
+    options: ["Kilograms", "Newtons"]
+    correct_answer: "Newtons"
+  - item_id: i_m07_trap1
+    misconception: M07
+    kind: trap
+    stem: "A bathroom scale on the Moon reads lower than on Earth for the same person. What changed?"
+    options: ["Their mass decreased", "Their weight decreased; mass is the same"]
+    correct_answer: "Their weight decreased; mass is the same"
+    trap_answer_maps_to:
+      "Their mass decreased": M07
+  - item_id: i_m07_r1
+    misconception: M07
+    kind: retest
+    stem: "What is the weight of an 8 kg dog on Earth?"
+    options: ["8 kg", "78.4 N", "8 N"]
+    correct_answer: "78.4 N"
+    trap_answer_maps_to:
+      "8 kg": M07
+  - item_id: i_m08_t1
+    misconception: M08
+    kind: transfer
+    stem: "What provides the centripetal force on the Moon as it orbits Earth?"
+    options: ["Earth's gravity", "Gravity plus a separate centripetal force", "A centrifugal force"]
+    correct_answer: "Earth's gravity"
+  - item_id: i_m08_t2
+    misconception: M08
+    kind: transfer
+    stem: "A 1 kg ball on a 2 m string moves in a horizontal circle at 4 m/s on a frictionless table. The tension is:"
+    options: ["8 N", "16 N", "4 N"]
+    correct_answer: "8 N"
+  - item_id: i_m08_t3
+    misconception: M08
+    kind: transfer
+    stem: "A cyclist turns on a flat road. How many horizontal forces act on the bike?"
+    options: ["One, friction toward the center", "Two, friction and centripetal force"]
+    correct_answer: "One, friction toward the center"
+  - item_id: i_m08_trap1
+    misconception: M08
+    kind: trap
+    stem: "A stone is swung on a rope in a horizontal circle. Which free-body diagram is correct (ignore gravity)?"
+    options: ["Tension inward and a centripetal force inward", "Tension inward only"]
+    correct_answer: "Tension inward only"
+    trap_answer_maps_to:
+      "Tension inward and a centripetal force inward": M08
+  - item_id: i_m08_r1
+    misconception: M08
+    kind: retest
+    stem: "A car turns on a flat curve. What is the centripetal force on the car?"
+    options: ["Friction from the road", "An additional force on top of friction"]
+    correct_answer: "Friction from the road"
+    trap_answer_maps_to:
+      "An additional force on top of friction": M08
+  - item_id: i_m09_t1
+    misconception: M09
+    kind: transfer
+    stem: "A golf ball leaves the club. Which forces act on it in flight, ignoring air?"
+    options: ["Gravity only", "Gravity and the club's force", "The club's force only"]
+    correct_answer: "Gravity only"
+  - item_id: i_m09_t2
+    misconception: M09
+    kind: transfer
+    stem: "An astronaut throws a wrench in deep space. After it leaves the hand, the wrench:"
+    options: ["Slows down as the throw force runs out", "Keeps moving at constant velocity", "Stops immediately"]
+    correct_answer: "Keeps moving at constant velocity"
+  - item_id: i_m09_t3
+    misconception: M09
+    kind: transfer
+    stem: "A bowling ball rolls down a long lane. What keeps it moving?"
+    options: ["The force from the bowler's hand", "Inertia; no forward force is needed"]
+    correct_answer: "Inertia; no forward force is needed"
+  - item_id: i_m09_t4
+    misconception: M09
+    kind: transfer
+    stem: "A dart has left the thrower's hand and flies toward the board. What horizontal force acts on it, ignoring air?"
+    options: ["None", "The force of the throw"]
+    correct_answer: "None"
+  - item_id: i_m09_trap1
+    misconception: M09
+    kind: trap
+    stem: "A baseball has just left the pitcher's hand at 40 m/s. Which arrow belongs on its free-body diagram?"
+    options: ["A forward arrow for the pitcher's throw", "Only a downward arrow for gravity"]
+    correct_answer: "Only a downward arrow for gravity"
+    trap_answer_maps_to:
+      "A forward arrow for the pitcher's throw": M09
+  - item_id: i_m09_trap2
+    misconception: M09
+    kind: trap
+    stem: "Why does a thrown snowball keep moving after it leaves your hand?"
+    options: ["It carries the force of your throw", "Nothing is needed to keep it moving"]
+    correct_answer: "Nothing is needed to keep it moving"
+    trap_answer_maps_to:
+      "It carries the force of your throw": M09
+  - item_id: i_m09_r1
+    misconception: M09
+    kind: retest
+    stem: "A soccer ball has been kicked and is rolling on frictionless ground. What forward force acts on it?"
+    options: ["The kick's force", "None"]
+    correct_answer: "None"
+    trap_answer_maps_to:
+      "The kick's force": M09
+  - item_id: i_m10_t1
+    misconception: M10
+    kind: transfer
+    stem: "A pendulum gradually stops swinging. What happened to its energy?"
+    options: ["It was used up", "It became thermal energy in the air and pivot"]
+    correct_answer: "It became thermal energy in the air and pivot"
+  - item_id: i_m10_t2
+    misconception: M10
+    kind: transfer
+    stem: "A phone battery goes flat. Where did the chemical energy go?"
+    options: ["Into light, sound and heat", "It was destroyed"]
+    correct_answer: "Into light, sound and heat"
+  - item_id: i_m10_t3
+    misconception: M10
+    kind: transfer
+    stem: "A 2 kg box slides to a stop from 3 m/s on a rough floor. How much energy became heat?"
+    options: ["9 J", "0 J", "6 J"]
+    correct_answer: "9 J"
+  - item_id: i_m10_trap1
+    misconception: M10
+    kind: trap
+    stem: "After a long bike ride your legs feel tired. What happened to the food energy you used?"
+    options: ["It was used up and no longer exists", "It became kinetic energy, heat and sound"]
+    correct_answer: "It became kinetic energy, heat and sound"
+    trap_answer_maps_to:
+      "It was used up and no longer exists": M10
+  - item_id: i_m10_r1
+    misconception: M10
+    kind: retest
+    stem: "A rolling ball slowly comes to rest on grass. Is the total energy of the universe lower now?"
+    options: ["Yes, some was used up", "No, it was transformed into heat"]
+    correct_answer: "No, it was transformed into heat"
+    trap_answer_maps_to:
+      "Yes, some was used up": M10
+  - item_id: i_m11_t1
+    misconception: M11
+    kind: transfer
+    stem: "A ping-pong ball hits a bowling ball. Which exerts the larger force?"
+    options: ["The bowling ball", "The ping-pong ball", "They are equal"]
+    correct_answer: "They are equal"
+  - item_id: i_m11_t2
+    misconception: M11
+    kind: transfer
+    stem: "A 100 kg and a 50 kg skater push apart. The force on the 50 kg skater is 200 N. The force on the 100 kg skater is:"
+    options: ["400 N", "200 N", "100 N"]
+    correct_answer: "200 N"
+  - item_id: i_m11_t3
+    misconception: M11
+    kind: transfer
+    stem: "Earth pulls a satellite with 5000 N. How hard does the satellite pull Earth?"
+    options: ["5000 N", "Almost zero", "Much more than 5000 N"]
+    correct_answer: "5000 N"
+  - item_id: i_m11_trap1
+    misconception: M11
+    kind: trap
+    stem: "A heavy linebacker tackles a small running back. During the hit, who exerts the bigger force?"
+    options: ["The linebacker, he is bigger", "They exert equal forces"]
+    correct_answer: "They exert equal forces"
+    trap_answer_maps_to:
+      "The linebacker, he is bigger": M11
+  - item_id: i_m11_r1
+    misconception: M11
+    kind: retest
+    stem: "A fly collides with a moving bus. Compare the forces."
+    options: ["The bus's force is larger", "They are equal"]
+    correct_answer: "They are equal"
+    trap_answer_maps_to:
+      "The bus's force is larger": M11
+  - item_id: i_m12_t1
+    misconception: M12
+    kind: transfer
+    stem: "A ball is rising after being thrown upward. The net force on it points:"
+    options: ["Up", "Down", "Zero"]
+    correct_answer: "Down"
+  - item_id: i_m12_t2
+    misconception: M12
+    kind: transfer
+    stem: "A bike moving north brakes hard. The net force points:"
+    options: ["North", "South"]
+    correct_answer: "South"
+  - item_id: i_m12_t3
+    misconception: M12
+    kind: transfer
+    stem: "A satellite moves in a circular orbit. The net force on it points:"
+    options: ["Along its velocity", "Toward Earth's center"]
+    correct_answer: "Toward Earth's center"
+  - item_id: i_m12_t4
+    misconception: M12
+    kind: transfer
+    stem: "A hockey puck slides east and is slowing due to friction. The net force points:"
+    options: ["East", "West"]
+    correct_answer: "West"
+  - item_id: i_m12_trap1
+    misconception: M12
+    kind: trap
+    stem: "A cannonball at the top of its arc moves horizontally east. The net force on it points:"
+    options: ["East, the way it is moving", "Straight down"]
+    correct_answer: "Straight down"
+    trap_answer_maps_to:
+      "East, the way it is moving": M12
+  - item_id: i_m12_trap2
+    misconception: M12
+    kind: trap
+    stem: "A car turns left at constant speed. The net force points:"
+    options: ["Forward, along its motion", "Left, toward the center of the turn"]
+    correct_answer: "Left, toward the center of the turn"
+    trap_answer_maps_to:
+      "Forward, along its motion": M12
+  - item_id: i_m12_r1
+    misconception: M12
+    kind: retest
+    stem: "A ball rolls uphill and is slowing down. The net force points:"
+    options: ["Uphill, the way it moves", "Downhill"]
+    correct_answer: "Downhill"
+    trap_answer_maps_to:
+      "Uphill, the way it moves": M12

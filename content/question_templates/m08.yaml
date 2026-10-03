@@ -1,0 +1,94 @@
+templates:
+  - template_id: m08_car_curve_01
+    primary: M08
+    question_type: mcq
+    concept_tags: [circular_motion, centripetal]
+    stem: "A car rounds a flat curve of radius {r} m at a constant {v} m/s. Which horizontal forces act on the car?"
+    params:
+      r: [30, 50, 80]
+      v: [10, 15, 20]
+    options:
+      - "Friction only, which provides the centripetal force"
+      - "Friction and a separate centripetal force"
+      - "A centrifugal force only"
+      - "No horizontal forces"
+    correct:
+      answer: "Friction only, which provides the centripetal force"
+      working:
+        - "Friction from the road is the only horizontal force; it is what supplies the centripetal force."
+        - "Centripetal is just the name for the net inward force, here friction."
+    wrong:
+      M08:
+        answer: "Friction and a separate centripetal force"
+        working:
+          - "There is friction plus the centripetal force pulling it in."
+          - "Centripetal force is an extra force that acts in circles, in addition to friction."
+          - "Anything moving in a circle gets its own centripetal force on top of the other forces."
+        rationale: "Treats centripetal force as an additional force."
+  - template_id: m08_string_ball_02
+    primary: M08
+    question_type: numeric
+    concept_tags: [circular_motion, tension]
+    stem: "A {m} kg ball on a string moves in a horizontal circle of radius {r} m at {v} m/s on a frictionless table. What is the tension in the string?"
+    params:
+      m: [0.2, 0.5, 1]
+      r: [0.5, 1, 2]
+      v: [2, 3, 4]
+    correct:
+      answer: "{m*v*v/r:.1f} N"
+      working:
+        - "The tension provides the centripetal force: T = m v^2 / r = {m*v*v/r:.1f} N."
+        - "The only horizontal force is tension, so it equals m v^2 / r."
+    wrong:
+      M08:
+        answer: "{2*m*v*v/r:.1f} N"
+        working:
+          - "The tension and the centripetal force both act, so T = 2 m v^2 / r."
+          - "You add the centripetal force on top of the tension."
+          - "There is the string force plus a centripetal force, so double it."
+        rationale: "Counts the centripetal force separately from tension."
+  - template_id: m08_satellite_03
+    primary: M08
+    question_type: explanation
+    concept_tags: [circular_motion, gravity]
+    stem: "A satellite orbits Earth at a constant {v} km/s. List the forces acting on it and explain."
+    params:
+      v: [3, 5, 7]
+    correct:
+      answer: "Only gravity, which acts as the centripetal force."
+      working:
+        - "Gravity is the only force; it points to the center and provides the centripetal force."
+        - "Centripetal force is not an extra force; here it is gravity."
+    wrong:
+      M08:
+        answer: "Gravity and a centripetal force."
+        working:
+          - "Gravity pulls it and there is also the centripetal force keeping it in orbit."
+          - "Orbiting objects have a centripetal force as well as gravity."
+          - "The centripetal force is added to gravity to keep it circling."
+        rationale: "Treats centripetal force as separate from gravity."
+  - template_id: m08_merry_go_round_04
+    primary: M08
+    question_type: mcq
+    concept_tags: [circular_motion, free_body_diagram]
+    stem: "A {m} kg child rides a merry-go-round of radius {r} m at constant speed. On a free-body diagram, how many horizontal forces should appear?"
+    params:
+      m: [20, 30, 40]
+      r: [1.5, 2, 3]
+    options:
+      - "One: static friction toward the center"
+      - "Two: friction and centripetal force"
+      - "Two: friction and centrifugal force"
+      - "None"
+    correct:
+      answer: "One: static friction toward the center"
+      working:
+        - "Static friction is the only horizontal force and it points to the center."
+        - "The centripetal force is friction itself, so only one arrow."
+    wrong:
+      M08:
+        answer: "Two: friction and centripetal force"
+        working:
+          - "You draw friction and also the centripetal force as a separate arrow."
+          - "Circular motion means there is an extra centripetal force to add."
+        rationale: "Draws centripetal force as an additional arrow."

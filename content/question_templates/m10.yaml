@@ -1,0 +1,90 @@
+templates:
+  - template_id: m10_ball_bounce_01
+    primary: M10
+    question_type: explanation
+    concept_tags: [energy_conservation]
+    stem: "A ball dropped from {h} m bounces back up to only {h2} m. Where did the missing energy go?"
+    params:
+      h: [2, 3, 4]
+      h2: [1, 1.5]
+    correct:
+      answer: "It was transformed into thermal energy and sound."
+      working:
+        - "Energy is conserved; the missing part became heat and sound during the bounce."
+        - "The collision converts some kinetic energy into thermal energy and sound."
+    wrong:
+      M10:
+        answer: "The energy was used up in the bounce."
+        working:
+          - "The ball used up some of its energy hitting the floor, so it is gone."
+          - "Energy gets used up every bounce."
+          - "Each bounce consumes energy until there is none left."
+        rationale: "Believes energy is consumed rather than transformed."
+  - template_id: m10_battery_02
+    primary: M10
+    question_type: mcq
+    concept_tags: [energy_conservation]
+    stem: "A flashlight runs for {t} hours until its battery is dead. What happened to the battery's chemical energy?"
+    params:
+      t: [2, 4, 6, 10]
+    options:
+      - "It was destroyed"
+      - "It was transformed into light and heat"
+      - "It is still in the battery"
+      - "It turned into mass"
+    correct:
+      answer: "It was transformed into light and heat"
+      working:
+        - "The bulb converted the chemical energy into light, which ended up as heat."
+        - "Energy is not destroyed; it changed form."
+    wrong:
+      M10:
+        answer: "It was destroyed"
+        working:
+          - "The energy got used up by the bulb, so it no longer exists."
+          - "The flashlight consumed all the energy."
+          - "After {t} hours the energy was all used up and gone."
+        rationale: "Believes energy is used up."
+  - template_id: m10_slide_heat_03
+    primary: M10
+    question_type: numeric
+    concept_tags: [energy_conservation, friction]
+    stem: "A {m} kg child slides down a {h} m high slide and reaches the bottom at {v} m/s. How much energy was converted to thermal energy by friction? Use g = 9.8."
+    params:
+      m: [20, 25, 30]
+      h: [3, 4, 5]
+      v: [4, 5, 6]
+    correct:
+      answer: "{m*9.8*h - 0.5*m*v*v:.1f} J"
+      working:
+        - "m g h - (1/2) m v^2 = {m*9.8*h - 0.5*m*v*v:.1f} J went into thermal energy."
+        - "The missing mechanical energy was transformed into heat by friction."
+    wrong:
+      M10:
+        answer: "0 J"
+        working:
+          - "The energy that is missing was just used up, it did not become anything."
+          - "Friction uses up energy, it does not turn into heat."
+          - "The lost energy is consumed by the slide, so nothing is converted."
+        rationale: "Believes lost energy is consumed rather than transformed."
+  - template_id: m10_car_brakes_04
+    primary: M10
+    question_type: explanation
+    concept_tags: [energy_conservation, kinetic_energy]
+    stem: "A {m} kg car moving at {v} m/s brakes to a stop. Explain what happens to its {0.5*m*v*v:.0f} J of kinetic energy."
+    params:
+      m: [1000, 1200, 1500]
+      v: [10, 20, 30]
+    correct:
+      answer: "It becomes thermal energy in the brakes and tires."
+      working:
+        - "Braking friction transforms the kinetic energy into heat; the total is conserved."
+        - "The brakes get hot because the kinetic energy turns into thermal energy."
+    wrong:
+      M10:
+        answer: "The kinetic energy is used up and disappears."
+        working:
+          - "Braking uses up the car's energy so it is gone."
+          - "Once the car stops all its energy has been consumed."
+          - "The energy is used up by the brakes and no longer exists."
+        rationale: "Believes energy disappears when used."

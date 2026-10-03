@@ -1,0 +1,125 @@
+templates:
+  - template_id: m09_thrown_ball_01
+    primary: M09
+    question_type: mcq
+    confusable_group: CG2
+    concept_tags: [inertia, forces]
+    stem: "A ball is thrown horizontally at {v} m/s. After it leaves the hand, which forces act on it? Ignore air resistance."
+    params:
+      v: [5, 10, 15, 20]
+    options:
+      - "Gravity only"
+      - "Gravity and the force of the throw"
+      - "The force of the throw only"
+      - "No forces"
+    correct:
+      answer: "Gravity only"
+      working:
+        - "Once the ball leaves the hand nothing pushes it forward; only gravity acts."
+        - "The hand cannot touch the ball after release, so the only force is its weight."
+    wrong:
+      M09:
+        answer: "Gravity and the force of the throw"
+        working:
+          - "The force from the hand stays with the ball and keeps it moving."
+          - "The throw gives the ball a force that it carries forward."
+          - "The ball still has the push from my hand inside it."
+        rationale: "Believes the ball carries the force of the throw."
+      M01:
+        answer: "Gravity and the force of the throw"
+        working:
+          - "It keeps moving forward, so there must be a forward force on it."
+          - "Without a forward force it could not keep moving at {v} m/s."
+        rationale: "Believes motion needs a sustaining force."
+      M12:
+        answer: "Gravity and the force of the throw"
+        working:
+          - "The ball moves forward, so there must be a force forward along the velocity."
+          - "The net force points where the ball goes, which is forward."
+        rationale: "Assumes net force follows the velocity."
+  - template_id: m09_kicked_ball_02
+    primary: M09
+    question_type: numeric
+    confusable_group: CG2
+    concept_tags: [inertia, forces]
+    stem: "A {m} kg ball is kicked and then rolls along frictionless ground at {v} m/s after leaving the foot. What horizontal force acts on the ball while it rolls?"
+    params:
+      m: [0.4, 0.45, 0.5]
+      v: [4, 6, 8, 10]
+    correct:
+      answer: "0 N"
+      working:
+        - "The foot is no longer touching the ball and there is no friction, so the horizontal force is 0."
+        - "It rolls at constant velocity because of inertia; no force is needed."
+    wrong:
+      M09:
+        answer: "{m*v:.1f} N"
+        working:
+          - "The kick put a force into the ball that it still has."
+          - "The force of the kick stays in the ball as it rolls."
+          - "The ball carries the kick's force with it, about m v."
+        rationale: "Believes the ball retains the force of the kick."
+      M01:
+        answer: "{m*v:.1f} N"
+        working:
+          - "A force is needed to keep the ball rolling at {v} m/s."
+          - "It keeps moving, so something must be pushing it forward."
+        rationale: "Believes constant motion requires a force."
+  - template_id: m09_cannonball_03
+    primary: M09
+    question_type: explanation
+    confusable_group: CG2
+    concept_tags: [inertia, projectile]
+    stem: "A cannonball leaves the cannon at {v} m/s. Explain why it keeps moving forward after leaving the barrel. Ignore air resistance."
+    params:
+      v: [50, 100, 150, 200]
+    correct:
+      answer: "Inertia: no forward force is needed; only gravity acts on it."
+      working:
+        - "Objects keep their velocity unless a force changes it; gravity only changes the vertical part."
+        - "After the barrel nothing pushes it; it keeps moving because of inertia."
+    wrong:
+      M09:
+        answer: "The force from the cannon keeps pushing it until it runs out."
+        working:
+          - "The cannon gives it a force that slowly runs out, then it falls."
+          - "The blast force is stored in the ball and carries it forward."
+          - "It has the cannon's force in it until that force is used up."
+        rationale: "Believes the projectile carries an internal force."
+      M01:
+        answer: "A forward force keeps it moving."
+        working:
+          - "Something must keep pushing it forward or it would stop."
+          - "To move forward at {v} m/s it needs a forward force."
+        rationale: "Believes motion requires a sustaining force."
+  - template_id: m09_puck_stick_04
+    primary: M09
+    question_type: mcq
+    confusable_group: CG2
+    concept_tags: [inertia]
+    stem: "A hockey puck leaves the stick at {v} m/s on frictionless ice. Why does it keep moving?"
+    params:
+      v: [10, 20, 30]
+    options:
+      - "The stick's force is stored in the puck"
+      - "No force is needed to keep moving at constant velocity"
+      - "The ice pushes it forward"
+      - "Its speed keeps increasing"
+    correct:
+      answer: "No force is needed to keep moving at constant velocity"
+      working:
+        - "With no friction there is no net force, so it keeps its velocity."
+        - "Inertia: it continues at {v} m/s without any push."
+    wrong:
+      M09:
+        answer: "The stick's force is stored in the puck"
+        working:
+          - "The stick hit it with a force, and the puck keeps that force as it slides."
+          - "The force from the hit stays inside the puck."
+        rationale: "Believes the puck stores the force of the stick."
+      M01:
+        answer: "The stick's force is stored in the puck"
+        working:
+          - "It needs a force to keep moving, and that force must come from the stick."
+          - "Without a force it would stop, so some force must still be there."
+        rationale: "Believes motion requires a force."

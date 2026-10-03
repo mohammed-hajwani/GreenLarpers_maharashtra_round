@@ -1,0 +1,121 @@
+interventions:
+  M01:
+    - strategy: counterexample
+      template: "You answered \"{learner_answer}\" and wrote: \"{learner_working}\". Consider a hockey puck on perfectly frictionless ice: after the stick leaves it, nothing pushes it, yet it glides on at the same speed. Things slow down in everyday life only because friction and drag act backward. {correct_concept}"
+      follow_up_prompt: "If friction disappeared completely, what force would a sliding box need to keep its speed?"
+    - strategy: fbd_walkthrough
+      template: "Let's draw the forces instead of guessing. List every object touching the moving body and the force each one exerts. At constant velocity the forward arrows and backward arrows must be the same length, because acceleration is zero and F_net = m a. Your answer \"{learner_answer}\" adds an extra forward arrow that nothing is providing. {correct_concept}"
+      follow_up_prompt: "Sketch the forces on a car cruising at steady speed. Which arrows are equal?"
+    - strategy: predict_then_check
+      template: "Predict first: a probe in deep space with engines off is moving at 1000 m/s. In one hour, how fast is it going? Real space probes like Voyager have coasted for decades without engines and without slowing down. Compare that with your answer \"{learner_answer}\". {correct_concept}"
+      follow_up_prompt: "Why do objects on Earth seem to need a push to keep moving?"
+  M02:
+    - strategy: counterexample
+      template: "You answered \"{learner_answer}\". On the Moon, astronaut David Scott dropped a hammer and a feather together and they hit the ground at the same moment. With no air, gravity gives every object the same acceleration. {correct_concept}"
+      follow_up_prompt: "Why does a feather fall slowly on Earth but not on the Moon?"
+    - strategy: cognitive_conflict
+      template: "Your reasoning was \"{learner_working}\". Imagine tying a light ball to a heavy ball. If heavier falls faster, the light ball should slow the heavy one down, but the pair is heavier so it should speed up. Both cannot be true, so mass cannot set the falling speed. {correct_concept}"
+      follow_up_prompt: "Two balls of 1 kg and 10 kg are dropped in a vacuum. Which lands first?"
+    - strategy: worked_example
+      template: "Heavier objects do feel a bigger gravitational force, F = m g. But they also have more mass to accelerate, so a = F / m = m g / m = g. The mass cancels. That is why your answer \"{learner_answer}\" does not hold without air. {correct_concept}"
+      follow_up_prompt: "Compute the acceleration of a 2 kg and a 20 kg rock in free fall."
+  M03:
+    - strategy: cognitive_conflict
+      template: "You answered \"{learner_answer}\". If the acceleration really were zero at the top, the velocity would stop changing, and the ball would hang in the air at zero speed forever. It does not; it starts falling right away. So something is still changing its velocity at the top. {correct_concept}"
+      follow_up_prompt: "What would happen to a ball at the top if its acceleration were truly zero?"
+    - strategy: worked_example
+      template: "Track the velocity every 0.1 s around the top: +0.98, 0, -0.98 m/s. The velocity changes by -0.98 m/s every 0.1 s, including across the moment it is zero. That steady change is an acceleration of 9.8 m/s^2 downward. {correct_concept}"
+      follow_up_prompt: "What is the velocity 0.2 s after the top of a vertical throw?"
+    - strategy: fbd_walkthrough
+      template: "Draw the forces on the ball at the very top. Is it still touching anything? Is gravity still pulling? The only arrow is the weight, pointing down, so F_net = m g and a = g. Your working said \"{learner_working}\", but a zero speed does not remove the weight arrow. {correct_concept}"
+      follow_up_prompt: "List the forces on a thrown stone at its highest point."
+  M04:
+    - strategy: counterexample
+      template: "You answered \"{learner_answer}\". A plane cruising at 250 m/s in a straight line has a huge velocity but zero acceleration. A sprinter leaving the blocks has almost no velocity but a large acceleration. Fast and accelerating are different things. {correct_concept}"
+      follow_up_prompt: "Give an example of something with zero velocity but non-zero acceleration."
+    - strategy: analogy
+      template: "Think of your bank balance and your monthly savings. The balance is like velocity; how much it changes each month is like acceleration. A big balance that stays the same means zero savings. Your reasoning \"{learner_working}\" mixes up the balance and the change. {correct_concept}"
+      follow_up_prompt: "A car's speedometer reads a steady 60 km/h. What is its acceleration?"
+    - strategy: worked_example
+      template: "Acceleration is a = (v_final - v_initial) / t. A train going from 30 m/s to 10 m/s in 10 s has a = (10 - 30) / 10 = -2 m/s^2. Neither 30 nor 10 is the acceleration; only the change matters. {correct_concept}"
+      follow_up_prompt: "A bike goes from 2 m/s to 8 m/s in 3 s. What is its acceleration?"
+  M05:
+    - strategy: fbd_walkthrough
+      template: "Draw two separate diagrams, one for each object. Put each third-law force on the object it acts on. You will see the pair never shares a diagram, so the two forces can never cancel. Your answer \"{learner_answer}\" puts both on one object. {correct_concept}"
+      follow_up_prompt: "A horse pulls a cart. Draw the forces on the cart only."
+    - strategy: counterexample
+      template: "If action and reaction cancelled, nothing could ever start moving: you push the ground, the ground pushes you, and you would stay still. But you walk every day. The ground's push acts on you, your push acts on the ground. {correct_concept}"
+      follow_up_prompt: "Which force actually moves you forward when you walk?"
+    - strategy: analogy
+      template: "Think of a handshake between two people: each person feels the other's grip. The grip you feel is on your hand, and the grip they feel is on theirs. Your working said \"{learner_working}\", but forces on different hands cannot cancel. {correct_concept}"
+      follow_up_prompt: "Earth pulls a book down. What is the paired force and what does it act on?"
+  M06:
+    - strategy: counterexample
+      template: "You answered \"{learner_answer}\". Stand on a scale in an elevator that starts moving up: the reading jumps above your weight. The scale shows the normal force, so the normal force is not always equal to the weight. {correct_concept}"
+      follow_up_prompt: "What does a scale read in an elevator accelerating downward?"
+    - strategy: fbd_walkthrough
+      template: "Draw every force on the object and apply Newton's second law perpendicular to the surface. On a ramp only the part of the weight into the surface, m g cos(theta), is balanced. With an extra push or pull, the normal force changes to keep the balance. {correct_concept}"
+      follow_up_prompt: "Find the normal force on a 5 kg block on a 30 degree frictionless ramp."
+    - strategy: predict_then_check
+      template: "Predict: you press down on a book on a table with your hand. Does the table push up harder, the same, or less? It pushes harder, otherwise the book would sink into the table. Your working \"{learner_working}\" misses that the normal force adjusts. {correct_concept}"
+      follow_up_prompt: "A rope pulls up on a crate resting on the floor. How does the normal force change?"
+  M07:
+    - strategy: counterexample
+      template: "You answered \"{learner_answer}\". An astronaut on the Moon weighs about one sixth as much as on Earth, but it is just as hard to push them sideways, because their mass is unchanged. {correct_concept}"
+      follow_up_prompt: "What is the mass of a 60 kg person on Mars?"
+    - strategy: worked_example
+      template: "Weight is a force: W = m g. A 5 kg bag has mass 5 kg but weight 5 x 9.8 = 49 N. The units are different, kilograms versus newtons, which tells you they are different quantities. {correct_concept}"
+      follow_up_prompt: "Find the weight of a 3 kg melon on Earth."
+    - strategy: analogy
+      template: "Mass is like the number of pages in a book; weight is like how hard the book presses on your hand. On the Moon the book has the same pages but presses less. Your reasoning \"{learner_working}\" treats the two as one number. {correct_concept}"
+      follow_up_prompt: "Which changes on the Moon, mass or weight?"
+  M08:
+    - strategy: fbd_walkthrough
+      template: "On your diagram, only draw forces that have a physical source: a string, a surface, friction, or gravity. Then ask which of those points to the center. That force is the centripetal force; you do not add another one. Your answer \"{learner_answer}\" counts it twice. {correct_concept}"
+      follow_up_prompt: "What provides the centripetal force for the Moon orbiting Earth?"
+    - strategy: analogy
+      template: "\"Centripetal\" is a job title, not a person. Tension, friction or gravity can do the job of pulling inward. Saying there is tension plus centripetal force is like counting both the manager and the job title as two people. {correct_concept}"
+      follow_up_prompt: "A car rounds a flat curve. Which real force does the centripetal job?"
+    - strategy: worked_example
+      template: "A 0.5 kg ball on a 1 m string at 2 m/s needs a net inward force of m v^2 / r = 2 N. The only horizontal force is tension, so T = 2 N, not 4 N. Your working \"{learner_working}\" added an extra force. {correct_concept}"
+      follow_up_prompt: "Find the tension for a 1 kg ball on a 2 m string at 3 m/s."
+  M09:
+    - strategy: counterexample
+      template: "You answered \"{learner_answer}\". A force needs something touching or pulling the object. Once the ball leaves your hand, your hand is gone. A puck on frictionless ice would slide forever without carrying any force at all. {correct_concept}"
+      follow_up_prompt: "After a ball leaves your hand, what objects are still exerting forces on it?"
+    - strategy: cognitive_conflict
+      template: "Your reasoning was \"{learner_working}\". If the throw's force were stored inside the ball and ran out, a ball thrown in space would eventually stop. But in space, thrown objects keep moving at the same speed forever. Nothing is running out. {correct_concept}"
+      follow_up_prompt: "What would happen to a wrench thrown by an astronaut in deep space?"
+    - strategy: fbd_walkthrough
+      template: "Draw the forces on the ball just after release. For each arrow, name the object that exerts it. Gravity comes from Earth. Is there any object pushing it forward? No, so there is no forward arrow; inertia, not a force, keeps it moving. {correct_concept}"
+      follow_up_prompt: "List the forces on a cannonball in flight, ignoring air."
+  M10:
+    - strategy: worked_example
+      template: "A 20 kg child sliding down a 4 m slide starts with m g h = 784 J. At the bottom they move at 5 m/s, so they have 250 J of kinetic energy. The other 534 J did not disappear; it became thermal energy in the slide and their clothes. {correct_concept}"
+      follow_up_prompt: "A dropped ball bounces lower each time. Where does the energy go?"
+    - strategy: analogy
+      template: "Energy is like money moving between accounts. When you pay for something the money is not destroyed; it moves to someone else. Your answer \"{learner_answer}\" treats spending as destroying. {correct_concept}"
+      follow_up_prompt: "Where does a car's kinetic energy go when it brakes?"
+    - strategy: predict_then_check
+      template: "Predict: rub your hands together quickly for ten seconds. What do you feel? They warm up. The kinetic energy of your hands became thermal energy. Your working \"{learner_working}\" misses where it goes. {correct_concept}"
+      follow_up_prompt: "Why do bicycle brakes get warm on a long downhill?"
+  M11:
+    - strategy: counterexample
+      template: "You answered \"{learner_answer}\". When a bug hits a windshield, the bug is destroyed and the car barely notices, yet the forces are exactly equal. The bug suffers more because its tiny mass gets a huge acceleration from the same force. {correct_concept}"
+      follow_up_prompt: "Why does the bug get squashed if the forces are equal?"
+    - strategy: worked_example
+      template: "A 5000 kg truck and a 1000 kg car push on each other with 10000 N. Truck: a = 10000 / 5000 = 2 m/s^2. Car: a = 10000 / 1000 = 10 m/s^2. Same force, different effects. {correct_concept}"
+      follow_up_prompt: "A 60 kg adult and 20 kg child push apart with 120 N. Find each acceleration."
+    - strategy: cognitive_conflict
+      template: "Your reasoning was \"{learner_working}\". If the bigger object always pushed harder, two people pushing palms would never feel the same push, yet force sensors in both hands always read the same number. {correct_concept}"
+      follow_up_prompt: "Does the Moon pull on Earth as hard as Earth pulls on the Moon?"
+  M12:
+    - strategy: counterexample
+      template: "You answered \"{learner_answer}\". A ball tossed upward is moving up, but gravity, the only force, points down. That is why it slows down. Net force tells you how velocity changes, not where it points. {correct_concept}"
+      follow_up_prompt: "A car is braking while moving east. Which way is the net force?"
+    - strategy: fbd_walkthrough
+      template: "Draw the forces first, ignoring which way the object moves. Add them up to get the net force. Only then compare with the velocity. For a projectile at its peak, the only arrow is gravity, straight down, while it moves sideways. {correct_concept}"
+      follow_up_prompt: "Draw the forces on a ball at the top of a sideways throw."
+    - strategy: predict_then_check
+      template: "Predict: a car goes around a circle at constant speed. If the net force were along the velocity, it would speed up. It does not, it just turns, so the net force must point toward the center. Your working \"{learner_working}\" assumed force follows motion. {correct_concept}"
+      follow_up_prompt: "Which way does the net force point for a car turning left at constant speed?"

@@ -1,0 +1,92 @@
+templates:
+  - template_id: m02_drop_vacuum_01
+    primary: M02
+    question_type: numeric
+    concept_tags: [free_fall, gravity]
+    stem: "In a vacuum chamber a {m1} kg ball and a {m2} kg ball are released together from {h} m. How many times longer does the lighter ball take to land than the heavier one?"
+    params:
+      m1: [1, 2]
+      m2: [4, 5, 10]
+      h: [2, 5, 10]
+    correct:
+      answer: "1 times (they land together)"
+      working:
+        - "In a vacuum all objects have the same acceleration g, so they land at the same time."
+        - "Acceleration does not depend on mass when there is no air resistance."
+    wrong:
+      M02:
+        answer: "{m2/m1:.1f} times"
+        working:
+          - "The heavier ball is {m2/m1:.1f} times heavier so it falls that many times faster."
+          - "Heavier objects fall faster because gravity pulls harder on them."
+          - "More weight means more speed when falling, so the light ball takes longer."
+        rationale: "Assumes fall time scales with mass."
+  - template_id: m02_moon_hammer_02
+    primary: M02
+    question_type: mcq
+    concept_tags: [free_fall, gravity]
+    stem: "An astronaut on the Moon drops a {m} kg hammer and a feather at the same time from the same height. What happens?"
+    params:
+      m: [0.5, 1, 1.5, 2]
+    options:
+      - "The hammer lands first"
+      - "The feather lands first"
+      - "They land at the same time"
+      - "Neither falls"
+    correct:
+      answer: "They land at the same time"
+      working:
+        - "There is no air on the Moon, so both have the same acceleration and land together."
+        - "Without air resistance mass does not affect how fast things fall."
+    wrong:
+      M02:
+        answer: "The hammer lands first"
+        working:
+          - "The hammer is much heavier so it falls faster."
+          - "Heavier things fall faster, so the hammer wins."
+          - "Gravity pulls harder on the heavy hammer so it speeds up more."
+        rationale: "Believes heavier objects fall faster without drag."
+  - template_id: m02_cliff_rocks_03
+    primary: M02
+    question_type: explanation
+    concept_tags: [free_fall, gravity]
+    stem: "Two rocks of masses {m1} kg and {m2} kg are dropped together from a {h} m cliff. Ignoring air resistance, explain which one lands first."
+    params:
+      m1: [1, 2, 3]
+      m2: [8, 10, 20]
+      h: [20, 40, 80]
+    correct:
+      answer: "Both land at the same time."
+      working:
+        - "Both accelerate at g, so they cover the {h} m in the same time."
+        - "Ignoring air, the acceleration is independent of mass."
+    wrong:
+      M02:
+        answer: "The {m2} kg rock lands first."
+        working:
+          - "The bigger mass is pulled more strongly so it falls faster."
+          - "Heavier rocks drop faster since they weigh more."
+          - "The {m2} kg rock is heavier so it reaches the ground before the light one."
+        rationale: "Believes heavier rocks fall faster in free fall."
+  - template_id: m02_marble_time_04
+    primary: M02
+    question_type: numeric
+    concept_tags: [free_fall, kinematics]
+    stem: "A {m} kg bowling ball and a {m2} kg marble are dropped from {h} m with no air resistance. How long does the marble take to fall? Use g = 9.8."
+    params:
+      m: [5, 7]
+      m2: [0.01, 0.02]
+      h: [5, 10, 20]
+    correct:
+      answer: "{sqrt(2*h/9.8):.2f} s"
+      working:
+        - "t = sqrt(2h/g) does not depend on mass, so t = {sqrt(2*h/9.8):.2f} s, same as the bowling ball."
+        - "Both fall with acceleration g, so the marble takes {sqrt(2*h/9.8):.2f} s."
+    wrong:
+      M02:
+        answer: "{2*sqrt(2*h/9.8):.2f} s"
+        working:
+          - "The marble is lighter so it falls slower than the bowling ball and takes longer."
+          - "Lighter objects fall more slowly, so the marble needs more time than the heavy ball."
+          - "The heavy ball falls faster, so the marble takes about twice as long."
+        rationale: "Assumes the lighter object falls more slowly."

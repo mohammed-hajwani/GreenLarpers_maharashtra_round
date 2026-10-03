@@ -1,0 +1,126 @@
+templates:
+  - template_id: m01_puck_ice_01
+    primary: M01
+    question_type: numeric
+    confusable_group: CG2
+    concept_tags: [newton_first_law, net_force]
+    stem: "A {m} kg hockey puck slides across frictionless ice at a constant {v} m/s. What is the net force on the puck in newtons?"
+    params:
+      m: [0.2, 0.5, 1, 2]
+      v: [3, 5, 8, 12]
+    correct:
+      answer: "0 N"
+      working:
+        - "Constant velocity means zero acceleration, so the net force is zero."
+        - "No acceleration, so by Newton's second law F_net = m a = 0."
+        - "The velocity is not changing, so the forces are balanced and the net force is 0."
+    wrong:
+      M01:
+        answer: "{m*v:.1f} N forward"
+        working:
+          - "It is moving at a constant speed so there must be a forward force keeping it moving, F = m v."
+          - "A force is needed to keep the puck moving at {v} m/s, otherwise it would stop."
+          - "To keep a constant velocity you need a constant force pushing it forward."
+        rationale: "Assumes a forward force is required to maintain constant velocity."
+      M09:
+        answer: "{m*v:.1f} N forward"
+        working:
+          - "The puck still has the force from the stick that hit it, so the force is m v forward."
+          - "The hit gave the puck a force that it carries with it as it slides."
+          - "The force from the stick stays inside the puck and keeps pushing it."
+        rationale: "Believes the puck carries the force from the stick."
+      M12:
+        answer: "{m*v:.1f} N forward"
+        working:
+          - "The net force points the same way the puck is moving, so it is forward."
+          - "Net force must be in the direction of the velocity, so it is forward."
+          - "Since it moves forward the net force must be forward too."
+        rationale: "Assumes net force aligns with velocity."
+  - template_id: m01_car_cruise_02
+    primary: M01
+    question_type: mcq
+    confusable_group: CG2
+    concept_tags: [newton_first_law, balanced_forces]
+    stem: "A car travels along a straight level highway at a steady {v} km/h. Which statement about the horizontal forces on the car is true?"
+    params:
+      v: [60, 80, 100, 120]
+    options:
+      - "The forward force from the road is larger than the drag forces"
+      - "The forward force from the road equals the drag forces"
+      - "There are no horizontal forces on the car"
+      - "The forward force increases over time"
+    correct:
+      answer: "The forward force from the road equals the drag forces"
+      working:
+        - "Steady speed in a straight line means zero acceleration, so the forward force balances drag."
+        - "The forces must be balanced because the velocity is constant."
+    wrong:
+      M01:
+        answer: "The forward force from the road is larger than the drag forces"
+        working:
+          - "The engine force must be bigger than air resistance or the car would not keep moving."
+          - "To keep going at {v} km/h the forward push has to win over friction."
+          - "If the forces were equal the car would slow down and stop."
+        rationale: "Believes motion requires an unbalanced forward force."
+      M12:
+        answer: "The forward force from the road is larger than the drag forces"
+        working:
+          - "The car moves forward so the net force has to point forward."
+          - "Net force is in the direction of motion, so the forward force wins."
+        rationale: "Assumes the net force direction follows the velocity."
+  - template_id: m01_spaceship_03
+    primary: M01
+    question_type: explanation
+    confusable_group: CG2
+    concept_tags: [newton_first_law, inertia]
+    stem: "A spaceship far from any planet is coasting at {v} m/s with its engines off. Explain what happens to its motion and why."
+    params:
+      v: [200, 500, 1000, 3000]
+    correct:
+      answer: "It keeps moving at {v} m/s in a straight line."
+      working:
+        - "With no net force there is no acceleration, so the velocity stays the same."
+        - "Newton's first law says no force is needed to keep moving at constant velocity."
+    wrong:
+      M01:
+        answer: "It gradually slows down and stops."
+        working:
+          - "Without the engines pushing there is no force to keep it moving, so it slows down."
+          - "Objects need a force to keep moving; with the engines off it will stop eventually."
+          - "Motion needs a force to sustain it, so the ship loses speed."
+        rationale: "Believes motion stops without a sustaining force."
+      M09:
+        answer: "It gradually slows down and stops."
+        working:
+          - "The force the engines gave it gets used up over time so it slows down."
+          - "The ship carries the push from the engines but that force runs out."
+        rationale: "Believes the ship carries a stored force that runs out."
+  - template_id: m01_crate_push_04
+    primary: M01
+    question_type: numeric
+    confusable_group: CG2
+    concept_tags: [newton_first_law, friction]
+    stem: "A worker pushes a {m} kg crate across a floor at a constant {v} m/s. The friction force on the crate is {f} N. How hard must the worker push?"
+    params:
+      m: [20, 30, 50]
+      v: [0.5, 1, 2]
+      f: [40, 60, 90, 120]
+    correct:
+      answer: "{f} N"
+      working:
+        - "Constant velocity means the net force is zero, so the push equals friction, {f} N."
+        - "The forces are balanced at constant speed: push = friction = {f} N."
+    wrong:
+      M01:
+        answer: "more than {f} N"
+        working:
+          - "The push must be greater than friction to keep the crate moving at {v} m/s."
+          - "To keep it moving you need extra force beyond friction, otherwise it stops."
+          - "A net forward force is needed to maintain a constant speed."
+        rationale: "Believes constant velocity needs a net forward force."
+      M12:
+        answer: "more than {f} N"
+        working:
+          - "The net force must point in the direction of motion, so the push beats friction."
+          - "The crate moves forward so the net force is forward."
+        rationale: "Assumes net force follows the velocity."

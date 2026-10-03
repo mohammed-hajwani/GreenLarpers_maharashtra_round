@@ -1,0 +1,132 @@
+probes:
+  - probe_id: p_cg2_01
+    confusable_group: CG2
+    stem: "A spacecraft drifts at constant velocity in deep space with its engines off. What happens next?"
+    options:
+      - "It slows down, because nothing is pushing it anymore"
+      - "It keeps going until the force it got from the engines runs out"
+      - "It keeps going, and the net force on it points forward"
+      - "It keeps going forever with zero net force"
+    expected_answer_by_label:
+      M01: "It slows down, because nothing is pushing it anymore"
+      M09: "It keeps going until the force it got from the engines runs out"
+      M12: "It keeps going, and the net force on it points forward"
+      none: "It keeps going forever with zero net force"
+  - probe_id: p_cg2_02
+    confusable_group: CG2
+    stem: "A ball thrown straight up is still rising and slowing down. Which statement do you agree with most?"
+    options:
+      - "The hand's force is still inside the ball, pushing it up"
+      - "The net force is up, because the ball is moving up"
+      - "Something must keep pushing it up or it would instantly stop"
+      - "The net force is down, even though it moves up"
+    expected_answer_by_label:
+      M09: "The hand's force is still inside the ball, pushing it up"
+      M12: "The net force is up, because the ball is moving up"
+      M01: "Something must keep pushing it up or it would instantly stop"
+      none: "The net force is down, even though it moves up"
+  - probe_id: p_cg2_03
+    confusable_group: CG2
+    stem: "A car is braking: it moves east but is slowing down. Which way is the net force?"
+    options:
+      - "East, the direction the car is moving"
+      - "West, opposite the motion"
+    expected_answer_by_label:
+      M12: "East, the direction the car is moving"
+      M01: "West, opposite the motion"
+      M09: "West, opposite the motion"
+      none: "West, opposite the motion"
+  - probe_id: p_cg1_01
+    confusable_group: CG1
+    stem: "A cyclist rides in a straight line at a constant 10 m/s. What is her acceleration?"
+    options:
+      - "10 m/s^2"
+      - "0 m/s^2"
+    expected_answer_by_label:
+      M04: "10 m/s^2"
+      M03: "0 m/s^2"
+      none: "0 m/s^2"
+  - probe_id: p_cg1_02
+    confusable_group: CG1
+    stem: "Car A cruises at 30 m/s. Car B is at rest but just starting to speed up. Which has the larger acceleration right now?"
+    options:
+      - "Car A, because it is faster"
+      - "Car B, because its velocity is changing"
+    expected_answer_by_label:
+      M04: "Car A, because it is faster"
+      M03: "Car B, because its velocity is changing"
+      none: "Car B, because its velocity is changing"
+  - probe_id: p_cg1_03
+    confusable_group: CG1
+    stem: "A rocket's engines ignite while it is still sitting on the pad. At that instant, what is its acceleration?"
+    options:
+      - "Zero, because it is not moving yet"
+      - "Large and upward, even though its speed is zero"
+    expected_answer_by_label:
+      M04: "Zero, because it is not moving yet"
+      M03: "Large and upward, even though its speed is zero"
+      none: "Large and upward, even though its speed is zero"
+  - probe_id: p_cg3_01
+    confusable_group: CG3
+    stem: "A truck hits a parked car. Which statement do you agree with most?"
+    options:
+      - "The truck exerts the bigger force on the car"
+      - "The forces are equal, so they cancel and the net effect is zero"
+      - "The forces are equal and act on different objects"
+    expected_answer_by_label:
+      M11: "The truck exerts the bigger force on the car"
+      M05: "The forces are equal, so they cancel and the net effect is zero"
+      none: "The forces are equal and act on different objects"
+  - probe_id: p_cg3_02
+    confusable_group: CG3
+    stem: "You push on a wall with 50 N. What does the wall do?"
+    options:
+      - "It pushes back with more than 50 N because it is bigger"
+      - "It pushes back with 50 N, and the two forces cancel each other"
+      - "It pushes back on you with 50 N"
+    expected_answer_by_label:
+      M11: "It pushes back with more than 50 N because it is bigger"
+      M05: "It pushes back with 50 N, and the two forces cancel each other"
+      none: "It pushes back on you with 50 N"
+  - probe_id: p_cg3_03
+    confusable_group: CG3
+    stem: "Earth pulls on the Moon. How hard does the Moon pull on Earth?"
+    options:
+      - "Less, since the Moon is smaller"
+      - "Equally, and the two forces cancel"
+      - "Equally, each force acting on a different body"
+    expected_answer_by_label:
+      M11: "Less, since the Moon is smaller"
+      M05: "Equally, and the two forces cancel"
+      none: "Equally, each force acting on a different body"
+  - probe_id: p_cg4_01
+    confusable_group: CG4
+    stem: "What is the weight of a 10 kg box on Earth?"
+    options:
+      - "10 kg"
+      - "98 N"
+    expected_answer_by_label:
+      M07: "10 kg"
+      M06: "98 N"
+      none: "98 N"
+  - probe_id: p_cg4_02
+    confusable_group: CG4
+    stem: "A 10 kg box sits on a 30 degree ramp. What is the normal force on it?"
+    options:
+      - "98 N, equal to its weight"
+      - "10, the mass of the box"
+      - "About 85 N"
+    expected_answer_by_label:
+      M06: "98 N, equal to its weight"
+      M07: "10, the mass of the box"
+      none: "About 85 N"
+  - probe_id: p_cg4_03
+    confusable_group: CG4
+    stem: "An astronaut's mass is 70 kg on Earth. What is it on the Moon?"
+    options:
+      - "About 12 kg"
+      - "70 kg"
+    expected_answer_by_label:
+      M07: "About 12 kg"
+      M06: "70 kg"
+      none: "70 kg"

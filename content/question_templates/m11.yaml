@@ -1,0 +1,107 @@
+templates:
+  - template_id: m11_bug_windshield_01
+    primary: M11
+    question_type: mcq
+    concept_tags: [newton_third_law, collisions]
+    stem: "A bug hits the windshield of a car moving at {v} m/s. Compare the force of the car on the bug with the force of the bug on the car."
+    params:
+      v: [15, 20, 25, 30]
+    options:
+      - "The car's force on the bug is larger"
+      - "The bug's force on the car is larger"
+      - "They are equal in size"
+      - "Only the car exerts a force"
+    correct:
+      answer: "They are equal in size"
+      working:
+        - "Newton's third law: the forces are equal and opposite; the bug just has far less mass."
+        - "Same size force on each, but the bug's acceleration is huge."
+    wrong:
+      M11:
+        answer: "The car's force on the bug is larger"
+        working:
+          - "The car is way bigger so it hits the bug with a bigger force."
+          - "Bigger object, bigger force, so the car's force wins."
+          - "The car is heavier and faster so it pushes much harder."
+        rationale: "Believes the larger object exerts the larger force."
+  - template_id: m11_truck_force_02
+    primary: M11
+    question_type: numeric
+    confusable_group: CG3
+    concept_tags: [newton_third_law, collisions]
+    stem: "A {m1} kg truck collides with a {m2} kg car. During the collision the car exerts {F} N on the truck. What force does the truck exert on the car?"
+    params:
+      m1: [4000, 6000, 8000]
+      m2: [1000, 1500]
+      F: [5000, 10000, 20000]
+    correct:
+      answer: "{F} N"
+      working:
+        - "Third law: the truck pushes on the car with the same {F} N in the opposite direction."
+        - "Interaction forces are always equal in size, whatever the masses."
+    wrong:
+      M11:
+        answer: "{F*m1/m2:.0f} N"
+        working:
+          - "The truck is heavier so it exerts a bigger force, scaled by the masses."
+          - "The bigger truck pushes harder than the small car does."
+          - "More mass means more force, so the truck's force is larger."
+        rationale: "Scales the force with the size of the object."
+      M05:
+        answer: "0 N"
+        working:
+          - "The two forces act together in the collision and cancel, so the net is zero."
+          - "Action and reaction cancel, so there is no force left on the car."
+        rationale: "Cancels the third-law pair."
+  - template_id: m11_adult_child_03
+    primary: M11
+    question_type: explanation
+    confusable_group: CG3
+    concept_tags: [newton_third_law]
+    stem: "An adult ({m1} kg) and a child ({m2} kg) on skates push each other apart. Explain who pushes harder."
+    params:
+      m1: [60, 75, 90]
+      m2: [20, 25, 30]
+    correct:
+      answer: "They push equally hard; the child accelerates more."
+      working:
+        - "The forces are a third-law pair, so they are equal; the lighter child gets a larger acceleration."
+        - "Same force on each, a = F/m, so the {m2} kg child speeds up more."
+    wrong:
+      M11:
+        answer: "The adult pushes harder."
+        working:
+          - "The adult is bigger and stronger, so they push with more force."
+          - "The {m1} kg adult exerts the larger force because they are heavier."
+          - "Bigger person, bigger force."
+        rationale: "Believes the larger body exerts the larger force."
+      M05:
+        answer: "Neither, the pushes cancel."
+        working:
+          - "The two pushes are equal and opposite so they cancel each other out."
+          - "Action and reaction cancel, so the net push is zero."
+        rationale: "Cancels the third-law pair on one object."
+  - template_id: m11_earth_apple_04
+    primary: M11
+    question_type: mcq
+    concept_tags: [newton_third_law, gravity]
+    stem: "A {m} kg apple falls toward Earth. Compare the force of Earth on the apple with the force of the apple on Earth."
+    params:
+      m: [0.1, 0.2, 0.3]
+    options:
+      - "Earth's force is larger"
+      - "The apple's force is larger"
+      - "They are equal"
+      - "The apple exerts no force on Earth"
+    correct:
+      answer: "They are equal"
+      working:
+        - "Gravitational forces come in equal and opposite pairs."
+        - "Third law: the apple pulls Earth with the same force; Earth's acceleration is just tiny."
+    wrong:
+      M11:
+        answer: "Earth's force is larger"
+        working:
+          - "Earth is huge so its force is bigger."
+          - "The bigger object pulls harder, so Earth wins."
+        rationale: "Believes the larger object exerts the larger force."

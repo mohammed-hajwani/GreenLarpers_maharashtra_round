@@ -1,0 +1,114 @@
+templates:
+  - template_id: m03_ball_up_01
+    primary: M03
+    question_type: numeric
+    confusable_group: CG1
+    concept_tags: [projectile, acceleration]
+    stem: "A ball is thrown straight up at {v} m/s. What is its acceleration at the highest point? Use g = 9.8."
+    params:
+      v: [5, 8, 10, 15, 20]
+    correct:
+      answer: "9.8 m/s^2 downward"
+      working:
+        - "Gravity still acts at the top so the acceleration is g downward even though v = 0."
+        - "The velocity is zero at the top but the acceleration stays 9.8 m/s^2 down."
+    wrong:
+      M03:
+        answer: "0 m/s^2"
+        working:
+          - "At the top the ball stops for an instant, so the acceleration is zero there."
+          - "At the highest point it is momentarily at rest, so a = 0."
+          - "At the apex the ball is not going up or down, so nothing is accelerating it."
+        rationale: "Equates momentary rest at the apex with zero acceleration."
+      M04:
+        answer: "0 m/s^2"
+        working:
+          - "Acceleration is the same as velocity, and the velocity is zero, so the acceleration is zero."
+          - "Acceleration just means how fast it is going, so a = v = 0."
+          - "It has no speed at that point so it has no acceleration."
+        rationale: "Treats acceleration as the same quantity as velocity."
+  - template_id: m03_arrow_up_02
+    primary: M03
+    question_type: mcq
+    confusable_group: CG1
+    concept_tags: [projectile, acceleration]
+    stem: "An arrow is shot straight up at {v} m/s. At the very top of its flight, which statement is true?"
+    params:
+      v: [20, 30, 40, 50]
+    options:
+      - "Velocity is zero and acceleration is zero"
+      - "Velocity is zero and acceleration is downward"
+      - "Velocity is upward and acceleration is zero"
+      - "Velocity and acceleration are both upward"
+    correct:
+      answer: "Velocity is zero and acceleration is downward"
+      working:
+        - "Gravity acts the whole time, so acceleration is g down even when the arrow pauses."
+        - "The velocity changes from up to down, so there must be a downward acceleration at the top."
+    wrong:
+      M03:
+        answer: "Velocity is zero and acceleration is zero"
+        working:
+          - "At the top the arrow stops for a moment, so acceleration is zero too."
+          - "The arrow is momentarily at rest at the apex, so it is not accelerating."
+        rationale: "Believes the apex pause means zero acceleration."
+      M04:
+        answer: "Velocity is zero and acceleration is zero"
+        working:
+          - "Velocity and acceleration are the same thing, so if one is zero the other is too."
+          - "Acceleration means speed, and the speed is zero at the top."
+        rationale: "Conflates acceleration with velocity."
+  - template_id: m03_stone_top_03
+    primary: M03
+    question_type: explanation
+    confusable_group: CG1
+    concept_tags: [projectile, acceleration]
+    stem: "A stone is thrown upward at {v} m/s. Describe its acceleration at the instant it reaches maximum height."
+    params:
+      v: [6, 9, 12, 18]
+    correct:
+      answer: "It is 9.8 m/s^2 downward."
+      working:
+        - "Gravity does not switch off at the top, so the acceleration is still g downward."
+        - "Only the velocity is zero at the top; the acceleration is g down throughout."
+    wrong:
+      M03:
+        answer: "Its acceleration is zero at the top."
+        working:
+          - "At the top the stone stops for an instant, so there is no acceleration."
+          - "It pauses at the highest point, so it is not accelerating at that moment."
+          - "At the apex it is momentarily at rest so a = 0."
+        rationale: "Equates the apex pause with zero acceleration."
+      M04:
+        answer: "Its acceleration is zero at the top."
+        working:
+          - "The speed is zero at the top, and acceleration is the speed, so it is zero."
+          - "Acceleration is basically how fast it moves, which is zero there."
+        rationale: "Uses velocity and acceleration interchangeably."
+  - template_id: m03_net_force_top_04
+    primary: M03
+    question_type: numeric
+    confusable_group: CG1
+    concept_tags: [projectile, net_force]
+    stem: "A {m} kg ball is thrown straight up at {v} m/s. What is the net force on the ball at the top of its path? Use g = 9.8."
+    params:
+      m: [0.2, 0.5, 1, 2]
+      v: [5, 10, 15]
+    correct:
+      answer: "{m*9.8:.1f} N downward"
+      working:
+        - "At the top only gravity acts, so the net force is m g = {m*9.8:.1f} N downward."
+        - "The ball still has weight at the top, so F_net = {m*9.8:.1f} N down."
+    wrong:
+      M03:
+        answer: "0 N"
+        working:
+          - "At the top it is momentarily at rest, so there is no acceleration and no net force."
+          - "The ball stops for an instant at the apex, so the net force is zero."
+        rationale: "Believes the apex pause means zero acceleration and force."
+      M04:
+        answer: "0 N"
+        working:
+          - "The velocity is zero, so the acceleration is zero too, and F = m a = 0."
+          - "Acceleration is the same as velocity here, both zero, so no net force."
+        rationale: "Conflates velocity and acceleration."

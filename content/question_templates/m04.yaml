@@ -1,0 +1,97 @@
+templates:
+  - template_id: m04_two_cars_01
+    primary: M04
+    question_type: mcq
+    concept_tags: [acceleration, kinematics]
+    stem: "Car A moves at a steady {v} m/s on a straight road. Car B starts from rest and is speeding up; right now it is at {v2} m/s. Which car has the larger acceleration?"
+    params:
+      v: [25, 30, 35]
+      v2: [5, 8, 10]
+    options:
+      - "Car A"
+      - "Car B"
+      - "They are equal"
+      - "Neither car is accelerating"
+    correct:
+      answer: "Car B"
+      working:
+        - "Car A has constant velocity so its acceleration is zero; car B is speeding up."
+        - "Acceleration is the change in velocity, and only car B's velocity is changing."
+    wrong:
+      M04:
+        answer: "Car A"
+        working:
+          - "Car A is going faster so it has more acceleration."
+          - "Acceleration is how fast something goes, and A is faster at {v} m/s."
+          - "The faster car has the bigger acceleration."
+        rationale: "Treats speed as acceleration."
+  - template_id: m04_cyclist_02
+    primary: M04
+    question_type: numeric
+    concept_tags: [acceleration, kinematics]
+    stem: "A cyclist rides in a straight line at a constant {v} m/s for {t} s. What is the cyclist's acceleration?"
+    params:
+      v: [4, 6, 8, 10]
+      t: [10, 20, 60]
+    correct:
+      answer: "0 m/s^2"
+      working:
+        - "The velocity does not change, so the acceleration is zero."
+        - "a = change in v / t = 0 / {t} = 0."
+    wrong:
+      M04:
+        answer: "{v} m/s^2"
+        working:
+          - "The acceleration is the same as the speed, {v}."
+          - "She is going {v} m/s so her acceleration is {v} m/s^2."
+          - "Acceleration is how fast she moves, which is {v}."
+        rationale: "Uses the velocity value as the acceleration."
+  - template_id: m04_toss_pause_03
+    primary: M04
+    question_type: explanation
+    confusable_group: CG1
+    concept_tags: [acceleration, projectile]
+    stem: "A tennis ball tossed straight up at {v} m/s pauses briefly at the top. Is the ball accelerating at that moment? Explain."
+    params:
+      v: [4, 6, 8, 10]
+    correct:
+      answer: "Yes, it accelerates at 9.8 m/s^2 downward."
+      working:
+        - "Its velocity is changing from upward to downward, so it is accelerating even at the pause."
+        - "Gravity keeps acting, so the acceleration is g downward at the top."
+    wrong:
+      M04:
+        answer: "No, its acceleration is zero at that moment."
+        working:
+          - "It is not moving at that instant, and acceleration means moving fast, so it is zero."
+          - "Acceleration is the same as velocity, which is zero at the top."
+          - "No speed means no acceleration."
+        rationale: "Equates acceleration with velocity."
+      M03:
+        answer: "No, its acceleration is zero at that moment."
+        working:
+          - "At the top it stops for an instant, so it is not accelerating there."
+          - "It is momentarily at rest at the apex so the acceleration is zero."
+        rationale: "Believes the apex pause means zero acceleration."
+  - template_id: m04_train_slow_04
+    primary: M04
+    question_type: numeric
+    concept_tags: [acceleration, kinematics]
+    stem: "A train slows down from {v} m/s to {v2} m/s in {t} s. What is the magnitude of its acceleration?"
+    params:
+      v: [30, 40]
+      v2: [10, 20]
+      t: [5, 10, 20]
+    correct:
+      answer: "{(v-v2)/t:.1f} m/s^2"
+      working:
+        - "a = (v_final - v_initial) / t, so the magnitude is ({v} - {v2}) / {t} = {(v-v2)/t:.1f} m/s^2."
+        - "The change in velocity is {v-v2} m/s over {t} s."
+    wrong:
+      M04:
+        answer: "{v2} m/s^2"
+        working:
+          - "Its acceleration is just its final speed, {v2}."
+          - "Acceleration is the speed it is moving at, so {v2}."
+          - "The train is going {v2} m/s at the end so that is its acceleration."
+        rationale: "Uses a velocity value as the acceleration."

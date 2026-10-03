@@ -1,0 +1,93 @@
+templates:
+  - template_id: m07_moon_mass_01
+    primary: M07
+    question_type: numeric
+    concept_tags: [mass, weight]
+    stem: "An astronaut has a mass of {m} kg on Earth. What is the astronaut's mass on the Moon?"
+    params:
+      m: [60, 72, 84, 90]
+    correct:
+      answer: "{m} kg"
+      working:
+        - "Mass is the amount of matter and does not change with location."
+        - "Only the weight changes on the Moon; the mass stays {m} kg."
+    wrong:
+      M07:
+        answer: "{m/6:.1f} kg"
+        working:
+          - "On the Moon gravity is 1/6, so the mass becomes {m/6:.1f} kg."
+          - "You weigh less on the Moon so your mass is less."
+          - "Mass and weight are the same, and you are lighter on the Moon."
+        rationale: "Believes mass changes with gravity like weight does."
+  - template_id: m07_flour_weight_02
+    primary: M07
+    question_type: mcq
+    concept_tags: [mass, weight]
+    stem: "What is the weight of a {m} kg bag of flour on Earth? Use g = 9.8."
+    params:
+      m: [1, 2, 5, 10]
+    options:
+      - "{m} kg"
+      - "{m*9.8:.1f} N"
+      - "{m} N"
+      - "{m/9.8:.2f} N"
+    correct:
+      answer: "{m*9.8:.1f} N"
+      working:
+        - "Weight is W = m g = {m} x 9.8 = {m*9.8:.1f} N."
+        - "Weight is a force, so multiply the mass by g."
+    wrong:
+      M07:
+        answer: "{m} kg"
+        working:
+          - "Its weight is {m} kg since weight and mass are the same."
+          - "The bag weighs {m}, that is what the label says."
+          - "Weight is measured in kilograms, so it is {m} kg."
+        rationale: "Treats the mass in kg as the weight."
+  - template_id: m07_mars_rock_03
+    primary: M07
+    question_type: explanation
+    concept_tags: [mass, weight]
+    stem: "Explain the difference between the mass and the weight of a {m} kg rock on Mars, where g = 3.7 m/s^2."
+    params:
+      m: [2, 5, 10, 20]
+    correct:
+      answer: "Its mass is {m} kg everywhere; its weight on Mars is {m*3.7:.1f} N."
+      working:
+        - "Mass is how much matter there is; weight is the gravitational force m g."
+        - "Weight depends on g, so on Mars W = {m} x 3.7 N, while mass stays {m} kg."
+    wrong:
+      M07:
+        answer: "Its mass and weight are both {m}."
+        working:
+          - "Mass and weight are the same thing measured in kg."
+          - "The rock weighs {m} kg, which is also its mass."
+          - "There is no difference, weight is just another word for mass."
+        rationale: "Uses mass and weight interchangeably."
+  - template_id: m07_sled_slope_04
+    primary: M07
+    question_type: numeric
+    confusable_group: CG4
+    concept_tags: [normal_force, mass, weight]
+    stem: "A {m} kg sled rests on a snowy slope of {theta} degrees. What is the normal force on the sled? Use g = 9.8."
+    params:
+      m: [10, 15, 25]
+      theta: [15, 25, 35]
+    correct:
+      answer: "{m*9.8*cosd(theta):.1f} N"
+      working:
+        - "N = m g cos(theta) = {m*9.8*cosd(theta):.1f} N."
+        - "The normal force balances the weight component into the slope."
+    wrong:
+      M07:
+        answer: "{m:.1f} N"
+        working:
+          - "The sled's weight is {m} kg, so the normal force is {m}."
+          - "The mass is the weight, so N = {m}."
+        rationale: "Uses mass as a force."
+      M06:
+        answer: "{m*9.8:.1f} N"
+        working:
+          - "The normal force is equal to the weight, m g."
+          - "Normal force always matches the full weight, {m*9.8:.1f} N."
+        rationale: "Equates normal force with weight on a slope."

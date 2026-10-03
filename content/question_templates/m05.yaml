@@ -1,0 +1,109 @@
+templates:
+  - template_id: m05_book_table_01
+    primary: M05
+    question_type: mcq
+    concept_tags: [newton_third_law]
+    stem: "A {m} kg book rests on a table. Earth pulls down on the book. What is the Newton's third law partner of this force?"
+    params:
+      m: [0.5, 1, 2, 3]
+    options:
+      - "The table pushing up on the book"
+      - "The book pulling up on the Earth"
+      - "The book pushing down on the table"
+      - "The table pulling on the Earth"
+    correct:
+      answer: "The book pulling up on the Earth"
+      working:
+        - "Third law pairs act on different objects: Earth pulls the book, so the book pulls the Earth."
+        - "The partner of Earth-on-book is book-on-Earth, same type of force, opposite object."
+    wrong:
+      M05:
+        answer: "The table pushing up on the book"
+        working:
+          - "The weight and the table's push are an action reaction pair and they cancel on the book."
+          - "Action and reaction both act on the book, so the normal force is the reaction to the weight."
+          - "The forces on the book are equal and opposite, which is Newton's third law."
+        rationale: "Places both third-law forces on the same object."
+  - template_id: m05_horse_cart_02
+    primary: M05
+    question_type: explanation
+    concept_tags: [newton_third_law, net_force]
+    stem: "A horse pulls a {m} kg cart with {F} N, and the cart pulls back on the horse with {F} N. Explain how the cart can still accelerate."
+    params:
+      m: [200, 300, 500]
+      F: [400, 600, 800]
+    correct:
+      answer: "The two forces act on different objects, so they do not cancel; the cart accelerates if the horse's pull beats friction on the cart."
+      working:
+        - "The horse's pull acts on the cart and the cart's pull acts on the horse, so they cannot cancel."
+        - "Only forces on the cart decide its acceleration; the pull back acts on the horse."
+    wrong:
+      M05:
+        answer: "It cannot accelerate because the forces cancel."
+        working:
+          - "The pull and the pull back are equal and opposite so they cancel and nothing moves."
+          - "Action and reaction cancel each other out on the cart."
+          - "The two {F} N forces balance, so the net force is zero."
+        rationale: "Treats a third-law pair as acting on one object."
+  - template_id: m05_truck_car_03
+    primary: M05
+    question_type: mcq
+    confusable_group: CG3
+    concept_tags: [newton_third_law, collisions]
+    stem: "A {m1} kg truck and a {m2} kg car collide head-on. Why does the car get damaged more?"
+    params:
+      m1: [3000, 5000, 8000]
+      m2: [900, 1200, 1500]
+    options:
+      - "The truck exerts a larger force on the car"
+      - "The forces are equal but the car has less mass so it accelerates more"
+      - "The forces cancel on the car"
+      - "The car exerts no force on the truck"
+    correct:
+      answer: "The forces are equal but the car has less mass so it accelerates more"
+      working:
+        - "Third law: equal forces on each other, but a = F/m is bigger for the {m2} kg car."
+        - "Both feel the same force; the lighter car gets the larger acceleration."
+    wrong:
+      M05:
+        answer: "The forces cancel on the car"
+        working:
+          - "The action and reaction forces both act at the collision and cancel out on the car."
+          - "Equal and opposite forces cancel, so the damage is about something else."
+        rationale: "Believes the pair cancels on one object."
+      M11:
+        answer: "The truck exerts a larger force on the car"
+        working:
+          - "The truck is much bigger so it hits with a bigger force."
+          - "The heavier {m1} kg truck pushes harder than the car pushes back."
+          - "Bigger object, bigger force, so the car loses."
+        rationale: "Believes the larger object exerts the larger force."
+  - template_id: m05_skaters_04
+    primary: M05
+    question_type: numeric
+    confusable_group: CG3
+    concept_tags: [newton_third_law, newton_second_law]
+    stem: "Skater A ({m1} kg) pushes skater B ({m2} kg) with {F} N on frictionless ice. What is the magnitude of skater A's acceleration?"
+    params:
+      m1: [50, 60, 80]
+      m2: [30, 40]
+      F: [60, 120, 240]
+    correct:
+      answer: "{F/m1:.2f} m/s^2"
+      working:
+        - "B pushes back on A with {F} N, so a = F/m = {F/m1:.2f} m/s^2."
+        - "By the third law A feels {F} N from B, giving a = {F/m1:.2f} m/s^2."
+    wrong:
+      M05:
+        answer: "0 m/s^2"
+        working:
+          - "A's push and B's push back cancel, so A does not accelerate."
+          - "Action and reaction cancel out, so the skater stays put."
+          - "The forces are equal and opposite so the net force on A is zero."
+        rationale: "Cancels a third-law pair on one object."
+      M11:
+        answer: "{F*m2/m1/m1:.2f} m/s^2"
+        working:
+          - "Skater A is heavier, so B can only push back with a smaller force."
+          - "The bigger skater pushes harder, so A feels less than {F} N."
+        rationale: "Believes the larger body exerts the larger force."

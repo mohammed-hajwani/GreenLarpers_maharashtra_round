@@ -1,0 +1,115 @@
+templates:
+  - template_id: m06_block_incline_01
+    primary: M06
+    question_type: numeric
+    confusable_group: CG4
+    concept_tags: [normal_force, incline]
+    stem: "A {m} kg block rests on a frictionless incline of {theta} degrees. What is the normal force on the block? Use g = 9.8."
+    params:
+      m: [2, 3, 5, 8]
+      theta: [20, 30, 40]
+    correct:
+      answer: "{m*9.8*cosd(theta):.1f} N"
+      working:
+        - "The normal force balances the component of weight perpendicular to the incline: N = m g cos(theta)."
+        - "Perpendicular to the slope, N = {m} x 9.8 x cos({theta}) = {m*9.8*cosd(theta):.1f} N."
+    wrong:
+      M06:
+        answer: "{m*9.8:.1f} N"
+        working:
+          - "The normal force equals the weight, so N = m g."
+          - "Normal force is always the same as weight, {m*9.8:.1f} N."
+          - "The surface pushes back with the full weight of the block."
+        rationale: "Ignores the incline geometry and equates normal force with weight."
+      M07:
+        answer: "{m:.1f} N"
+        working:
+          - "The block has a mass of {m}, so the normal force is {m}."
+          - "The weight is {m} kg, so the normal force is {m}."
+        rationale: "Uses mass as if it were a force."
+  - template_id: m06_elevator_02
+    primary: M06
+    question_type: numeric
+    confusable_group: CG4
+    concept_tags: [normal_force, newton_second_law]
+    stem: "A {m} kg person stands in an elevator accelerating upward at {a} m/s^2. What normal force does the floor exert? Use g = 9.8."
+    params:
+      m: [50, 60, 70, 80]
+      a: [1, 2, 3]
+    correct:
+      answer: "{m*(9.8+a):.1f} N"
+      working:
+        - "N - m g = m a, so N = m (g + a) = {m*(9.8+a):.1f} N."
+        - "The floor must push more than the weight to accelerate the person upward."
+    wrong:
+      M06:
+        answer: "{m*9.8:.1f} N"
+        working:
+          - "The normal force always equals the weight, m g."
+          - "The floor just supports the weight, so N = {m*9.8:.1f} N no matter what."
+        rationale: "Assumes normal force equals weight in all situations."
+      M07:
+        answer: "{m:.1f} N"
+        working:
+          - "The person's mass is {m}, so the floor pushes with {m}."
+          - "Their weight is {m} kg, so the normal force is {m}."
+        rationale: "Treats mass in kg as the weight force."
+  - template_id: m06_push_down_03
+    primary: M06
+    question_type: mcq
+    confusable_group: CG4
+    concept_tags: [normal_force, balanced_forces]
+    stem: "A {m} kg box sits on the floor while you push straight down on it with {F} N. The normal force on the box is:"
+    params:
+      m: [5, 10, 20]
+      F: [20, 50, 100]
+    options:
+      - "Equal to its weight"
+      - "Greater than its weight"
+      - "Less than its weight"
+      - "Zero"
+    correct:
+      answer: "Greater than its weight"
+      working:
+        - "The floor must balance both the weight and your {F} N push, so N = m g + {F}."
+        - "Vertical forces balance: N = weight + push, which is more than the weight."
+    wrong:
+      M06:
+        answer: "Equal to its weight"
+        working:
+          - "The normal force is always equal to the weight of the object."
+          - "The floor only supports the weight, so N = m g."
+        rationale: "Assumes normal force always equals weight."
+      M07:
+        answer: "Equal to its weight"
+        working:
+          - "The normal force is the box's mass, {m}, which is its weight."
+          - "The box weighs {m} kg so the floor pushes with {m}."
+        rationale: "Treats mass and weight as one quantity."
+  - template_id: m06_rope_lift_04
+    primary: M06
+    question_type: explanation
+    confusable_group: CG4
+    concept_tags: [normal_force, balanced_forces]
+    stem: "A {m} kg crate on the floor is pulled upward by a rope with {T} N, which is less than its weight. Explain how the normal force compares to the weight."
+    params:
+      m: [20, 30, 40]
+      T: [50, 80, 100]
+    correct:
+      answer: "The normal force is less than the weight: N = m g - T."
+      working:
+        - "The rope carries part of the weight, so the floor only pushes with m g - {T}."
+        - "Vertical balance gives N + T = m g, so N is smaller than the weight."
+    wrong:
+      M06:
+        answer: "The normal force equals the weight."
+        working:
+          - "Normal force is always the same as the weight no matter what."
+          - "The ground always pushes back with exactly m g."
+        rationale: "Assumes normal force always equals weight."
+      M07:
+        answer: "The normal force equals {m}."
+        working:
+          - "The crate's mass is {m}, so N is {m}, the same as its weight."
+          - "Weight and mass are the same, so the floor pushes with {m}."
+        rationale: "Uses mass as the weight force."
