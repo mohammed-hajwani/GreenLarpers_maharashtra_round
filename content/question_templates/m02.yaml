@@ -1,5 +1,6 @@
 templates:
   - template_id: m02_drop_vacuum_01
+    difficulty: medium
     primary: M02
     question_type: numeric
     concept_tags: [free_fall, gravity]
@@ -22,6 +23,7 @@ templates:
           - "More weight means more speed when falling, so the light ball takes longer."
         rationale: "Assumes fall time scales with mass."
   - template_id: m02_moon_hammer_02
+    difficulty: easy
     primary: M02
     question_type: mcq
     concept_tags: [free_fall, gravity]
@@ -47,6 +49,7 @@ templates:
           - "Gravity pulls harder on the heavy hammer so it speeds up more."
         rationale: "Believes heavier objects fall faster without drag."
   - template_id: m02_cliff_rocks_03
+    difficulty: medium
     primary: M02
     question_type: explanation
     concept_tags: [free_fall, gravity]
@@ -69,6 +72,7 @@ templates:
           - "The {m2} kg rock is heavier so it reaches the ground before the light one."
         rationale: "Believes heavier rocks fall faster in free fall."
   - template_id: m02_marble_time_04
+    difficulty: hard
     primary: M02
     question_type: numeric
     concept_tags: [free_fall, kinematics]

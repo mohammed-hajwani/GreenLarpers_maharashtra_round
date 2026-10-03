@@ -1,5 +1,3 @@
-import random
-
 import streamlit as st
 
 from relearn.app.views import (
@@ -10,7 +8,6 @@ from relearn.app.views import (
     status_line,
 )
 from relearn.content import load_content
-from relearn.data.generator import make_question
 from relearn.pipeline import Tutor
 from relearn.schemas import LearnerResponse, Question, QuestionType
 
@@ -25,6 +22,8 @@ KEYS = [
     "assess_items",
     "last_result",
     "round",
+    "decision",
+    "probe_steps",
 ]
 
 
@@ -33,27 +32,26 @@ def reset_flow() -> None:
         st.session_state.pop(k, None)
 
 
-def new_question(primary: str | None = None) -> Question:
+def _topic_picker(tutor: Tutor, learner: str) -> None:
     content = load_content()
-    pool = [t for t in content.templates if primary is None or t.primary == primary]
-    rng = random.Random()
-    t = rng.choice(pool)
-    return make_question(t, {k: rng.choice(v) for k, v in t.params.items()})
-
-
-def _topic_picker() -> None:
-    content = load_content()
-    options = ["any"] + sorted(content.misconceptions)
+    options = ["auto"] + list(content.concepts)
     cols = st.columns([3, 1])
-    topic = cols[0].selectbox(
-        "Topic",
+    concept = cols[0].selectbox(
+        "Concept",
         options,
-        format_func=lambda m: "Any topic" if m == "any" else content.misconceptions[m].description,
+        format_func=lambda c: "Adaptive: let the system choose" if c == "auto" else content.concepts[c].name,
     )
-    if cols[1].button("New question", use_container_width=True) or "question" not in st.session_state:
+    if cols[1].button("Next question", use_container_width=True) or "question" not in st.session_state:
         reset_flow()
-        st.session_state.question = new_question(None if topic == "any" else topic)
+        question, decision = tutor.next_question(learner, None if concept == "auto" else concept)
+        st.session_state.question = question
+        st.session_state.decision = decision
         st.session_state.phase = "answer"
+    decision = st.session_state.get("decision")
+    if decision is not None and st.session_state.question.template_id == decision.template_id:
+        with st.container(border=True):
+            st.markdown(f"**{decision.headline}**")
+            st.caption(f"Difficulty: **{decision.band}** · " + "; ".join(decision.reasons))
 
 
 def _custom_question() -> None:
@@ -163,7 +161,7 @@ def _retest_banner(tutor: Tutor, learner: str) -> None:
 
 def render_practice(tutor: Tutor, learner: str) -> None:
     _retest_banner(tutor, learner)
-    _topic_picker()
+    _topic_picker(tutor, learner)
     _custom_question()
     phase = st.session_state.phase
     if phase == "answer":

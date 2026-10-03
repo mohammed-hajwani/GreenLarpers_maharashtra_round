@@ -1,5 +1,6 @@
 templates:
   - template_id: m05_book_table_01
+    difficulty: medium
     primary: M05
     question_type: mcq
     concept_tags: [newton_third_law]
@@ -25,6 +26,7 @@ templates:
           - "The forces on the book are equal and opposite, which is Newton's third law."
         rationale: "Places both third-law forces on the same object."
   - template_id: m05_horse_cart_02
+    difficulty: hard
     primary: M05
     question_type: explanation
     concept_tags: [newton_third_law, net_force]
@@ -46,6 +48,7 @@ templates:
           - "The two {F} N forces balance, so the net force is zero."
         rationale: "Treats a third-law pair as acting on one object."
   - template_id: m05_truck_car_03
+    difficulty: medium
     primary: M05
     question_type: mcq
     confusable_group: CG3
@@ -79,6 +82,7 @@ templates:
           - "Bigger object, bigger force, so the car loses."
         rationale: "Believes the larger object exerts the larger force."
   - template_id: m05_skaters_04
+    difficulty: hard
     primary: M05
     question_type: numeric
     confusable_group: CG3

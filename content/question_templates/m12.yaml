@@ -1,5 +1,6 @@
 templates:
   - template_id: m12_projectile_top_01
+    difficulty: medium
     primary: M12
     question_type: mcq
     confusable_group: CG2
@@ -32,6 +33,7 @@ templates:
           - "The force from the hand keeps pushing it forward."
         rationale: "Believes the ball carries the force of the throw."
   - template_id: m12_braking_car_02
+    difficulty: medium
     primary: M12
     question_type: numeric
     confusable_group: CG2
@@ -61,6 +63,7 @@ templates:
           - "A force is needed to keep it going east, so the net force is east."
         rationale: "Believes motion requires a forward force."
   - template_id: m12_rising_ball_03
+    difficulty: medium
     primary: M12
     question_type: explanation
     confusable_group: CG2
@@ -88,6 +91,7 @@ templates:
           - "The throw gave it an upward force that has not run out yet."
         rationale: "Believes the ball carries the force of the throw."
   - template_id: m12_circle_track_04
+    difficulty: hard
     primary: M12
     question_type: mcq
     confusable_group: CG2

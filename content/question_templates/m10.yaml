@@ -1,5 +1,6 @@
 templates:
   - template_id: m10_ball_bounce_01
+    difficulty: easy
     primary: M10
     question_type: explanation
     concept_tags: [energy_conservation]
@@ -21,6 +22,7 @@ templates:
           - "Each bounce consumes energy until there is none left."
         rationale: "Believes energy is consumed rather than transformed."
   - template_id: m10_battery_02
+    difficulty: easy
     primary: M10
     question_type: mcq
     concept_tags: [energy_conservation]
@@ -46,6 +48,7 @@ templates:
           - "After {t} hours the energy was all used up and gone."
         rationale: "Believes energy is used up."
   - template_id: m10_slide_heat_03
+    difficulty: hard
     primary: M10
     question_type: numeric
     concept_tags: [energy_conservation, friction]
@@ -68,6 +71,7 @@ templates:
           - "The lost energy is consumed by the slide, so nothing is converted."
         rationale: "Believes lost energy is consumed rather than transformed."
   - template_id: m10_car_brakes_04
+    difficulty: medium
     primary: M10
     question_type: explanation
     concept_tags: [energy_conservation, kinetic_energy]

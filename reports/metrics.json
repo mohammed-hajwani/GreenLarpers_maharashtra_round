@@ -1,5 +1,143 @@
 {
-  "generated_at": "2026-10-03T12:11:48+00:00",
+  "probing": {
+    "method": "simulated learners hold the sample's true misconception and answer each probe with the stored expected option, with answer noise 0.1",
+    "subset": "confusable-group samples",
+    "results": {
+      "v1_embedding": {
+        "val": {
+          "n": 320,
+          "routed_to_probe": 120,
+          "seeds": [
+            42,
+            43,
+            44,
+            45,
+            46
+          ],
+          "no_probe": {
+            "accuracy_mean": 0.628125,
+            "accuracy_std": 0.0,
+            "probes_asked_mean": 0,
+            "entropy_drop_bits_per_probe_mean": 0.0
+          },
+          "random_probe": {
+            "accuracy_mean": 0.83125,
+            "accuracy_std": 0.010269797953221861,
+            "probes_asked_mean": 197,
+            "entropy_drop_bits_per_probe_mean": 0.26654745589712536,
+            "lift_points": 20.3125
+          },
+          "information_gain_probe": {
+            "accuracy_mean": 0.875625,
+            "accuracy_std": 0.008244316223920583,
+            "probes_asked_mean": 195.4,
+            "entropy_drop_bits_per_probe_mean": 0.3468999861793359,
+            "lift_points": 24.749999999999993
+          },
+          "information_gain_beats_random": true
+        },
+        "test": {
+          "n": 416,
+          "routed_to_probe": 138,
+          "seeds": [
+            42,
+            43,
+            44,
+            45,
+            46
+          ],
+          "no_probe": {
+            "accuracy_mean": 0.7259615384615384,
+            "accuracy_std": 0.0,
+            "probes_asked_mean": 0,
+            "entropy_drop_bits_per_probe_mean": 0.0
+          },
+          "random_probe": {
+            "accuracy_mean": 0.8182692307692307,
+            "accuracy_std": 0.0032607355688102136,
+            "probes_asked_mean": 210.8,
+            "entropy_drop_bits_per_probe_mean": 0.5136203975902317,
+            "lift_points": 9.230769230769232
+          },
+          "information_gain_probe": {
+            "accuracy_mean": 0.80625,
+            "accuracy_std": 0.00907113570390058,
+            "probes_asked_mean": 202.8,
+            "entropy_drop_bits_per_probe_mean": 0.4813755572078388,
+            "lift_points": 8.028846153846159
+          },
+          "information_gain_beats_random": false
+        }
+      },
+      "baseline": {
+        "val": {
+          "n": 320,
+          "routed_to_probe": 149,
+          "seeds": [
+            42,
+            43,
+            44,
+            45,
+            46
+          ],
+          "no_probe": {
+            "accuracy_mean": 0.83125,
+            "accuracy_std": 0.0,
+            "probes_asked_mean": 0,
+            "entropy_drop_bits_per_probe_mean": 0.0
+          },
+          "random_probe": {
+            "accuracy_mean": 0.963125,
+            "accuracy_std": 0.010345590848279296,
+            "probes_asked_mean": 223.4,
+            "entropy_drop_bits_per_probe_mean": 0.5028372269309722,
+            "lift_points": 13.187499999999996
+          },
+          "information_gain_probe": {
+            "accuracy_mean": 0.965,
+            "accuracy_std": 0.009142961773954851,
+            "probes_asked_mean": 216.4,
+            "entropy_drop_bits_per_probe_mean": 0.5733537637432446,
+            "lift_points": 13.374999999999993
+          },
+          "information_gain_beats_random": true
+        },
+        "test": {
+          "n": 416,
+          "routed_to_probe": 168,
+          "seeds": [
+            42,
+            43,
+            44,
+            45,
+            46
+          ],
+          "no_probe": {
+            "accuracy_mean": 0.8197115384615384,
+            "accuracy_std": 0.0,
+            "probes_asked_mean": 0,
+            "entropy_drop_bits_per_probe_mean": 0.0
+          },
+          "random_probe": {
+            "accuracy_mean": 0.8995192307692308,
+            "accuracy_std": 0.006866758104368101,
+            "probes_asked_mean": 271,
+            "entropy_drop_bits_per_probe_mean": 0.5783320896330632,
+            "lift_points": 7.980769230769235
+          },
+          "information_gain_probe": {
+            "accuracy_mean": 0.9043269230769231,
+            "accuracy_std": 0.013288725924120429,
+            "probes_asked_mean": 268,
+            "entropy_drop_bits_per_probe_mean": 0.6062310299577424,
+            "lift_points": 8.461538461538465
+          },
+          "information_gain_beats_random": true
+        }
+      }
+    }
+  },
+  "generated_at": "2026-10-03T12:25:00+00:00",
   "data_provenance": "synthetic",
   "dataset": {
     "total": 2296,
@@ -11,6 +149,56 @@
     "split_method": "by question template; test templates never appear in train or val",
     "handwritten_test_size": 65,
     "handwritten_provenance": "hand-written by the project team, not real student data"
+  },
+  "difficulty_coverage": {
+    "counts": {
+      "force_motion": {
+        "easy": 4,
+        "medium": 7,
+        "hard": 1
+      },
+      "free_fall": {
+        "easy": 1,
+        "medium": 2,
+        "hard": 1
+      },
+      "kinematics": {
+        "easy": 3,
+        "medium": 3,
+        "hard": 2
+      },
+      "third_law": {
+        "easy": 1,
+        "medium": 4,
+        "hard": 3
+      },
+      "weight_normal": {
+        "easy": 2,
+        "medium": 3,
+        "hard": 3
+      },
+      "circular": {
+        "easy": 1,
+        "medium": 2,
+        "hard": 1
+      },
+      "energy": {
+        "easy": 2,
+        "medium": 1,
+        "hard": 1
+      }
+    },
+    "gaps": [
+      "Force vs Motion: hard has 1 template(s), want 2",
+      "Free Fall: easy has 1 template(s), want 2",
+      "Free Fall: hard has 1 template(s), want 2",
+      "Newton's Third Law: easy has 1 template(s), want 2",
+      "Circular Motion: easy has 1 template(s), want 2",
+      "Circular Motion: hard has 1 template(s), want 2",
+      "Energy Conservation: medium has 1 template(s), want 2",
+      "Energy Conservation: hard has 1 template(s), want 2"
+    ],
+    "min_templates_per_band": 2
   },
   "comparison": [
     {
@@ -2005,144 +2193,6 @@
           "M12",
           "none"
         ]
-      }
-    }
-  },
-  "probing": {
-    "method": "simulated learners hold the sample's true misconception and answer each probe with the stored expected option, with answer noise 0.1",
-    "subset": "confusable-group samples",
-    "results": {
-      "v1_embedding": {
-        "val": {
-          "n": 320,
-          "routed_to_probe": 120,
-          "seeds": [
-            42,
-            43,
-            44,
-            45,
-            46
-          ],
-          "no_probe": {
-            "accuracy_mean": 0.628125,
-            "accuracy_std": 0.0,
-            "probes_asked_mean": 0,
-            "entropy_drop_bits_per_probe_mean": 0.0
-          },
-          "random_probe": {
-            "accuracy_mean": 0.83125,
-            "accuracy_std": 0.010269797953221861,
-            "probes_asked_mean": 197,
-            "entropy_drop_bits_per_probe_mean": 0.26654745589712536,
-            "lift_points": 20.3125
-          },
-          "information_gain_probe": {
-            "accuracy_mean": 0.875625,
-            "accuracy_std": 0.008244316223920583,
-            "probes_asked_mean": 195.4,
-            "entropy_drop_bits_per_probe_mean": 0.3468999861793359,
-            "lift_points": 24.749999999999993
-          },
-          "information_gain_beats_random": true
-        },
-        "test": {
-          "n": 416,
-          "routed_to_probe": 138,
-          "seeds": [
-            42,
-            43,
-            44,
-            45,
-            46
-          ],
-          "no_probe": {
-            "accuracy_mean": 0.7259615384615384,
-            "accuracy_std": 0.0,
-            "probes_asked_mean": 0,
-            "entropy_drop_bits_per_probe_mean": 0.0
-          },
-          "random_probe": {
-            "accuracy_mean": 0.8182692307692307,
-            "accuracy_std": 0.0032607355688102136,
-            "probes_asked_mean": 210.8,
-            "entropy_drop_bits_per_probe_mean": 0.5136203975902317,
-            "lift_points": 9.230769230769232
-          },
-          "information_gain_probe": {
-            "accuracy_mean": 0.80625,
-            "accuracy_std": 0.00907113570390058,
-            "probes_asked_mean": 202.8,
-            "entropy_drop_bits_per_probe_mean": 0.4813755572078388,
-            "lift_points": 8.028846153846159
-          },
-          "information_gain_beats_random": false
-        }
-      },
-      "baseline": {
-        "val": {
-          "n": 320,
-          "routed_to_probe": 149,
-          "seeds": [
-            42,
-            43,
-            44,
-            45,
-            46
-          ],
-          "no_probe": {
-            "accuracy_mean": 0.83125,
-            "accuracy_std": 0.0,
-            "probes_asked_mean": 0,
-            "entropy_drop_bits_per_probe_mean": 0.0
-          },
-          "random_probe": {
-            "accuracy_mean": 0.963125,
-            "accuracy_std": 0.010345590848279296,
-            "probes_asked_mean": 223.4,
-            "entropy_drop_bits_per_probe_mean": 0.5028372269309722,
-            "lift_points": 13.187499999999996
-          },
-          "information_gain_probe": {
-            "accuracy_mean": 0.965,
-            "accuracy_std": 0.009142961773954851,
-            "probes_asked_mean": 216.4,
-            "entropy_drop_bits_per_probe_mean": 0.5733537637432446,
-            "lift_points": 13.374999999999993
-          },
-          "information_gain_beats_random": true
-        },
-        "test": {
-          "n": 416,
-          "routed_to_probe": 168,
-          "seeds": [
-            42,
-            43,
-            44,
-            45,
-            46
-          ],
-          "no_probe": {
-            "accuracy_mean": 0.8197115384615384,
-            "accuracy_std": 0.0,
-            "probes_asked_mean": 0,
-            "entropy_drop_bits_per_probe_mean": 0.0
-          },
-          "random_probe": {
-            "accuracy_mean": 0.8995192307692308,
-            "accuracy_std": 0.006866758104368101,
-            "probes_asked_mean": 271,
-            "entropy_drop_bits_per_probe_mean": 0.5783320896330632,
-            "lift_points": 7.980769230769235
-          },
-          "information_gain_probe": {
-            "accuracy_mean": 0.9043269230769231,
-            "accuracy_std": 0.013288725924120429,
-            "probes_asked_mean": 268,
-            "entropy_drop_bits_per_probe_mean": 0.6062310299577424,
-            "lift_points": 8.461538461538465
-          },
-          "information_gain_beats_random": true
-        }
       }
     }
   }

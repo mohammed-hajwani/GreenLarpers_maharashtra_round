@@ -1,5 +1,6 @@
 templates:
   - template_id: m04_two_cars_01
+    difficulty: medium
     primary: M04
     question_type: mcq
     concept_tags: [acceleration, kinematics]
@@ -26,6 +27,7 @@ templates:
           - "The faster car has the bigger acceleration."
         rationale: "Treats speed as acceleration."
   - template_id: m04_cyclist_02
+    difficulty: easy
     primary: M04
     question_type: numeric
     concept_tags: [acceleration, kinematics]
@@ -47,6 +49,7 @@ templates:
           - "Acceleration is how fast she moves, which is {v}."
         rationale: "Uses the velocity value as the acceleration."
   - template_id: m04_toss_pause_03
+    difficulty: medium
     primary: M04
     question_type: explanation
     confusable_group: CG1
@@ -74,6 +77,7 @@ templates:
           - "It is momentarily at rest at the apex so the acceleration is zero."
         rationale: "Believes the apex pause means zero acceleration."
   - template_id: m04_train_slow_04
+    difficulty: hard
     primary: M04
     question_type: numeric
     concept_tags: [acceleration, kinematics]

@@ -71,3 +71,8 @@ mastery:
     easy: 0.6
     medium: 1.0
     hard: 1.4
+difficulty:
+  easy_below: 0.4
+  hard_above: 0.7
+  recent_window: 3
+  min_templates_per_band: 2

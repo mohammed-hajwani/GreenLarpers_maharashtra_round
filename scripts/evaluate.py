@@ -6,6 +6,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from relearn.adaptive.difficulty import coverage_report
 from relearn.config import load_config
 from relearn.data.handwritten import load_handwritten
 from relearn.data.pipeline import build_splits
@@ -93,6 +94,7 @@ def main() -> None:
             "handwritten_test_size": len(handwritten),
             "handwritten_provenance": "hand-written by the project team, not real student data",
         },
+        "difficulty_coverage": coverage_report(),
         "comparison": comparison,
         "models": models,
     }

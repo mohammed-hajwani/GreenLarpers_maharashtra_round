@@ -1,3 +1,4 @@
+from relearn.adaptive.difficulty import DifficultyDecision, decide_band, instantiate, pick_template
 from relearn.assessment.evaluator import evaluate_assessment, passes_reassessment
 from relearn.assessment.planner import plan_assessment, plan_retest
 from relearn.config import load_config
@@ -26,7 +27,9 @@ from relearn.schemas import (
 
 
 class Tutor:
-    def __init__(self, store: LearnerStore, model: TextClassifier | None = None, llm: LLMClient | None = None):
+    def __init__(
+        self, store: LearnerStore, model: TextClassifier | None = None, llm: LLMClient | None = None
+    ):
         self.store = store
         self.model = model
         self.llm = llm or StubLLMClient()
@@ -39,7 +42,16 @@ class Tutor:
             question.question_id,
             None if d.is_correct else d.top_labels[0][0],
             d.is_correct,
-            {"answer": response.answer, "working": response.working, "top": d.top_labels},
+            {
+                "answer": response.answer,
+                "working": response.working,
+                "top": d.top_labels,
+                "confidence": d.confidence,
+                "route": d.route,
+                "template_id": question.template_id,
+                "concept": self.question_concept(question, d),
+                "difficulty": self.question_difficulty(question),
+            },
         )
         return d
 
@@ -221,6 +233,54 @@ class Tutor:
         )
         self.store.put(record)
         return record
+
+    def concept_history(self, learner_id: str, concept: str) -> list[dict]:
+        return [
+            e
+            for e in self.store.timeline(learner_id)
+            if e["kind"] == "practice" and e.get("concept") == concept
+        ]
+
+    def target_concept(self, learner_id: str) -> str:
+        content = load_content()
+        mastery = self.store.all_mastery(learner_id)
+        states = {r.misconception: r.state.value for r in self.store.records(learner_id)}
+        active = [
+            c.id
+            for c in content.concepts.values()
+            if any(states.get(m) in ("active", "intervened", "relapsed") for m in c.misconceptions)
+        ]
+        pool = active or list(content.concepts)
+        order = list(content.concepts)
+        return min(pool, key=lambda c: (mastery[c].mean if c in mastery else 0.5, order.index(c)))
+
+    def next_question(
+        self, learner_id: str, concept: str | None = None
+    ) -> tuple[Question, DifficultyDecision]:
+        content = load_content()
+        concept = concept or self.target_concept(learner_id)
+        mastery = self.store.mastery(learner_id, concept).mean
+        history = self.concept_history(learner_id, concept)
+        states = {
+            r.misconception: r.state.value
+            for r in self.store.records(learner_id)
+            if r.misconception in content.concepts[concept].misconceptions
+        }
+        previous = history[-1].get("difficulty") if history else None
+        base, band, reasons, factors = decide_band(mastery, history, states, previous)
+        template, gap = pick_template(concept, band, [h.get("template_id", "") for h in history])
+        decision = DifficultyDecision(
+            concept=concept,
+            concept_name=content.concepts[concept].name,
+            mastery=mastery,
+            base_band=base,
+            band=band,
+            reasons=reasons + ([gap] if gap else []),
+            factors=factors,
+            template_id=template.template_id,
+            coverage_gap=gap,
+        )
+        return instantiate(template, self.store.attempt_count(learner_id)), decision
 
     def profile(self, learner_id: str) -> list[dict]:
         content = load_content()

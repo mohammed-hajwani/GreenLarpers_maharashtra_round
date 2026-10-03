@@ -1,5 +1,6 @@
 templates:
   - template_id: m06_block_incline_01
+    difficulty: hard
     primary: M06
     question_type: numeric
     confusable_group: CG4
@@ -28,6 +29,7 @@ templates:
           - "The weight is {m} kg, so the normal force is {m}."
         rationale: "Uses mass as if it were a force."
   - template_id: m06_elevator_02
+    difficulty: hard
     primary: M06
     question_type: numeric
     confusable_group: CG4
@@ -55,6 +57,7 @@ templates:
           - "Their weight is {m} kg, so the normal force is {m}."
         rationale: "Treats mass in kg as the weight force."
   - template_id: m06_push_down_03
+    difficulty: medium
     primary: M06
     question_type: mcq
     confusable_group: CG4
@@ -87,6 +90,7 @@ templates:
           - "The box weighs {m} kg so the floor pushes with {m}."
         rationale: "Treats mass and weight as one quantity."
   - template_id: m06_rope_lift_04
+    difficulty: medium
     primary: M06
     question_type: explanation
     confusable_group: CG4

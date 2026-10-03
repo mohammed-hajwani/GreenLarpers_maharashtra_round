@@ -1,5 +1,6 @@
 templates:
   - template_id: m01_puck_ice_01
+    difficulty: easy
     primary: M01
     question_type: numeric
     confusable_group: CG2
@@ -37,6 +38,7 @@ templates:
           - "Since it moves forward the net force must be forward too."
         rationale: "Assumes net force aligns with velocity."
   - template_id: m01_car_cruise_02
+    difficulty: easy
     primary: M01
     question_type: mcq
     confusable_group: CG2
@@ -69,6 +71,7 @@ templates:
           - "Net force is in the direction of motion, so the forward force wins."
         rationale: "Assumes the net force direction follows the velocity."
   - template_id: m01_spaceship_03
+    difficulty: medium
     primary: M01
     question_type: explanation
     confusable_group: CG2
@@ -96,6 +99,7 @@ templates:
           - "The ship carries the push from the engines but that force runs out."
         rationale: "Believes the ship carries a stored force that runs out."
   - template_id: m01_crate_push_04
+    difficulty: medium
     primary: M01
     question_type: numeric
     confusable_group: CG2

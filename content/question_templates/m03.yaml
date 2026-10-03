@@ -1,5 +1,6 @@
 templates:
   - template_id: m03_ball_up_01
+    difficulty: easy
     primary: M03
     question_type: numeric
     confusable_group: CG1
@@ -28,6 +29,7 @@ templates:
           - "It has no speed at that point so it has no acceleration."
         rationale: "Treats acceleration as the same quantity as velocity."
   - template_id: m03_arrow_up_02
+    difficulty: easy
     primary: M03
     question_type: mcq
     confusable_group: CG1
@@ -59,6 +61,7 @@ templates:
           - "Acceleration means speed, and the speed is zero at the top."
         rationale: "Conflates acceleration with velocity."
   - template_id: m03_stone_top_03
+    difficulty: medium
     primary: M03
     question_type: explanation
     confusable_group: CG1
@@ -86,6 +89,7 @@ templates:
           - "Acceleration is basically how fast it moves, which is zero there."
         rationale: "Uses velocity and acceleration interchangeably."
   - template_id: m03_net_force_top_04
+    difficulty: hard
     primary: M03
     question_type: numeric
     confusable_group: CG1

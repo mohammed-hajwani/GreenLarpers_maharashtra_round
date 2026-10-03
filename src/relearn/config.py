@@ -97,6 +97,13 @@ class MasteryConfig(BaseModel):
     difficulty_weight: dict[str, float]
 
 
+class DifficultyConfig(BaseModel):
+    easy_below: float
+    hard_above: float
+    recent_window: int
+    min_templates_per_band: int
+
+
 class AppConfig(BaseModel):
     db_env: str
     db_filename: str
@@ -116,6 +123,7 @@ class Config(BaseModel):
     learner: LearnerConfig
     app: AppConfig
     mastery: MasteryConfig
+    difficulty: DifficultyConfig
     loops: dict
 
     def path(self, name: str) -> Path:

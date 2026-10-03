@@ -1,5 +1,6 @@
 templates:
   - template_id: m08_car_curve_01
+    difficulty: easy
     primary: M08
     question_type: mcq
     concept_tags: [circular_motion, centripetal]
@@ -26,6 +27,7 @@ templates:
           - "Anything moving in a circle gets its own centripetal force on top of the other forces."
         rationale: "Treats centripetal force as an additional force."
   - template_id: m08_string_ball_02
+    difficulty: medium
     primary: M08
     question_type: numeric
     concept_tags: [circular_motion, tension]
@@ -48,6 +50,7 @@ templates:
           - "There is the string force plus a centripetal force, so double it."
         rationale: "Counts the centripetal force separately from tension."
   - template_id: m08_satellite_03
+    difficulty: medium
     primary: M08
     question_type: explanation
     concept_tags: [circular_motion, gravity]
@@ -68,6 +71,7 @@ templates:
           - "The centripetal force is added to gravity to keep it circling."
         rationale: "Treats centripetal force as separate from gravity."
   - template_id: m08_merry_go_round_04
+    difficulty: hard
     primary: M08
     question_type: mcq
     concept_tags: [circular_motion, free_body_diagram]

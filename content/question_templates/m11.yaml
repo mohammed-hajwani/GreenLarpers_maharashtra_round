@@ -1,5 +1,6 @@
 templates:
   - template_id: m11_bug_windshield_01
+    difficulty: easy
     primary: M11
     question_type: mcq
     concept_tags: [newton_third_law, collisions]
@@ -25,6 +26,7 @@ templates:
           - "The car is heavier and faster so it pushes much harder."
         rationale: "Believes the larger object exerts the larger force."
   - template_id: m11_truck_force_02
+    difficulty: medium
     primary: M11
     question_type: numeric
     confusable_group: CG3
@@ -54,6 +56,7 @@ templates:
           - "Action and reaction cancel, so there is no force left on the car."
         rationale: "Cancels the third-law pair."
   - template_id: m11_adult_child_03
+    difficulty: medium
     primary: M11
     question_type: explanation
     confusable_group: CG3
@@ -82,6 +85,7 @@ templates:
           - "Action and reaction cancel, so the net push is zero."
         rationale: "Cancels the third-law pair on one object."
   - template_id: m11_earth_apple_04
+    difficulty: hard
     primary: M11
     question_type: mcq
     concept_tags: [newton_third_law, gravity]

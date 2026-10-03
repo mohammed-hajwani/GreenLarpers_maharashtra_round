@@ -1,5 +1,6 @@
 templates:
   - template_id: m07_moon_mass_01
+    difficulty: easy
     primary: M07
     question_type: numeric
     concept_tags: [mass, weight]
@@ -20,6 +21,7 @@ templates:
           - "Mass and weight are the same, and you are lighter on the Moon."
         rationale: "Believes mass changes with gravity like weight does."
   - template_id: m07_flour_weight_02
+    difficulty: easy
     primary: M07
     question_type: mcq
     concept_tags: [mass, weight]
@@ -45,6 +47,7 @@ templates:
           - "Weight is measured in kilograms, so it is {m} kg."
         rationale: "Treats the mass in kg as the weight."
   - template_id: m07_mars_rock_03
+    difficulty: medium
     primary: M07
     question_type: explanation
     concept_tags: [mass, weight]
@@ -65,6 +68,7 @@ templates:
           - "There is no difference, weight is just another word for mass."
         rationale: "Uses mass and weight interchangeably."
   - template_id: m07_sled_slope_04
+    difficulty: hard
     primary: M07
     question_type: numeric
     confusable_group: CG4

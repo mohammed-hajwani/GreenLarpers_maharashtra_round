@@ -87,3 +87,15 @@
 - Every update writes a `mastery_log` row with alpha, beta and mean before and after.
 - Mastery never changes misconception states. Resolution still requires transfer, trap and delayed retest (tested in `test_high_mastery_never_resolves_after_trap_failure`).
 - `Tutor.confirm` now takes the question and returns `(record, mastery_update)`. The mastery update happens after probing, so it uses the final diagnosis.
+
+## Upgrade stage F: adaptive difficulty
+- Each of the 48 templates has a difficulty set by judgment: one-step conceptual MCQs are easy; single-step numerics and short explanations are medium; multi-step numerics, geometry and multi-body problems are hard.
+- Coverage gaps are reported, not filled with fake items. 8 concept/band cells have only 1 template against a target of 2 (see `metrics.json` `difficulty_coverage.gaps`). Every concept has at least one template in every band.
+- The engine is deterministic, never random:
+  - The base band comes from stored mastery: below 0.40 easy, 0.40 to 0.70 medium, above 0.70 hard.
+  - Three correct answers in a row in the concept step up one band; the last two wrong step down one.
+  - An unresolved misconception in the concept caps difficulty at medium.
+  - A recent uncertain diagnosis blocks stepping up.
+  - The change from the previous difficulty is limited to one band.
+- Target concept: the lowest-mastery concept that has an active, intervened or relapsed misconception, otherwise the lowest-mastery concept overall. Template choice prefers the least recently used template in the chosen band, falling back to the nearest band with a reason. Parameters cycle by attempt count.
+- The Practice page's random question picker was replaced by the adaptive engine. The UI shows the headline ("...mastery of X is currently N%.", using the stored value) and the rule reasons.
