@@ -137,6 +137,29 @@ def passages_by_id() -> dict[str, str]:
     return {p.passage_id: p.text for p in build_corpus()}
 
 
+def log_event(tutor: Tutor, learner_id: str, kind: str, ref_id: str, misconception: str | None, payload: dict) -> None:
+    tutor.store.log(learner_id, kind, ref_id, misconception, None, payload)
+
+
+def misconception_states(tutor: Tutor, learner_id: str) -> dict[str, str]:
+    return {r.misconception: r.state.value for r in tutor.store.records(learner_id)}
+
+
+def concept_status(tutor: Tutor, learner_id: str, concept: str) -> str:
+    from relearn.content import load_content
+
+    members = load_content().concepts[concept].misconceptions
+    states = {m: s for m, s in misconception_states(tutor, learner_id).items() if m in members}
+    stored = tutor.store.all_mastery(learner_id).get(concept)
+    if stored is None and not states:
+        return "not_started"
+    flagged = any(e["kind"] == "review_flag" and e["ref_id"] == concept for e in tutor.store.timeline(learner_id))
+    mastered = stored is not None and stored.mean >= load_config().difficulty.hard_above
+    if mastered and all(s == "resolved" for s in states.values()):
+        return "mastered"
+    return "review" if flagged else "in_progress"
+
+
 def reset(tutor: Tutor, learner_id: str) -> None:
     tutor.store.reset(learner_id)
 
