@@ -161,3 +161,8 @@
   - its output must pass `check_intervention` (non-empty, at most 250 words, contains the stored correct-concept sentence verbatim, no forbidden claim)
 - Without a key, the stub keeps the template and appends one retrieved "Related idea" passage when the checker still passes. The UI lists "Sources used for this intervention" with passage id, file and cosine.
 - `Intervention` gained `mode` and `sources` (PRD section 6 updated). The grounded path and the fallback paths are tested with a fake LLM; no test calls the network.
+
+## Upgrade stage L: service layer (stretch)
+- `relearn.services` is a module of plain functions: `create_tutor`, `active_model`, `predict`, `explain_prediction`, `diagnose`, `next_probe`, `answer_probe`, `finalize`, `intervention`, `plan_assessment`, `submit_assessment`, `due_retests`, `pending_retest`, `submit_retest`, `next_question`, `mastery`, `progress`, `profile`, `timeline`, `trace`, `reset`, `dashboard` and `evaluate`. Every Streamlit module calls these. A test parses the UI's imports and fails if it imports models, diagnosis, the store, analytics or pipeline internals (only the `Tutor` type is allowed).
+- No FastAPI wrapper was added; it is optional in the spec and not deployed.
+- `pipeline.py` moved the profile builder to `learner/profile.py` and the retrieval call to `rag/retriever.retrieve_for` to stay under 300 lines.

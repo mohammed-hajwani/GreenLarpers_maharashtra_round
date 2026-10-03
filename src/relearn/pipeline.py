@@ -12,12 +12,13 @@ from relearn.intervention.checker import check_intervention
 from relearn.intervention.grounded import build_grounded_intervention
 from relearn.intervention.selector import EXHAUSTED, select_strategy
 from relearn.learner.mastery import MasteryUpdate, item_evidence, practice_evidence, probe_evidence, update
-from relearn.learner.state import on_assessment, on_diagnosis, on_intervention, on_retest, posterior_mean
+from relearn.learner.profile import profile_rows
+from relearn.learner.state import on_assessment, on_diagnosis, on_intervention, on_retest
 from relearn.learner.store import LearnerStore
 from relearn.llm.base import LLMClient
 from relearn.llm.stub import StubLLMClient
 from relearn.models.base import TextClassifier
-from relearn.rag.retriever import get_retriever
+from relearn.rag.retriever import retrieve_for
 from relearn.schemas import (
     AssessmentItem,
     AssessmentResult,
@@ -158,12 +159,7 @@ class Tutor:
         return None
 
     def retrieve(self, misconception: str, response: LearnerResponse) -> list[dict]:
-        try:
-            retriever = self.retriever or get_retriever()
-            query = f"{load_content().misconceptions[misconception].description}. {response.answer}. {response.working}"
-            return retriever.retrieve(query, misconception)
-        except Exception:
-            return []
+        return retrieve_for(misconception, response, self.retriever)
 
     def plan(self, learner_id: str, misconception: str) -> list[AssessmentItem]:
         return plan_assessment(misconception, self.store.seen_items(learner_id))
@@ -297,20 +293,4 @@ class Tutor:
         return self.store.trace(self.store.save_trace(learner_id, kind, digest, trace))
 
     def profile(self, learner_id: str) -> list[dict]:
-        content = load_content()
-        timeline = self.store.timeline(learner_id)
-        rows = []
-        for r in self.store.records(learner_id):
-            rows.append(
-                {
-                    "misconception": r.misconception,
-                    "label": content.misconceptions[r.misconception].label,
-                    "state": r.state.value,
-                    "posterior_held": round(posterior_mean(r), 3),
-                    "attempts": sum(
-                        1 for e in timeline if e["misconception"] == r.misconception and e["kind"] != "state"
-                    ),
-                    "strategies_tried": ", ".join(r.strategies_tried),
-                }
-            )
-        return rows
+        return profile_rows(self.store, learner_id)

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from relearn.analytics import dashboard_data
+from relearn import services as svc
 from relearn.config import ROOT
 from relearn.content import load_content
 from relearn.data.generator import make_question
@@ -27,7 +27,7 @@ def _wrong(item: AssessmentItem) -> str:
 
 
 def _round(tutor: Tutor, learner: str, m: str, correct_kinds: list[str] | None) -> dict:
-    items = tutor.plan(learner, m)
+    items = svc.plan_assessment(tutor, learner, m)
     answers = {}
     remaining = list(correct_kinds) if correct_kinds is not None else None
     for i in items:
@@ -35,7 +35,7 @@ def _round(tutor: Tutor, learner: str, m: str, correct_kinds: list[str] | None) 
         if remaining is not None and ok:
             remaining.remove(i.kind)
         answers[i.item_id] = i.correct_answer if ok else _wrong(i)
-    result, record = tutor.submit_assessment(learner, m, items, answers)
+    result, record = svc.submit_assessment(tutor, learner, m, items, answers)
     trace = tutor.last_trace
     return {
         "items": [
@@ -45,7 +45,7 @@ def _round(tutor: Tutor, learner: str, m: str, correct_kinds: list[str] | None) 
         "transfer": f"{result.transfer_correct}/{result.transfer_total}",
         "trap_passed": result.trap_passed,
         "state": record.state.value,
-        "pending_retest_in": tutor.pending_retest(learner, m),
+        "pending_retest_in": svc.pending_retest(tutor, learner, m),
         "mastery_before": trace["mastery_updates"][0]["before"],
         "mastery_after": trace["mastery_updates"][-1]["after"],
         "trace": trace,
@@ -55,12 +55,12 @@ def _round(tutor: Tutor, learner: str, m: str, correct_kinds: list[str] | None) 
 def _probe_phase(tutor: Tutor, learner: str, d, held: str) -> tuple:
     used: set[str] = set()
     probe_steps, cards = [], []
-    while (choice := tutor.next_probe(d, used)) is not None:
+    while (choice := svc.next_probe(tutor, d, used)) is not None:
         probe = choice.probe
         answer = probe.expected_answer_by_label.get(held, probe.options[0])
         used.add(probe.probe_id)
         before = d.top_labels
-        d, step = tutor.answer_probe(learner, d, choice, answer)
+        d, step = svc.answer_probe(tutor, learner, d, choice, answer)
         probe_steps.append(step)
         cards.append(
             {
@@ -85,10 +85,10 @@ def _probe_phase(tutor: Tutor, learner: str, d, held: str) -> tuple:
 def _spacing(tutor: Tutor, learner: str, concepts: list[str]) -> list[dict]:
     rows = []
     for concept in concepts:
-        q, decision = tutor.next_question(learner, concept)
+        q, decision = svc.next_question(tutor, learner, concept)
         r = LearnerResponse(question_id=q.question_id, answer=q.correct_answer)
-        d = tutor.submit(learner, q, r)
-        trace = tutor.finalize_interaction(learner, q, r, d, d, [])
+        d = svc.diagnose(tutor, learner, q, r)
+        trace = svc.finalize(tutor, learner, q, r, d, d, [])
         rows.append(
             {
                 "why": decision.headline,
@@ -105,12 +105,12 @@ def _spacing(tutor: Tutor, learner: str, concepts: list[str]) -> list[dict]:
 def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
     script = script or load_script()
     learner = script["learner_id"]
-    tutor.store.reset(learner)
+    svc.reset(tutor, learner)
     steps: list[dict] = []
     p = script["practice"]
     q = _question(p["template_id"], p["params"])
     response = LearnerResponse(question_id=q.question_id, answer=p["answer"], working=p["working"])
-    initial = tutor.submit(learner, q, response)
+    initial = svc.diagnose(tutor, learner, q, response)
     steps.append(
         {
             "kind": "diagnosis",
@@ -120,22 +120,22 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
     )
     d, probe_steps, cards = _probe_phase(tutor, learner, initial, script["held_misconception"])
     steps.extend(cards)
-    trace = tutor.finalize_interaction(learner, q, response, initial, d, probe_steps)
+    trace = svc.finalize(tutor, learner, q, response, initial, d, probe_steps)
     steps.append({"kind": "trace", "title": "3. AI decision trace for this answer", "data": trace})
     m = d.top_labels[0][0]
-    iv = tutor.intervene(learner, m, response)
+    iv = svc.intervention(tutor, learner, m, response)
     steps.append({"kind": "intervention", "title": "4. Targeted intervention", "data": iv.model_dump()})
     r1 = _round(tutor, learner, m, script["round_1_correct_kinds"])
     steps.append({"kind": "assessment", "title": "5. Reassessment: passes follow-ups, fails the trap", "data": r1})
-    iv2 = tutor.intervene(learner, m, response)
+    iv2 = svc.intervention(tutor, learner, m, response)
     steps.append({"kind": "intervention", "title": "6. Escalation to a second strategy", "data": iv2.model_dump()})
     r2 = _round(tutor, learner, m, None if script["round_2_all_correct"] else [])
     steps.append({"kind": "assessment", "title": "7. Reassessment: transfer and trap passed", "data": r2})
     rows = _spacing(tutor, learner, script["spacing_concepts"])
     steps.append({"kind": "practice", "title": "8. Adaptive practice in between (spacing)", "data": {"rows": rows}})
-    _, item = next(x for x in tutor.due_retests(learner) if x[0] == m)
+    _, item = next(x for x in svc.due_retests(tutor, learner) if x[0] == m)
     answer = item.correct_answer if script["retest_correct"] else _wrong(item)
-    result, record = tutor.submit_retest(learner, item, answer)
+    result, record = svc.submit_retest(tutor, learner, item, answer)
     retest_trace = tutor.last_trace
     steps.append(
         {
@@ -151,7 +151,7 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
             },
         }
     )
-    _, decision = tutor.next_question(learner)
+    _, decision = svc.next_question(tutor, learner)
     steps.append(
         {
             "kind": "next",
@@ -164,9 +164,9 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
             "kind": "profile",
             "title": "11. Learner profile and dashboard",
             "data": {
-                "rows": tutor.profile(learner),
-                "timeline": tutor.store.timeline(learner),
-                "dashboard": dashboard_data(tutor.store, learner),
+                "rows": svc.profile(tutor, learner),
+                "timeline": svc.timeline(tutor, learner),
+                "dashboard": svc.dashboard(tutor, learner),
             },
         }
     )

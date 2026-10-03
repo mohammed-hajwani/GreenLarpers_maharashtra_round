@@ -1,0 +1,130 @@
+from relearn.adaptive.difficulty import DifficultyDecision
+from relearn.analytics import dashboard_data, evaluation_data
+from relearn.config import load_config
+from relearn.diagnosis.diagnoser import diagnose as model_diagnose
+from relearn.diagnosis.disambiguator import ProbeChoice, ProbeStep
+from relearn.diagnosis.explain import explain
+from relearn.learner.store import LearnerStore
+from relearn.llm.anthropic_client import make_llm
+from relearn.models.loader import ActiveModel, get_active_model
+from relearn.pipeline import Tutor
+from relearn.progress.features import learner_features
+from relearn.progress.model import predict as progress_predict
+from relearn.schemas import (
+    AssessmentItem,
+    AssessmentResult,
+    Diagnosis,
+    Intervention,
+    LearnerRecord,
+    LearnerResponse,
+    Question,
+)
+
+
+def create_tutor(db_path: str | None = None) -> Tutor:
+    path = db_path or load_config().db_path()
+    return Tutor(LearnerStore(path), get_active_model().model, make_llm())
+
+
+def active_model() -> ActiveModel:
+    return get_active_model()
+
+
+def predict(question: Question, response: LearnerResponse) -> Diagnosis:
+    return model_diagnose(question, response, get_active_model().model)
+
+
+def explain_prediction(question: Question, response: LearnerResponse, label: str) -> dict:
+    model = get_active_model().model
+    return explain(model, question, response, label) if model else {}
+
+
+def diagnose(tutor: Tutor, learner_id: str, question: Question, response: LearnerResponse) -> Diagnosis:
+    return tutor.submit(learner_id, question, response)
+
+
+def next_probe(tutor: Tutor, diagnosis: Diagnosis, used: set[str]) -> ProbeChoice | None:
+    return tutor.next_probe(diagnosis, used)
+
+
+def answer_probe(
+    tutor: Tutor, learner_id: str, diagnosis: Diagnosis, choice: ProbeChoice, answer: str
+) -> tuple[Diagnosis, ProbeStep]:
+    return tutor.answer_probe(learner_id, diagnosis, choice, answer)
+
+
+def finalize(
+    tutor: Tutor,
+    learner_id: str,
+    question: Question,
+    response: LearnerResponse,
+    initial: Diagnosis,
+    final: Diagnosis,
+    steps: list[ProbeStep],
+) -> dict:
+    return tutor.finalize_interaction(learner_id, question, response, initial, final, steps)
+
+
+def intervention(tutor: Tutor, learner_id: str, misconception: str, response: LearnerResponse) -> Intervention | None:
+    return tutor.intervene(learner_id, misconception, response)
+
+
+def plan_assessment(tutor: Tutor, learner_id: str, misconception: str) -> list[AssessmentItem]:
+    return tutor.plan(learner_id, misconception)
+
+
+def submit_assessment(
+    tutor: Tutor, learner_id: str, misconception: str, items: list[AssessmentItem], answers: dict[str, str]
+) -> tuple[AssessmentResult, LearnerRecord]:
+    return tutor.submit_assessment(learner_id, misconception, items, answers)
+
+
+def due_retests(tutor: Tutor, learner_id: str) -> list[tuple[str, AssessmentItem]]:
+    return tutor.due_retests(learner_id)
+
+
+def pending_retest(tutor: Tutor, learner_id: str, misconception: str) -> int | None:
+    return tutor.pending_retest(learner_id, misconception)
+
+
+def submit_retest(
+    tutor: Tutor, learner_id: str, item: AssessmentItem, answer: str
+) -> tuple[AssessmentResult, LearnerRecord]:
+    return tutor.submit_retest(learner_id, item, answer)
+
+
+def next_question(tutor: Tutor, learner_id: str, concept: str | None = None) -> tuple[Question, DifficultyDecision]:
+    return tutor.next_question(learner_id, concept)
+
+
+def mastery(tutor: Tutor, learner_id: str) -> dict[str, float]:
+    return {c: m.mean for c, m in tutor.store.all_mastery(learner_id).items()}
+
+
+def progress(tutor: Tutor, learner_id: str, concept: str) -> dict | None:
+    feats = learner_features(tutor.store, learner_id, concept)
+    return progress_predict(feats) if feats else None
+
+
+def profile(tutor: Tutor, learner_id: str) -> list[dict]:
+    return tutor.profile(learner_id)
+
+
+def timeline(tutor: Tutor, learner_id: str) -> list[dict]:
+    return tutor.store.timeline(learner_id)
+
+
+def trace(tutor: Tutor, trace_id: int) -> dict:
+    return tutor.store.trace(trace_id)
+
+
+def reset(tutor: Tutor, learner_id: str) -> None:
+    tutor.store.reset(learner_id)
+
+
+def dashboard(tutor: Tutor, learner_id: str) -> dict:
+    return dashboard_data(tutor.store, learner_id)
+
+
+def evaluate() -> dict:
+    return evaluation_data()

@@ -84,3 +84,12 @@ class Retriever:
 @lru_cache(maxsize=1)
 def get_retriever() -> Retriever:
     return Retriever()
+
+
+def retrieve_for(misconception: str, response, retriever: Retriever | None = None) -> list[dict]:
+    try:
+        retriever = retriever or get_retriever()
+        query = f"{load_content().misconceptions[misconception].description}. {response.answer}. {response.working}"
+        return retriever.retrieve(query, misconception)
+    except Exception:
+        return []

@@ -1,5 +1,6 @@
 import streamlit as st
 
+from relearn import services as svc
 from relearn.app.trace_view import render_assessment_trace, render_practice_trace
 from relearn.app.views import (
     label_name,
@@ -47,7 +48,7 @@ def _topic_picker(tutor: Tutor, learner: str) -> None:
     )
     if cols[1].button("Next question", width="stretch") or "question" not in st.session_state:
         reset_flow()
-        question, decision = tutor.next_question(learner, None if concept == "auto" else concept)
+        question, decision = svc.next_question(tutor, learner, None if concept == "auto" else concept)
         st.session_state.question = question
         st.session_state.decision = decision
         st.session_state.phase = "answer"
@@ -85,7 +86,7 @@ def _answer_form(tutor: Tutor, learner: str) -> None:
         if st.form_submit_button("Submit", type="primary") and answer:
             response = LearnerResponse(question_id=q.question_id, answer=answer, working=working)
             st.session_state.response = response
-            st.session_state.diagnosis = tutor.submit(learner, q, response)
+            st.session_state.diagnosis = svc.diagnose(tutor, learner, q, response)
             st.session_state.initial_diagnosis = st.session_state.diagnosis
             st.session_state.probe_steps = []
             st.session_state.probes_used = set()
@@ -94,10 +95,11 @@ def _answer_form(tutor: Tutor, learner: str) -> None:
 
 
 def _advance_probe(tutor: Tutor, learner: str) -> None:
-    choice = tutor.next_probe(st.session_state.diagnosis, st.session_state.probes_used)
+    choice = svc.next_probe(tutor, st.session_state.diagnosis, st.session_state.probes_used)
     st.session_state.probe = choice
     if choice is None:
-        trace = tutor.finalize_interaction(
+        trace = svc.finalize(
+            tutor,
             learner,
             st.session_state.question,
             st.session_state.response,
@@ -120,7 +122,9 @@ def _probe_form(tutor: Tutor, learner: str) -> None:
         answer = st.radio("Choose", probe.options, index=None, label_visibility="collapsed", key="probe_ans")
         if st.form_submit_button("Answer probe") and answer:
             st.session_state.probes_used.add(probe.probe_id)
-            st.session_state.diagnosis, step = tutor.answer_probe(learner, st.session_state.diagnosis, choice, answer)
+            st.session_state.diagnosis, step = svc.answer_probe(
+                tutor, learner, st.session_state.diagnosis, choice, answer
+            )
             st.session_state.setdefault("probe_steps", []).append(step)
             _advance_probe(tutor, learner)
             st.rerun()
@@ -133,7 +137,7 @@ def _assessment_form(tutor: Tutor, learner: str, m: str) -> None:
         for i in items:
             answers[i.item_id] = st.radio(i.stem, i.options, index=None, key=f"a_{i.item_id}_{st.session_state.round}")
         if st.form_submit_button("Submit answers", type="primary"):
-            result, record = tutor.submit_assessment(learner, m, items, {k: v or "" for k, v in answers.items()})
+            result, record = svc.submit_assessment(tutor, learner, m, items, {k: v or "" for k, v in answers.items()})
             rows = [
                 {
                     "kind": i.kind,
@@ -148,7 +152,7 @@ def _assessment_form(tutor: Tutor, learner: str, m: str) -> None:
                 "transfer": f"{result.transfer_correct}/{result.transfer_total}",
                 "trap_passed": result.trap_passed,
                 "state": record.state.value,
-                "pending_retest_in": tutor.pending_retest(learner, m),
+                "pending_retest_in": svc.pending_retest(tutor, learner, m),
             }
             st.session_state.assessment_trace_id = tutor.last_trace["id"]
             st.session_state.phase = "assessed"
@@ -156,12 +160,12 @@ def _assessment_form(tutor: Tutor, learner: str, m: str) -> None:
 
 
 def _retest_banner(tutor: Tutor, learner: str) -> None:
-    for m, item in tutor.due_retests(learner):
+    for m, item in svc.due_retests(tutor, learner):
         with st.container(border=True):
             st.markdown(f"**Delayed retest** for {label_name(m)}")
             choice = st.radio(item.stem, item.options, index=None, key=f"retest_{item.item_id}")
             if st.button("Submit retest", key=f"rt_{item.item_id}") and choice:
-                _, record = tutor.submit_retest(learner, item, choice)
+                _, record = svc.submit_retest(tutor, learner, item, choice)
                 st.session_state.retest_msg = (m, record.state.value)
                 st.rerun()
     if msg := st.session_state.pop("retest_msg", None):
@@ -184,12 +188,12 @@ def render_practice(tutor: Tutor, learner: str) -> None:
         _probe_form(tutor, learner)
         return
     if st.session_state.get("trace_id"):
-        render_practice_trace(tutor.store.trace(st.session_state.trace_id))
+        render_practice_trace(svc.trace(tutor, st.session_state.trace_id))
     if d.is_correct:
         return
     m = d.top_labels[0][0]
     if phase == "diagnosed" and st.button("Help me with this", type="primary"):
-        st.session_state.intervention = tutor.intervene(learner, m, r)
+        st.session_state.intervention = svc.intervention(tutor, learner, m, r)
         st.session_state.phase = "intervened"
         st.rerun()
     if phase in ("intervened", "assessing", "assessed"):
@@ -199,7 +203,7 @@ def render_practice(tutor: Tutor, learner: str) -> None:
             return
         render_intervention(iv.model_dump())
     if phase == "intervened" and st.button("Check my understanding", type="primary"):
-        st.session_state.assess_items = tutor.plan(learner, m)
+        st.session_state.assess_items = svc.plan_assessment(tutor, learner, m)
         st.session_state.round = st.session_state.get("round", 0) + 1
         st.session_state.phase = "assessing"
         st.rerun()
@@ -209,8 +213,8 @@ def render_practice(tutor: Tutor, learner: str) -> None:
         result = st.session_state.last_result
         render_assessment(result)
         if st.session_state.get("assessment_trace_id"):
-            render_assessment_trace(tutor.store.trace(st.session_state.assessment_trace_id))
+            render_assessment_trace(svc.trace(tutor, st.session_state.assessment_trace_id))
         if result["state"] in ("active", "relapsed") and st.button("Try another explanation", type="primary"):
-            st.session_state.intervention = tutor.intervene(learner, m, r)
+            st.session_state.intervention = svc.intervention(tutor, learner, m, r)
             st.session_state.phase = "intervened"
             st.rerun()

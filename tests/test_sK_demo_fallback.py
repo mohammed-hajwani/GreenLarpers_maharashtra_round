@@ -46,7 +46,7 @@ def test_app_demo_live() -> None:
 
 
 def test_app_demo_replay_is_labeled(monkeypatch) -> None:
-    monkeypatch.setattr("relearn.app.streamlit_app.get_active_model", lambda: load_chain(()))
+    monkeypatch.setattr("relearn.services.get_active_model", lambda: load_chain(()))
     monkeypatch.setattr("relearn.app.streamlit_app.get_tutor", lambda: Tutor(LearnerStore(":memory:"), None))
     at = AppTest.from_file(APP, default_timeout=180)
     _start_demo(at)

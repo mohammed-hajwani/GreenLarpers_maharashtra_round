@@ -1,8 +1,8 @@
 import pandas as pd
 import streamlit as st
 
-from relearn.analytics import dashboard_data, evaluation_data
-from relearn.learner.store import LearnerStore
+from relearn import services as svc
+from relearn.pipeline import Tutor
 
 EMPTY = "No data yet. Answer a few practice questions to populate this view."
 
@@ -15,8 +15,8 @@ def _section(title: str, rows: list | dict, render) -> None:
     render(rows)
 
 
-def render_dashboard(store: LearnerStore, learner_id: str) -> None:
-    data = dashboard_data(store, learner_id)
+def render_dashboard(tutor: Tutor, learner_id: str) -> None:
+    data = svc.dashboard(tutor, learner_id)
     if data["empty"]:
         st.info(EMPTY)
         return
@@ -63,7 +63,7 @@ def render_dashboard(store: LearnerStore, learner_id: str) -> None:
 
 
 def render_evaluation_page() -> None:
-    data = evaluation_data()
+    data = svc.evaluate()
     if not data["available"]:
         st.warning("evaluation not run")
         return

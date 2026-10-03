@@ -2,14 +2,11 @@ import uuid
 
 import streamlit as st
 
+from relearn import services as svc
 from relearn.app.dashboard import render_dashboard, render_evaluation_page
 from relearn.app.demo import load_script, run_demo
 from relearn.app.practice import render_practice, reset_flow
 from relearn.app.views import render_profile, render_step
-from relearn.config import load_config
-from relearn.learner.store import LearnerStore
-from relearn.llm.anthropic_client import make_llm
-from relearn.models.loader import get_active_model
 from relearn.pipeline import Tutor
 
 MODEL_NAMES = {
@@ -21,12 +18,11 @@ MODEL_NAMES = {
 
 @st.cache_resource
 def get_tutor() -> Tutor:
-    active = get_active_model()
-    return Tutor(LearnerStore(load_config().db_path()), active.model, make_llm())
+    return svc.create_tutor()
 
 
 def health() -> None:
-    active = get_active_model()
+    active = svc.active_model()
     st.write("ok")
     st.write(f"model: {active.source}")
     st.stop()
@@ -69,7 +65,7 @@ BADGE_COLOR = {"v1_embedding": "green", "baseline": "orange", "replay": "red"}
 
 
 def model_badge() -> None:
-    active = get_active_model()
+    active = svc.active_model()
     version = f" v{active.model.version}" if active.model else ""
     st.markdown(f":{BADGE_COLOR[active.source]}-badge[Active model: {MODEL_NAMES[active.source]}{version}]")
 
@@ -80,13 +76,13 @@ def sidebar(tutor: Tutor) -> str:
         page = st.radio("Page", ["Practice", "Dashboard", "Profile", "Model Evaluation", "Demo mode"])
         st.caption(f"Learner: `{st.session_state.learner_id}`")
         if st.button("Reset demo"):
-            tutor.store.reset(st.session_state.learner_id)
-            tutor.store.reset(load_script()["learner_id"])
+            svc.reset(tutor, st.session_state.learner_id)
+            svc.reset(tutor, load_script()["learner_id"])
             reset_flow()
             st.session_state.pop("demo_steps", None)
             st.rerun()
         st.divider()
-        st.caption(f"Active model: **{MODEL_NAMES[get_active_model().source]}**")
+        st.caption(f"Active model: **{MODEL_NAMES[svc.active_model().source]}**")
     return page
 
 
@@ -109,13 +105,13 @@ def main() -> None:
     elif page == "Dashboard":
         st.header("Learning analytics")
         who = st.radio("Learner", ["you", "demo learner"], horizontal=True)
-        render_dashboard(tutor.store, learner if who == "you" else load_script()["learner_id"])
+        render_dashboard(tutor, learner if who == "you" else load_script()["learner_id"])
     elif page == "Model Evaluation":
         st.header("Model evaluation")
         render_evaluation_page()
     elif page == "Profile":
         st.header("Learner profile")
-        render_profile({"rows": tutor.profile(learner), "timeline": tutor.store.timeline(learner)})
+        render_profile({"rows": svc.profile(tutor, learner), "timeline": svc.timeline(tutor, learner)})
     else:
         demo_page(tutor)
     st.divider()
