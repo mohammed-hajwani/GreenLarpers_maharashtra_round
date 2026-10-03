@@ -1,0 +1,21 @@
+{
+  "repeats": {
+    "questions_requested": 10,
+    "unique_stems": 1
+  },
+  "screening_flags": {
+    "idk": true,
+    "blank_reasoning_answer": false,
+    "real": false
+  },
+  "student_view_banned_strings": {
+    "landing": {},
+    "after_wrong_answer": {
+      "Decision Trace": 1,
+      "confidence": 4,
+      "probability": 3,
+      "misconception": 3
+    },
+    "exceptions": 0
+  }
+}
