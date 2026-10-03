@@ -79,7 +79,11 @@ def main() -> None:
         for mode in ("model_only", "with_answer_key")
     ]
     metrics = {
-        **{k: v for k, v in previous.items() if k in ("probing", "simulation", "progress_model")},
+        **{
+            k: v
+            for k, v in previous.items()
+            if k in ("probing", "simulation", "progress_model", "modality_simulation", "open_set")
+        },
         "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "data_provenance": "synthetic",
         "dataset": {

@@ -2245,5 +2245,109 @@
         ]
       }
     }
+  },
+  "modality_simulation": {
+    "assumptions": {
+      "base_effectiveness": {
+        "text": 0.35,
+        "diagram": 0.42,
+        "simulation": 0.48
+      },
+      "per_misconception_shift": "uniform(-0.2, 0.2) per modality, so the best modality differs by misconception",
+      "per_learner_shift": "uniform(-0.15, 0.15) per modality (individual preference)",
+      "clip": [
+        0.05,
+        0.95
+      ],
+      "max_interventions": 3,
+      "label": "Simulated learners, not real students"
+    },
+    "learners_per_seed": 3000,
+    "seeds": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "modalities": [
+      "text",
+      "diagram",
+      "simulation"
+    ],
+    "results": {
+      "text_only": {
+        "first_try_resolution": {
+          "mean": 0.3817333333333333,
+          "std": 0.03674077359616213
+        },
+        "first_try_resolution_last_third": {
+          "mean": 0.3772,
+          "std": 0.037833318649042665
+        },
+        "resolved_within_3": {
+          "mean": 0.7194,
+          "std": 0.042297044814029267
+        },
+        "mean_interventions": {
+          "mean": 2.0278,
+          "std": 0.08077749961743333
+        }
+      },
+      "fixed_rotation": {
+        "first_try_resolution": {
+          "mean": 0.3856,
+          "std": 0.04009843443882123
+        },
+        "first_try_resolution_last_third": {
+          "mean": 0.3836,
+          "std": 0.040632991521668695
+        },
+        "resolved_within_3": {
+          "mean": 0.8268,
+          "std": 0.02487622693791539
+        },
+        "mean_interventions": {
+          "mean": 1.9559333333333333,
+          "std": 0.07511780377809545
+        }
+      },
+      "random": {
+        "first_try_resolution": {
+          "mean": 0.4392,
+          "std": 0.02696796453407471
+        },
+        "first_try_resolution_last_third": {
+          "mean": 0.4372,
+          "std": 0.02196724834839359
+        },
+        "resolved_within_3": {
+          "mean": 0.8228,
+          "std": 0.020727437532571818
+        },
+        "mean_interventions": {
+          "mean": 1.8774666666666666,
+          "std": 0.052101866036107045
+        }
+      },
+      "adaptive": {
+        "first_try_resolution": {
+          "mean": 0.5284666666666666,
+          "std": 0.030224787472830614
+        },
+        "first_try_resolution_last_third": {
+          "mean": 0.548,
+          "std": 0.029250641018616998
+        },
+        "resolved_within_3": {
+          "mean": 0.8222,
+          "std": 0.024140882797077306
+        },
+        "mean_interventions": {
+          "mean": 1.7403333333333333,
+          "std": 0.05789185319772261
+        }
+      }
+    }
   }
 }

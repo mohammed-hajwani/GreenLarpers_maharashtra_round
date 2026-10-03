@@ -1,0 +1,123 @@
+visuals:
+  M01:
+    diagram:
+      scene: block
+      title: A puck sliding at a steady speed on frictionless ice
+      velocity: right
+      forces:
+        - {dir: down, label: weight}
+        - {dir: up, label: normal force}
+      tempting: {dir: right, label: push that keeps it going}
+      caption: Only the weight and the normal force act, and they cancel. Nothing pushes it forward, yet it keeps its speed.
+    simulation:
+      kind: slide
+      caption: Give the puck one push, then set friction to zero. Does it need another push to keep going?
+  M02:
+    diagram:
+      scene: drop_two
+      title: A heavy and a light ball falling with no air
+      forces:
+        - {dir: down, label: "a = g"}
+      tempting: {dir: down, label: faster for the heavy one}
+      caption: Both balls speed up at the same rate, g. The heavy one is pulled harder but also has more mass to move.
+    simulation:
+      kind: fall
+      caption: Drop both balls with air on, then with air off. When do they land together?
+  M03:
+    diagram:
+      scene: ball_top
+      title: A ball at the very top of a vertical throw
+      velocity: none
+      forces:
+        - {dir: down, label: "a = g, still"}
+      tempting: {dir: none, label: "a = 0 at the top"}
+      caption: The speed is zero for an instant, but gravity never switches off. The velocity keeps changing, so the acceleration is still g downward.
+    simulation:
+      kind: throw
+      caption: Throw the ball up and pause at the top. Watch the green acceleration arrow. Does it ever disappear?
+  M04:
+    diagram:
+      scene: two_cars
+      title: A fast car at a steady speed and a slow car speeding up
+      caption: Car A is fast but its velocity is not changing, so its acceleration is zero. Car B is slow but speeding up, so it is the one accelerating.
+    simulation:
+      kind: throw
+      caption: Watch the purple velocity arrow and the green acceleration arrow. They are different things.
+  M05:
+    diagram:
+      scene: pair
+      title: A horse pulls a cart; the cart pulls back on the horse
+      left: horse
+      right: cart
+      equal: true
+      caption: The two forces are equal and opposite, but each one acts on a different object, so they never cancel each other.
+    simulation:
+      kind: collide
+      caption: Push the carts apart. Each cart feels one force, from the other cart.
+  M06:
+    diagram:
+      scene: incline
+      title: A block resting on a smooth ramp
+      caption: The normal force only balances the part of the weight pressing into the ramp, so it is smaller than the weight.
+    simulation:
+      kind: normal
+      caption: Push down on the box or pull it up with a rope. Watch the normal force change while the weight stays the same.
+  M07:
+    diagram:
+      scene: mass_weight
+      title: A 5 kg box on Earth
+      caption: Mass is the amount of stuff, 5 kg. Weight is a force, m times g, about 49 N. Different units, different ideas.
+    simulation:
+      kind: normal
+      caption: Change g (Earth, Moon, Mars). The weight changes; the mass never does.
+  M08:
+    diagram:
+      scene: circle
+      title: A ball on a string moving in a circle
+      caption: The string's tension is the only horizontal force. "Centripetal" is just the name for it; there is no extra force to add.
+    simulation:
+      kind: circle
+      caption: Cut the string. Which way does the ball go, and which force was keeping it in the circle?
+  M09:
+    diagram:
+      scene: ball_air
+      title: A ball just after it leaves the hand
+      velocity: right
+      forces:
+        - {dir: down, label: weight}
+      tempting: {dir: right, label: force of the throw}
+      caption: Once the ball leaves the hand, nothing is pushing it forward. It keeps moving because of inertia, and only gravity acts.
+    simulation:
+      kind: slide
+      caption: Push the puck once. When your hand lets go, which forces are left?
+  M10:
+    diagram:
+      scene: energy
+      title: A child sliding down a slide with friction
+      caption: Energy is not used up. The missing kinetic energy becomes heat in the slide and the child's clothes.
+    simulation:
+      kind: energy
+      caption: Turn friction up. Watch the bars. Does the total ever go down?
+  M11:
+    diagram:
+      scene: pair
+      title: A truck and a small car collide
+      left: truck
+      right: car
+      equal: true
+      caption: The forces on each other are exactly equal. The car is damaged more because the same force gives its smaller mass a bigger acceleration.
+    simulation:
+      kind: collide
+      caption: Make one cart much heavier. Do the force bars change? Does the acceleration?
+  M12:
+    diagram:
+      scene: ball_air
+      title: A ball tossed upward, still rising
+      velocity: up
+      forces:
+        - {dir: down, label: weight}
+      tempting: {dir: up, label: net force upward}
+      caption: The ball moves up but the only force points down. The net force shows how the velocity is changing, not where the ball is going.
+    simulation:
+      kind: throw
+      caption: Throw the ball up. While it is rising, which way does the green net-force arrow point?

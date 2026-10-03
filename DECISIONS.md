@@ -173,3 +173,17 @@
 - For custom questions without an answer key, a `none` prediction is shown as "No misconception detected in your reasoning ... correctness is not verified", not "Correct".
 - `none` now counts as correct only when its calibrated probability is at least the probe threshold (0.50). Below that the route is `uncertain` and the leading misconception becomes the working hypothesis (new `Diagnosis.misconception` property). Before this, `none` at 41% (with M02 at 30%) was accepted as correct.
 - Because low-confidence `none` answers are now probed instead of accepted, the probing simulation changed. Info-gain probes now beat random in all 4 settings: v1 test 0.726 → random 0.855 → info-gain 0.886; baseline test 0.820 → 0.928 → 0.945. The validation numbers are unchanged.
+
+## Final push: multimodal adaptive teaching
+- Each of the 12 misconceptions has a visual spec in `content/visuals.yaml`:
+  - an SVG force diagram (real forces in solid green, motion in dashed purple, the tempting non-force crossed out in red and named in text, not by colour alone)
+  - one of 7 canvas simulations: slide, fall, throw, collide, normal, circle, energy
+- Simulations are plain HTML and JavaScript with no dependencies, rendered through `streamlit.components.v1.html`. Nothing autoplays (motion starts only when the learner presses a button), so they are compatible with reduced motion. They have native keyboard controls and a polite live readout.
+- Modality is chosen per intervention by Thompson sampling over text, diagram and simulation, using Beta(1 + successes, 1 + failures) per (misconception, modality) from the new `modality_stats` table. Modalities this learner already had for the misconception are excluded first.
+- Outcome attribution: a passed reassessment counts as a success for the modality of the learner's latest intervention on that misconception; a failed one counts as a failure.
+- Simulated evaluation (`scripts/simulate_modality.py`, 3000 learners × 5 seeds, assumptions stored in `metrics.json`, labelled simulated):
+  - first-try resolution: adaptive 0.528 (0.548 in the last third), random 0.439, fixed rotation 0.386, text-only 0.382
+  - resolved within 3 interventions: about 0.82 for adaptive, rotation and random; 0.719 for text-only
+  - mean interventions: adaptive 1.74, text-only 2.03
+- The student hint card shows "Picture it" (diagram) or "Try it yourself" (simulation) next to the short text hint. Insights shows the modality outcome table and the simulated comparison.
+- `Intervention` gained `modality` (PRD section 6 updated). `update_learner` moved to `learner/updates.py` to keep `pipeline.py` under 300 lines.

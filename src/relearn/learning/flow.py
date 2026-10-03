@@ -20,6 +20,8 @@ class Feedback:
     hint: str = ""
     answer: str = ""
     explanation: str = ""
+    modality: str = "text"
+    visual_for: str | None = None
 
 
 @dataclass
@@ -150,14 +152,18 @@ class LessonEngine:
         flow.mix_up = mix_up or item.mix_up
         if flow.checks >= VISIT_CAP:
             return self._defer(flow)
+        modality = "text"
         if mix_up:
             iv = svc.intervention(self.tutor, flow.learner_id, mix_up, p["response"])
             hint = first_hint(iv.text if iv else "", mix_up)
+            modality = iv.modality if iv else "text"
         else:
             hint = generic_hint()
         if flow.attempts_on_item >= 2:
             hint = f"{hint} {key_idea(flow.mix_up)}".strip()
-        flow.feedback = Feedback("incorrect", "Let's work through this.", hint=hint)
+        flow.feedback = Feedback(
+            "incorrect", "Let's work through this.", hint=hint, modality=modality, visual_for=mix_up
+        )
         return flow.feedback
 
     def _defer(self, flow: LessonFlow) -> Feedback:

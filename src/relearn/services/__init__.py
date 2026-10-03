@@ -160,6 +160,37 @@ def concept_status(tutor: Tutor, learner_id: str, concept: str) -> str:
     return "review" if flagged else "in_progress"
 
 
+def diagram(misconception: str) -> str | None:
+    from relearn.multimodal.diagrams import diagram_svg
+
+    return diagram_svg(misconception)
+
+
+def diagram_text(misconception: str) -> tuple[str, str]:
+    from relearn.multimodal.diagrams import diagram_caption
+
+    return diagram_caption(misconception)
+
+
+def simulation(misconception: str) -> str | None:
+    from relearn.multimodal.simulations import simulation_html
+
+    return simulation_html(misconception)
+
+
+def simulation_caption(misconception: str) -> str:
+    from relearn.multimodal.simulations import simulation_spec
+
+    spec = simulation_spec(misconception)
+    return spec["caption"] if spec else ""
+
+
+def modality_stats(tutor: Tutor) -> dict:
+    from relearn.multimodal.policy import modality_stats as stats
+
+    return stats(tutor.store)
+
+
 def reset(tutor: Tutor, learner_id: str) -> None:
     tutor.store.reset(learner_id)
 

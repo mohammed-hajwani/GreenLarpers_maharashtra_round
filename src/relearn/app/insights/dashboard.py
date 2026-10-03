@@ -99,6 +99,14 @@ def render_evaluation_page() -> None:
         st.caption(m["progress_model"]["label"])
         rows = [{"target": t, "model": r["model"], **r["test"]} for t, r in m["progress_model"]["metrics"].items()]
         st.dataframe(pd.DataFrame(rows).round(3), hide_index=True, width="stretch")
+    if "modality_simulation" in m:
+        sim = m["modality_simulation"]
+        st.subheader("Adaptive teaching modality (simulated learners)")
+        st.caption(
+            sim["assumptions"]["label"] + ". Assumptions: " + sim["assumptions"]["per_misconception_shift"] + "."
+        )
+        rows = [{"policy": p, **{k: v["mean"] for k, v in r.items()}} for p, r in sim["results"].items()]
+        st.dataframe(pd.DataFrame(rows).round(3), hide_index=True, width="stretch")
     if "probing" in m:
         st.subheader("Probe selection on simulated learners")
         st.caption(m["probing"]["method"])

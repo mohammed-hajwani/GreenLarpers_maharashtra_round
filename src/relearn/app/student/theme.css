@@ -213,6 +213,32 @@ h1, h2, h3 {
   margin: 0 0 0.6rem;
 }
 
+.stApp .rl-visual {
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.85rem 1rem 0.5rem;
+  margin: 0 0 0.75rem;
+  animation: rl-rise 260ms var(--ease) both;
+}
+
+.stApp .rl-visual svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.stApp .rl-visual-caption {
+  color: var(--text-2);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0.4rem 0 0.6rem;
+}
+
+.stApp .rl-visual-label {
+  margin-top: 0.25rem;
+}
+
 .stApp .rl-card-name {
   font-size: 1.1rem;
   font-weight: 700;

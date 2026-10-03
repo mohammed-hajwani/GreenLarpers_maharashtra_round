@@ -194,6 +194,7 @@ class Intervention(BaseModel):
     follow_up_prompt: str
     mode: str = "template"
     sources: list[dict] = Field(default_factory=list)
+    modality: str = "text"
 
 class AssessmentItem(BaseModel):
     item_id: str

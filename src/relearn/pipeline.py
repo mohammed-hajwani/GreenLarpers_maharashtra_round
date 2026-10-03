@@ -18,6 +18,7 @@ from relearn.learner.store import LearnerStore
 from relearn.llm.base import LLMClient
 from relearn.llm.stub import StubLLMClient
 from relearn.models.base import TextClassifier
+from relearn.multimodal.policy import intervention_payload, pick_for, record_outcome
 from relearn.rag.retriever import retrieve_for
 from relearn.schemas import (
     AssessmentItem,
@@ -145,6 +146,8 @@ class Tutor:
             iv, mode = build_grounded_intervention(misconception, strategy, response, self.llm, passages, mastery)
             iv = iv.model_copy(update={"mode": mode, "sources": passages})
             if check_intervention(iv):
+                modality, why = pick_for(self.store, learner_id, misconception)
+                iv = iv.model_copy(update={"modality": modality})
                 record = on_intervention(record, strategy)
                 self.store.put(record)
                 self.store.bump_stat(misconception, strategy, "delivered")
@@ -153,7 +156,7 @@ class Tutor:
                     "intervention",
                     strategy,
                     misconception,
-                    payload={"state": "intervened", "mode": mode, "sources": [p["passage_id"] for p in passages]},
+                    payload=intervention_payload(mode, modality, why, passages),
                 )
                 return iv
             tried.append(strategy)
@@ -201,6 +204,7 @@ class Tutor:
         if passes_reassessment(result) and record.state == MisconceptionState.intervened:
             due = self.store.attempt_count(learner_id) + load_config().assessment.retest_gap
         self.store.put(record, due)
+        record_outcome(self.store, learner_id, misconception, passes_reassessment(result))
         self.store.log(learner_id, "state", misconception, misconception, payload={"state": record.state.value})
         self.last_trace = self._assessment_trace(
             learner_id, "assessment", misconception, before, record, result, updates
@@ -245,12 +249,6 @@ class Tutor:
             learner_id, "retest", item.misconception, before, record, result, updates
         )
         return result, record
-
-    def update_learner(self, learner_id: str, misconception: str, result: AssessmentResult) -> LearnerRecord:
-        record = self.store.get(learner_id, misconception)
-        record = on_retest(record, result) if result.retest_passed is not None else on_assessment(record, result)
-        self.store.put(record)
-        return record
 
     def concept_history(self, learner_id: str, concept: str) -> list[dict]:
         return concept_history(self.store, learner_id, concept)

@@ -2,7 +2,9 @@ from html import escape
 from pathlib import Path
 
 import streamlit as st
+import streamlit.components.v1 as components
 
+from relearn import services as svc
 from relearn.learning.flow import Feedback, LessonFlow
 from relearn.schemas import QuestionType
 
@@ -140,9 +142,28 @@ def answer_feedback(flow: LessonFlow, actions: dict, disabled: bool = False) -> 
         return
     with st.container(key="rl-feedback-card"):
         live_message(feedback.message, feedback.status, feedback.hint)
+        if feedback.status == "incorrect" and feedback.modality != "text" and feedback.visual_for:
+            visual_card(feedback.modality, feedback.visual_for)
         if feedback.status in ("correct", "revealed", "incorrect_item"):
             explanation_card(feedback, show_answer=feedback.status != "correct")
         lesson_navigation(feedback.status, flow, actions, disabled)
+
+
+def visual_card(modality: str, mix_up: str) -> None:
+    if modality == "diagram":
+        svg = svc.diagram(mix_up)
+        if svg:
+            title, caption = svc.diagram_text(mix_up)
+            html(
+                f'<div class="rl-visual"><p class="rl-explain-label">Picture it</p>{svg}'
+                f'<p class="rl-visual-caption">{escape(caption)}</p></div>'
+            )
+    elif modality == "simulation":
+        page = svc.simulation(mix_up)
+        if page:
+            html('<p class="rl-explain-label rl-visual-label">Try it yourself</p>')
+            components.html(page, height=430, scrolling=False)
+            html(f'<p class="rl-visual-caption">{escape(svc.simulation_caption(mix_up))}</p>')
 
 
 def lesson_navigation(status: str, flow: LessonFlow, actions: dict, disabled: bool) -> None:

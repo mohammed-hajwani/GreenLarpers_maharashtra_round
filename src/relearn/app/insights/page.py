@@ -77,6 +77,11 @@ def student_decisions(tutor: Tutor, learner: str) -> None:
                 render_practice_trace(record)
             else:
                 render_assessment_trace(record)
+    stats = svc.modality_stats(tutor)
+    if stats:
+        st.subheader("Teaching modality outcomes learned so far (all learners)")
+        rows = [{"misconception": m, "modality": k, **v} for m, mods in sorted(stats.items()) for k, v in mods.items()]
+        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
     if interventions:
         st.subheader("Hints delivered (intervention strategy and sources)")
         passages = svc.passages_by_id()
@@ -86,6 +91,7 @@ def student_decisions(tutor: Tutor, learner: str) -> None:
                 "misconception": e["misconception"],
                 "strategy": e["ref_id"],
                 "mode": e.get("mode", "template"),
+                "modality": e.get("modality", "text"),
                 "sources": "; ".join(f"{pid}: {passages.get(pid, '')[:90]}" for pid in e.get("sources", [])),
             }
             for e in interventions
