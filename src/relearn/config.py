@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 class PathsConfig(BaseModel):
     content_dir: str
     data_dir: str
-    artifacts_dir: str
+    models_dir: str
     reports_dir: str
 
 
@@ -31,6 +31,14 @@ class BaselineConfig(BaseModel):
     C: float
     max_iter: int
     min_macro_f1: float
+
+
+class EmbeddingConfig(BaseModel):
+    encoder: str
+    C: float
+    max_iter: int
+    try_gradient_boosting: bool
+    exemplars_per_class: int
 
 
 class TransformerConfig(BaseModel):
@@ -84,6 +92,7 @@ class Config(BaseModel):
     data: DataConfig
     baseline: BaselineConfig
     transformer: TransformerConfig
+    embedding: EmbeddingConfig
     diagnosis: DiagnosisConfig
     disambiguation: DisambiguationConfig
     intervention: InterventionConfig

@@ -7,7 +7,7 @@
       "v": 6
     },
     "answer": "2.7 N",
-    "working": "The push keeps acting on it so it keeps going."
+    "working": "The force from the hit keeps it moving forward."
   },
   "probe_answers": {
     "p_cg2_01": "It slows down, because nothing is pushing it anymore",
@@ -51,19 +51,19 @@
       "data": {
         "stem": "A 0.45 kg ball is kicked and then rolls along frictionless ground at 6 m/s after leaving the foot. What horizontal force acts on the ball while it rolls?",
         "answer": "2.7 N",
-        "working": "The push keeps acting on it so it keeps going.",
+        "working": "The force from the hit keeps it moving forward.",
         "top_labels": [
           [
             "M09",
-            0.5826377299604748
+            0.5894498797926502
           ],
           [
             "M01",
-            0.4148390616135321
+            0.40336909884701744
           ],
           [
-            "M07",
-            0.00034028338126889274
+            "M12",
+            0.00452621154287176
           ]
         ],
         "is_correct": false,
@@ -86,29 +86,29 @@
         "before": [
           [
             "M09",
-            0.5826377299604748
+            0.5894498797926502
           ],
           [
             "M01",
-            0.4148390616135321
+            0.40336909884701744
           ],
           [
-            "M07",
-            0.00034028338126889274
+            "M12",
+            0.00452621154287176
           ]
         ],
         "top_labels": [
           [
             "M01",
-            0.8581254801929536
+            0.8523407477638636
           ],
           [
             "M09",
-            0.14179170786523912
+            0.1465340604622044
           ],
           [
-            "M07",
-            8.28119418073865e-05
+            "M12",
+            0.0011251917739320031
           ]
         ],
         "is_correct": false,
@@ -122,7 +122,7 @@
       "data": {
         "misconception": "M01",
         "strategy": "counterexample",
-        "text": "You answered \"2.7 N\" and wrote: \"The push keeps acting on it so it keeps going.\". Consider a hockey puck on perfectly frictionless ice: after the stick leaves it, nothing pushes it, yet it glides on at the same speed. Things slow down in everyday life only because friction and drag act backward. An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
+        "text": "You answered \"2.7 N\" and wrote: \"The force from the hit keeps it moving forward.\". Consider a hockey puck on perfectly frictionless ice: after the stick leaves it, nothing pushes it, yet it glides on at the same speed. Things slow down in everyday life only because friction and drag act backward. An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
         "follow_up_prompt": "If friction disappeared completely, what force would a sliding box need to keep its speed?"
       }
     },
@@ -250,37 +250,37 @@
             "misconception": "M01",
             "label": "force_for_constant_velocity",
             "state": "resolved",
-            "posterior_held": 0.205,
+            "posterior_held": 0.204,
             "attempts": 11,
             "strategies_tried": "counterexample, fbd_walkthrough"
           }
         ],
         "timeline": [
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "practice",
             "ref_id": "m09_kicked_ball_02__m0.45_v6",
             "misconception": "M09",
             "correct": false,
             "answer": "2.7 N",
-            "working": "The push keeps acting on it so it keeps going.",
+            "working": "The force from the hit keeps it moving forward.",
             "top": [
               [
                 "M09",
-                0.5826377299604748
+                0.5894498797926502
               ],
               [
                 "M01",
-                0.4148390616135321
+                0.40336909884701744
               ],
               [
-                "M07",
-                0.00034028338126889274
+                "M12",
+                0.00452621154287176
               ]
             ]
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "probe",
             "ref_id": "p_cg2_01",
             "misconception": null,
@@ -289,20 +289,20 @@
             "top": [
               [
                 "M01",
-                0.8581254801929536
+                0.8523407477638636
               ],
               [
                 "M09",
-                0.14179170786523912
+                0.1465340604622044
               ],
               [
-                "M07",
-                8.28119418073865e-05
+                "M12",
+                0.0011251917739320031
               ]
             ]
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -310,7 +310,7 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "intervention",
             "ref_id": "counterexample",
             "misconception": "M01",
@@ -318,7 +318,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -326,7 +326,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -334,7 +334,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t3",
             "misconception": "M01",
@@ -342,7 +342,7 @@
             "answer": "Gravity is bigger than air resistance"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap1",
             "misconception": "M01",
@@ -350,7 +350,7 @@
             "answer": "A forward force that keeps it moving"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -358,7 +358,7 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "intervention",
             "ref_id": "fbd_walkthrough",
             "misconception": "M01",
@@ -366,7 +366,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t4",
             "misconception": "M01",
@@ -374,7 +374,7 @@
             "answer": "300 N"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -382,7 +382,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -390,7 +390,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap2",
             "misconception": "M01",
@@ -398,7 +398,7 @@
             "answer": "No, they are equal"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -406,7 +406,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "practice",
             "ref_id": "m07_flour_weight_02__m2",
             "misconception": null,
@@ -429,7 +429,7 @@
             ]
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "practice",
             "ref_id": "m02_moon_hammer_02__m1",
             "misconception": null,
@@ -452,7 +452,7 @@
             ]
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "practice",
             "ref_id": "m04_cyclist_02__t20_v6",
             "misconception": null,
@@ -475,7 +475,7 @@
             ]
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "retest",
             "ref_id": "i_m01_r1",
             "misconception": "M01",
@@ -483,7 +483,7 @@
             "answer": "None"
           },
           {
-            "ts": "2026-10-03T11:36:42+00:00",
+            "ts": "2026-10-03T12:13:53+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",

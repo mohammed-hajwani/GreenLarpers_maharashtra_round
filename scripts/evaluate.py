@@ -1,4 +1,5 @@
 import json
+from datetime import UTC, datetime
 
 import matplotlib
 
@@ -6,13 +7,13 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from relearn.config import load_config
-from relearn.data.generator import generate_dataset
-from relearn.data.splits import split_by_template
-from relearn.models.artifacts import load_baseline
+from relearn.data.handwritten import load_handwritten
+from relearn.data.pipeline import build_splits
 from relearn.models.evaluation import evaluate_model
+from relearn.models.registry import BASELINE, EMBEDDING, load_model, read_metadata, update_metadata
 
 
-def plot_confusion(result: dict, path: str) -> None:
+def plot_confusion(result: dict, title: str, path: str) -> None:
     labels = result["labels"]
     fig, ax = plt.subplots(figsize=(8, 7))
     ax.imshow(result["confusion_matrix"], cmap="Blues")
@@ -24,37 +25,83 @@ def plot_confusion(result: dict, path: str) -> None:
                 ax.text(j, i, v, ha="center", va="center", fontsize=7)
     ax.set_xlabel("predicted")
     ax.set_ylabel("true")
-    ax.set_title("Baseline confusion matrix, held-out templates")
+    ax.set_title(title)
     fig.tight_layout()
     fig.savefig(path, dpi=120)
+    plt.close(fig)
 
 
 def main() -> None:
     cfg = load_config()
-    splits = split_by_template(generate_dataset(cfg), cfg)
-    model = load_baseline(cfg.path("artifacts_dir"))
+    splits = build_splits(cfg)
+    handwritten = load_handwritten()
     reports = cfg.path("reports_dir")
     reports.mkdir(parents=True, exist_ok=True)
-    test = evaluate_model(model, splits["test"])
+    path = reports / "metrics.json"
+    previous = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    models = {}
+    for kind in (BASELINE, EMBEDDING):
+        model = load_model(kind)
+        meta = read_metadata(kind)
+        result = {
+            "name": model.name,
+            "version": model.version,
+            "training_date": meta.get("training_date"),
+            "temperature": model.temperature,
+            "val": evaluate_model(model, splits["val"]),
+            "test": evaluate_model(model, splits["test"]),
+            "handwritten": evaluate_model(model, handwritten),
+        }
+        plot_confusion(
+            result["test"], f"{kind} test (held-out templates)", str(reports / f"confusion_{kind}_test.png")
+        )
+        plot_confusion(
+            result["handwritten"],
+            f"{kind} hand-written set",
+            str(reports / f"confusion_{kind}_handwritten.png"),
+        )
+        update_metadata(
+            kind,
+            metrics={
+                split: {k: result[split][k] for k in ("model_only", "with_answer_key", "ece_calibrated")}
+                for split in ("val", "test", "handwritten")
+            },
+        )
+        models[kind] = result
+    comparison = [
+        {
+            "model": kind,
+            "eval_set": split,
+            "mode": mode,
+            **{
+                k: models[kind][split][mode][k]
+                for k in ("accuracy", "macro_precision", "macro_recall", "macro_f1")
+            },
+        }
+        for kind in models
+        for split in ("test", "handwritten")
+        for mode in ("model_only", "with_answer_key")
+    ]
     metrics = {
-        "model": "baseline_tfidf_logreg",
-        "temperature": model.temperature,
-        "val": {k: v for k, v in evaluate_model(model, splits["val"]).items() if k != "confusion_matrix"},
-        "test": test,
+        **{k: v for k, v in previous.items() if k in ("probing", "simulation", "progress_model")},
+        "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
+        "data_provenance": "synthetic",
+        "dataset": {
+            "total": sum(len(v) for v in splits.values()),
+            "split_sizes": {k: len(v) for k, v in splits.items()},
+            "split_method": "by question template; test templates never appear in train or val",
+            "handwritten_test_size": len(handwritten),
+            "handwritten_provenance": "hand-written by the project team, not real student data",
+        },
+        "comparison": comparison,
+        "models": models,
     }
-    existing = reports / "metrics.json"
-    if existing.exists():
-        metrics = {**json.loads(existing.read_text(encoding="utf-8")), **metrics}
-    existing.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
-    plot_confusion(test, str(reports / "confusion_matrix.png"))
-    snapshot = {k: metrics[k] for k in metrics if k not in ("test", "val")}
-    snapshot["test"] = {k: v for k, v in test.items() if k != "confusion_matrix"}
-    (cfg.path("artifacts_dir") / "metrics_snapshot.json").write_text(
-        json.dumps(snapshot, indent=2), encoding="utf-8"
-    )
-    print(
-        json.dumps({"model_only": test["model_only"], "with_answer_key": test["with_answer_key"]}, indent=2)
-    )
+    path.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
+    for row in comparison:
+        print(
+            f"{row['model']:<13} {row['eval_set']:<11} {row['mode']:<16} "
+            f"acc={row['accuracy']:.3f} macroF1={row['macro_f1']:.3f}"
+        )
 
 
 if __name__ == "__main__":

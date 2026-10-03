@@ -2,10 +2,10 @@ seed: 42
 paths:
   content_dir: content
   data_dir: data
-  artifacts_dir: artifacts
+  models_dir: models
   reports_dir: reports
 data:
-  target_per_label: 170
+  target_per_label: 200
   val_templates_per_misconception: 1
   test_templates_per_misconception: 1
   min_total_samples: 2000
@@ -48,3 +48,9 @@ learner:
 app:
   db_env: RELEARN_DB
   db_filename: relearn.db
+embedding:
+  encoder: sentence-transformers/all-MiniLM-L6-v2
+  C: 4.0
+  max_iter: 3000
+  try_gradient_boosting: true
+  exemplars_per_class: 25

@@ -38,15 +38,15 @@ def tests_for(stage: int) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("stage", type=int)
+    parser.add_argument("stage")
     args = parser.parse_args()
     run([sys.executable, "-m", "ruff", "check", "src", "scripts", "tests", "app.py"])
     check_no_comments()
-    files = tests_for(args.stage)
+    files = tests_for(int(args.stage)) if args.stage.isdigit() else []
     run(
         [sys.executable, "-m", "pytest", "-q", *files]
         if files
-        else [sys.executable, "-m", "pytest", "-q", "--co"]
+        else [sys.executable, "-m", "pytest", "-q"]
     )
     print(f"gate {args.stage} passed")
 

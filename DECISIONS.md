@@ -38,3 +38,19 @@
 - The demo input (kicked-ball question, "The push keeps acting on it so it keeps going.") was chosen because the baseline finds it genuinely ambiguous between M09 and M01 (0.58 vs 0.41).
 - Practice offers a free-text "ask your own question" box so judges can try inputs live.
 - Hub transformer loading in `models/loader.py` is a stub that always falls back to the committed baseline.
+
+## Upgrade stage B: classifier and evaluation
+- Data pipeline is generate, clean (whitespace), deduplicate (stem, answer, working, label), then split by template. Deduplication removed 267 of 2270 rows, so `target_per_label` rose from 170 to 200, giving 2296 rows with imbalance 1.52.
+- The model input text puts `||` between answer and working (`stem [SEP] answer || working`) so the embedding model can embed them separately. The baseline was retrained on this format.
+- Embedding model candidates, chosen by validation macro-F1 (model only):
+  - hybrid TF-IDF + MiniLM(answer) + MiniLM(working) with logistic regression: 0.649
+  - MiniLM-only logistic regression: 0.527
+  - MiniLM-only HistGradientBoosting: 0.346
+  - The baseline scores 0.574 for comparison.
+  - Embedding the full "stem + answer + working" text scored 0.37, because the stem dominates the vector and does not transfer to unseen templates.
+  - The hybrid was selected as `v1_embedding`.
+- Honest result: v1 beats the baseline on validation and on the hand-written set (macro-F1 0.831 vs 0.775 model only) but is worse on the synthetic test split (0.632 vs 0.683). The active model is chosen by validation (v1), and both test numbers are reported.
+- Model artifacts moved from `artifacts/` to `models/baseline/` and `models/v1_embedding/`, each with `model.joblib` and `metadata.json`. The MiniLM encoder is downloaded from the Hub on first use into `RELEARN_MODEL_CACHE` (default `.cache/hf`) and kept by an in-process `lru_cache`.
+- The hand-written test set (`content/handwritten_test.yaml`, 65 items, 5 per label) was written by the project team in phrasing different from the templates. It is not real student data and is used only for evaluation.
+- Loader fallback chain: `v1_embedding` (warm-up encode) → `baseline` → labeled replay. `RELEARN_FORCE_MODEL=baseline|none` forces a tier for testing.
+- The demo input changed to "The force from the hit keeps it moving forward.", which is ambiguous under v1 (M09 0.59, M01 0.40).

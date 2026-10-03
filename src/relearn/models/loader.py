@@ -2,30 +2,42 @@ import os
 from dataclasses import dataclass
 from functools import lru_cache
 
-from relearn.config import load_config
-from relearn.models.artifacts import load_baseline
-from relearn.models.baseline import BaselineModel
+from relearn.models.base import TextClassifier
+from relearn.models.registry import BASELINE, EMBEDDING, load_model, read_metadata
+
+FORCE_ENV = "RELEARN_FORCE_MODEL"
 
 
 @dataclass
 class ActiveModel:
-    model: BaselineModel | None
+    model: TextClassifier | None
     source: str
     error: str = ""
+    metadata: dict | None = None
 
 
-def _try_hub() -> BaselineModel | None:
-    if not os.environ.get("HF_MODEL_REPO"):
-        return None
-    return None
+def _load_embedding() -> TextClassifier:
+    model = load_model(EMBEDDING)
+    model.predict_proba(["warm up [sep] 0 n || warm up"])
+    return model
+
+
+def load_chain(order: tuple[str, ...]) -> ActiveModel:
+    errors = []
+    loaders = {EMBEDDING: _load_embedding, BASELINE: lambda: load_model(BASELINE)}
+    for kind in order:
+        try:
+            return ActiveModel(loaders[kind](), kind, "; ".join(errors), read_metadata(kind))
+        except Exception as exc:
+            errors.append(f"{kind}: {type(exc).__name__}: {exc}")
+    return ActiveModel(None, "replay", "; ".join(errors))
 
 
 @lru_cache(maxsize=1)
 def get_active_model() -> ActiveModel:
-    hub = _try_hub()
-    if hub is not None:
-        return ActiveModel(hub, "hub_transformer")
-    try:
-        return ActiveModel(load_baseline(load_config().path("artifacts_dir")), "baseline")
-    except Exception as exc:
-        return ActiveModel(None, "unavailable", str(exc))
+    forced = os.environ.get(FORCE_ENV, "")
+    if forced == "none":
+        return ActiveModel(None, "replay", "forced by RELEARN_FORCE_MODEL")
+    if forced == BASELINE:
+        return load_chain((BASELINE,))
+    return load_chain((EMBEDDING, BASELINE))

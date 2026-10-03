@@ -1,15 +1,14 @@
 import json
 
 from relearn.config import load_config
-from relearn.data.generator import generate_dataset
-from relearn.data.splits import split_by_template
+from relearn.data.pipeline import build_splits
 from relearn.data.validate import dataset_stats, validate_dataset
 
 
 def main() -> None:
     cfg = load_config()
-    samples = generate_dataset(cfg)
-    splits = split_by_template(samples, cfg)
+    splits = build_splits(cfg)
+    samples = [s for v in splits.values() for s in v]
     errors = validate_dataset(samples, splits, cfg)
     if errors:
         raise SystemExit("validation failed: " + "; ".join(errors[:10]))

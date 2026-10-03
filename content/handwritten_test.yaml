@@ -1,0 +1,456 @@
+items:
+  - id: hw_m01_01
+    label: M01
+    question_type: explanation
+    stem: "A shopping cart rolls across a perfectly smooth floor at 2 m/s after you let go. What keeps it moving?"
+    correct_answer: "Nothing is needed; it keeps moving by inertia."
+    answer: "There has to be some force still acting forward on it."
+    working: "If no force acted forward it would immediately start slowing and stop."
+  - id: hw_m01_02
+    label: M01
+    question_type: numeric
+    stem: "A 3 kg block slides at constant speed on frictionless ice. What net force acts on it?"
+    correct_answer: "0 N"
+    answer: "3 N"
+    working: "To slide at a steady speed it needs a small constant push, I estimated 3 N."
+  - id: hw_m01_03
+    label: M01
+    question_type: explanation
+    stem: "A train moves along a straight track at a constant 30 m/s. Compare the forward and backward forces."
+    correct_answer: "They are equal."
+    answer: "The forward force is bigger."
+    working: "Moving means the forward force is winning, otherwise the train would be slowing down."
+  - id: hw_m01_04
+    label: M01
+    question_type: explanation
+    stem: "An air hockey puck glides across the table at steady speed. Is any horizontal force needed?"
+    correct_answer: "No."
+    answer: "Yes, a small one."
+    working: "Without something pushing it forward the puck could not keep going."
+  - id: hw_m01_05
+    label: M01
+    question_type: explanation
+    stem: "A cyclist coasts at constant velocity on a level road with no friction. What is the net force?"
+    correct_answer: "Zero."
+    answer: "A forward net force."
+    working: "Constant motion needs a constant force to maintain it."
+  - id: hw_m02_01
+    label: M02
+    question_type: explanation
+    stem: "A brick and a pebble fall from a bridge with negligible air resistance. Which reaches the water first?"
+    correct_answer: "Both at the same time."
+    answer: "The brick."
+    working: "It is much heavier so gravity speeds it up more."
+  - id: hw_m02_02
+    label: M02
+    question_type: numeric
+    stem: "In a vacuum, a 10 kg anvil falls 5 m in 1.01 s. How long does a 0.1 kg coin take to fall 5 m?"
+    correct_answer: "1.01 s"
+    answer: "10 s"
+    working: "The coin is a hundred times lighter so it drops more slowly, it takes longer."
+  - id: hw_m02_03
+    label: M02
+    question_type: explanation
+    stem: "Galileo drops two iron balls of different mass from a tower. What does he observe, ignoring air?"
+    correct_answer: "They land together."
+    answer: "The big ball lands way before the small one."
+    working: "More mass means more pull and a faster fall."
+  - id: hw_m02_04
+    label: M02
+    question_type: explanation
+    stem: "Why do a hammer and a feather land together on the Moon?"
+    correct_answer: "There is no air, so both accelerate at the same rate."
+    answer: "They don't, the hammer still lands first."
+    working: "Heavy things always fall quicker than light things."
+  - id: hw_m02_05
+    label: M02
+    question_type: explanation
+    stem: "Two identical-size balls, one solid steel and one hollow plastic, fall in a vacuum. Compare their accelerations."
+    correct_answer: "Equal."
+    answer: "The steel ball accelerates more."
+    working: "Since it weighs more it falls faster."
+  - id: hw_m03_01
+    label: M03
+    question_type: explanation
+    stem: "A volleyball is hit straight up. What is its acceleration exactly at the peak?"
+    correct_answer: "9.8 m/s^2 downward."
+    answer: "Zero."
+    working: "At the peak the ball hangs still for a moment so nothing is accelerating it."
+  - id: hw_m03_02
+    label: M03
+    question_type: explanation
+    stem: "A kid on a swing reaches the highest point and stops briefly. Is she accelerating then?"
+    correct_answer: "Yes."
+    answer: "No."
+    working: "She is stopped for an instant at the top, so her acceleration is zero right there."
+  - id: hw_m03_03
+    label: M03
+    question_type: numeric
+    stem: "A ball is tossed vertically at 12 m/s. What is the net force on the 0.3 kg ball at its highest point?"
+    correct_answer: "2.9 N downward"
+    answer: "0 N"
+    working: "At the top it's momentarily at rest, so no net force."
+  - id: hw_m03_04
+    label: M03
+    question_type: explanation
+    stem: "A rock thrown upward pauses at the top. What does gravity do at that instant?"
+    correct_answer: "Gravity still pulls it down with g."
+    answer: "Gravity is balanced at that instant."
+    working: "At the top point the rock is momentarily not moving, so the acceleration there is zero."
+  - id: hw_m03_05
+    label: M03
+    question_type: explanation
+    stem: "At the top of a jump, a basketball player is momentarily still. What is their acceleration?"
+    correct_answer: "g downward."
+    answer: "0 at the top."
+    working: "They stop for an instant at the highest point so the acceleration vanishes there."
+  - id: hw_m04_01
+    label: M04
+    question_type: numeric
+    stem: "A plane cruises straight and level at a steady 200 m/s. What is its acceleration?"
+    correct_answer: "0 m/s^2"
+    answer: "200 m/s^2"
+    working: "Its acceleration is how fast it goes, which is 200."
+  - id: hw_m04_02
+    label: M04
+    question_type: explanation
+    stem: "A sports car at 50 m/s steady versus a bicycle speeding up from 1 to 3 m/s. Which accelerates more?"
+    correct_answer: "The bicycle."
+    answer: "The sports car."
+    working: "The car is much faster, so it has the larger acceleration."
+  - id: hw_m04_03
+    label: M04
+    question_type: numeric
+    stem: "A runner's velocity goes from 3 m/s to 7 m/s in 2 s. What is the acceleration?"
+    correct_answer: "2 m/s^2"
+    answer: "7 m/s^2"
+    working: "At the end she is going 7 m/s so the acceleration is 7."
+  - id: hw_m04_04
+    label: M04
+    question_type: explanation
+    stem: "A satellite moves at a constant 7 km/s in a straight line far from any planet. Is it accelerating?"
+    correct_answer: "No."
+    answer: "Yes, a lot."
+    working: "Something that fast must have a huge acceleration; acceleration just means speed."
+  - id: hw_m04_05
+    label: M04
+    question_type: explanation
+    stem: "If an object's velocity is zero, must its acceleration be zero?"
+    correct_answer: "No."
+    answer: "Yes."
+    working: "Acceleration and velocity are basically the same thing, so zero velocity means zero acceleration."
+  - id: hw_m05_01
+    label: M05
+    question_type: explanation
+    stem: "A rocket pushes gas backward and the gas pushes the rocket forward. Why doesn't this cancel out?"
+    correct_answer: "The forces act on different objects."
+    answer: "It does cancel, the thrust must come from something else."
+    working: "Equal and opposite forces cancel, so the third law pair gives zero net force."
+  - id: hw_m05_02
+    label: M05
+    question_type: explanation
+    stem: "A lamp hangs from the ceiling. Name the third-law partner of the lamp's weight."
+    correct_answer: "The lamp pulling up on Earth."
+    answer: "The tension in the cord."
+    working: "The cord pulls up and the weight pulls down, they are the action reaction pair on the lamp."
+  - id: hw_m05_03
+    label: M05
+    question_type: explanation
+    stem: "You push a heavy box and it pushes back on you equally. How can the box move?"
+    correct_answer: "The forces act on different bodies; only forces on the box decide its motion."
+    answer: "It can't really, the push and push back cancel."
+    working: "Action and reaction are equal and opposite so they add to zero."
+  - id: hw_m05_04
+    label: M05
+    question_type: explanation
+    stem: "A swimmer pushes water back and moves forward. Explain using Newton's third law."
+    correct_answer: "The water pushes the swimmer forward."
+    answer: "The pushes cancel, so it must be the kicking."
+    working: "The swimmer's push and the water's push are equal and opposite so they cancel out."
+  - id: hw_m05_05
+    label: M05
+    question_type: explanation
+    stem: "A book sits on a table. Are the weight and the normal force a Newton's third law pair?"
+    correct_answer: "No."
+    answer: "Yes."
+    working: "They are equal and opposite and act on the book, that's what action and reaction means."
+  - id: hw_m06_01
+    label: M06
+    question_type: numeric
+    stem: "A 6 kg box rests on a 35 degree frictionless ramp. What is the normal force? Use g = 9.8."
+    correct_answer: "48.2 N"
+    answer: "58.8 N"
+    working: "Normal force equals weight, 6 times 9.8."
+  - id: hw_m06_02
+    label: M06
+    question_type: explanation
+    stem: "You stand on a scale in an elevator that is accelerating down. Does the scale read your weight?"
+    correct_answer: "No, it reads less."
+    answer: "Yes, it reads your weight."
+    working: "The normal force is always equal to your weight."
+  - id: hw_m06_03
+    label: M06
+    question_type: numeric
+    stem: "A 4 kg book on a table is pressed down by a hand with 15 N. What is the normal force? Use g = 9.8."
+    correct_answer: "54.2 N"
+    answer: "39.2 N"
+    working: "The table pushes back with the book's weight, m g."
+  - id: hw_m06_04
+    label: M06
+    question_type: explanation
+    stem: "A sled is pulled with a rope angled upward. How does the normal force compare to the sled's weight?"
+    correct_answer: "It is less than the weight."
+    answer: "Same as the weight."
+    working: "The ground always supports exactly the weight of an object."
+  - id: hw_m06_05
+    label: M06
+    question_type: explanation
+    stem: "A car drives over the top of a hill. Is the normal force on it equal to its weight?"
+    correct_answer: "No, it is less."
+    answer: "Yes."
+    working: "Normal force is just the weight pushing back, it's always equal."
+  - id: hw_m07_01
+    label: M07
+    question_type: numeric
+    stem: "What is the weight of a 12 kg dog on Earth? Use g = 9.8."
+    correct_answer: "117.6 N"
+    answer: "12 kg"
+    working: "The dog weighs 12 kilograms."
+  - id: hw_m07_02
+    label: M07
+    question_type: numeric
+    stem: "An 80 kg astronaut goes to Mars (g = 3.7). What is the astronaut's mass there?"
+    correct_answer: "80 kg"
+    answer: "30 kg"
+    working: "Gravity is weaker so the astronaut's mass goes down."
+  - id: hw_m07_03
+    label: M07
+    question_type: explanation
+    stem: "Is there a difference between how heavy and how massive an object is?"
+    correct_answer: "Yes, weight is a force and mass is the amount of matter."
+    answer: "No, they're the same."
+    working: "Mass is just your weight in kilograms."
+  - id: hw_m07_04
+    label: M07
+    question_type: numeric
+    stem: "A 5 kg box sits on the floor. What is the normal force from the floor? Use g = 9.8."
+    correct_answer: "49 N"
+    answer: "5 N"
+    working: "The box's mass is 5 so the floor pushes with 5."
+  - id: hw_m07_05
+    label: M07
+    question_type: explanation
+    stem: "A bag of rice is labeled 2 kg. What would a spring scale on the Moon show for its mass?"
+    correct_answer: "2 kg of mass; the weight would be lower."
+    answer: "About a third of a kilogram."
+    working: "On the Moon you weigh less so the mass is less too."
+  - id: hw_m08_01
+    label: M08
+    question_type: explanation
+    stem: "A roller coaster car goes around a vertical loop. List the forces acting on it at the top."
+    correct_answer: "Gravity and the normal force from the track."
+    answer: "Gravity, the normal force, and the centripetal force."
+    working: "Because it moves in a circle you also need to add a centripetal force."
+  - id: hw_m08_02
+    label: M08
+    question_type: numeric
+    stem: "A 2 kg ball whirls on a 1 m string at 3 m/s on a frictionless table. Find the string tension."
+    correct_answer: "18 N"
+    answer: "36 N"
+    working: "Tension plus the centripetal force, so 18 plus 18."
+  - id: hw_m08_03
+    label: M08
+    question_type: explanation
+    stem: "Earth orbits the Sun. Which forces act on Earth?"
+    correct_answer: "Only the Sun's gravity."
+    answer: "The Sun's gravity and a centripetal force."
+    working: "Anything going in a circle has a centripetal force on it as well as the other forces."
+  - id: hw_m08_04
+    label: M08
+    question_type: explanation
+    stem: "A runner rounds a curved track. Draw the horizontal forces on the runner."
+    correct_answer: "Friction toward the center."
+    answer: "Friction and a separate centripetal force."
+    working: "The centripetal force is an extra arrow pointing into the curve."
+  - id: hw_m08_05
+    label: M08
+    question_type: explanation
+    stem: "A washing machine drum spins clothes in a circle. What provides the centripetal force?"
+    correct_answer: "The drum wall's normal force."
+    answer: "The centripetal force itself, plus the wall pushing."
+    working: "There are two forces, the wall and the centripetal force, that keep the clothes circling."
+  - id: hw_m09_01
+    label: M09
+    question_type: explanation
+    stem: "A javelin flies through the air after leaving the athlete's hand. What forces act on it, ignoring air?"
+    correct_answer: "Only gravity."
+    answer: "Gravity and the throw."
+    working: "The throw's force stays in the javelin and carries it forward until it runs out."
+  - id: hw_m09_02
+    label: M09
+    question_type: explanation
+    stem: "Why does a bowling ball keep rolling down the lane after release?"
+    correct_answer: "Inertia; no forward force is needed."
+    answer: "It still has the force from the bowler's arm."
+    working: "The arm gave it a force that it keeps until it hits the pins."
+  - id: hw_m09_03
+    label: M09
+    question_type: explanation
+    stem: "A stone is thrown from a cliff horizontally. Why does it move sideways while falling?"
+    correct_answer: "It keeps its horizontal velocity by inertia."
+    answer: "The thrower's force is still pushing it sideways."
+    working: "The force of the throw stays in the stone for a while."
+  - id: hw_m09_04
+    label: M09
+    question_type: explanation
+    stem: "A paper airplane glides and slowly comes down. Why does it eventually stop going forward?"
+    correct_answer: "Air drag slows it."
+    answer: "The force from my throw gets used up."
+    working: "It only has so much force from the launch, and it runs out."
+  - id: hw_m09_05
+    label: M09
+    question_type: explanation
+    stem: "A ball is kicked into the air. While it flies, is the foot's force still acting on it?"
+    correct_answer: "No."
+    answer: "Yes, until it lands."
+    working: "The ball carries the kick inside it, that is what moves it."
+  - id: hw_m10_01
+    label: M10
+    question_type: explanation
+    stem: "A spinning top slows down and falls over. Where did its energy go?"
+    correct_answer: "Into thermal energy and sound through friction."
+    answer: "It was used up."
+    working: "The top used up all its energy spinning."
+  - id: hw_m10_02
+    label: M10
+    question_type: explanation
+    stem: "After running a marathon, where has the chemical energy from your food gone?"
+    correct_answer: "Into kinetic energy and heat."
+    answer: "It's gone, you burned it."
+    working: "Running consumes the energy so it no longer exists."
+  - id: hw_m10_03
+    label: M10
+    question_type: numeric
+    stem: "A 1 kg book slides from 4 m/s to rest on a table. How much energy became heat?"
+    correct_answer: "8 J"
+    answer: "0 J"
+    working: "The energy was just lost, used up by the table."
+  - id: hw_m10_04
+    label: M10
+    question_type: explanation
+    stem: "A phone dies after a day of use. Is the energy destroyed?"
+    correct_answer: "No, it was converted to light, sound and heat."
+    answer: "Yes."
+    working: "Using the phone uses up the battery's energy."
+  - id: hw_m10_05
+    label: M10
+    question_type: explanation
+    stem: "A pendulum in a room eventually stops. Is energy conserved?"
+    correct_answer: "Yes, it became thermal energy."
+    answer: "No, some energy is used up each swing."
+    working: "Each swing consumes a bit of energy until nothing is left."
+  - id: hw_m11_01
+    label: M11
+    question_type: explanation
+    stem: "A tennis racket hits a ball. Which feels the bigger force?"
+    correct_answer: "They feel equal forces."
+    answer: "The ball."
+    working: "The racket is bigger and heavier so it hits harder than the ball hits back."
+  - id: hw_m11_02
+    label: M11
+    question_type: numeric
+    stem: "A 70 kg skater pushes a 35 kg skater with 140 N. What force does the lighter skater exert back?"
+    correct_answer: "140 N"
+    answer: "70 N"
+    working: "The lighter skater is half as big so they push back with half the force."
+  - id: hw_m11_03
+    label: M11
+    question_type: explanation
+    stem: "A bus collides with a bicycle. Compare the forces."
+    correct_answer: "Equal in magnitude."
+    answer: "The bus exerts a much bigger force."
+    working: "The bus is so much more massive that its force is bigger."
+  - id: hw_m11_04
+    label: M11
+    question_type: explanation
+    stem: "Does a falling raindrop pull on the Earth?"
+    correct_answer: "Yes, with the same force Earth pulls on it."
+    answer: "Barely, much less than Earth pulls on it."
+    working: "The drop is tiny so its force on Earth is tiny compared to Earth's."
+  - id: hw_m11_05
+    label: M11
+    question_type: explanation
+    stem: "An elephant steps on a mouse. Who exerts more force on whom?"
+    correct_answer: "Equal forces."
+    answer: "The elephant on the mouse."
+    working: "The elephant is bigger so its force is larger."
+  - id: hw_m12_01
+    label: M12
+    question_type: explanation
+    stem: "A skier slides up a slope and is slowing down. Which way does the net force point?"
+    correct_answer: "Down the slope."
+    answer: "Up the slope."
+    working: "The skier is moving up the slope, so the net force is up the slope."
+  - id: hw_m12_02
+    label: M12
+    question_type: explanation
+    stem: "A moon orbits a planet at constant speed. Which way is the net force?"
+    correct_answer: "Toward the planet."
+    answer: "Along the direction it is moving."
+    working: "The net force points the way the moon is traveling."
+  - id: hw_m12_03
+    label: M12
+    question_type: explanation
+    stem: "A thrown ball is at the highest point of a parabola, moving to the right. Direction of the net force?"
+    correct_answer: "Downward."
+    answer: "To the right."
+    working: "It is moving right, so the force must point right too."
+  - id: hw_m12_04
+    label: M12
+    question_type: numeric
+    stem: "A 1500 kg car moving north decelerates at 2 m/s^2. What is the net force?"
+    correct_answer: "3000 N south"
+    answer: "3000 N north"
+    working: "The car goes north so the net force is north."
+  - id: hw_m12_05
+    label: M12
+    question_type: explanation
+    stem: "A hockey puck slides east and friction slows it. Which way is the net force?"
+    correct_answer: "West."
+    answer: "East."
+    working: "Net force is always in the direction of the velocity."
+  - id: hw_none_01
+    label: none
+    question_type: explanation
+    stem: "A puck glides at constant speed on frictionless ice. What net force acts on it?"
+    correct_answer: "Zero."
+    answer: "Zero."
+    working: "Constant velocity means no acceleration, so the forces are balanced."
+  - id: hw_none_02
+    label: none
+    question_type: explanation
+    stem: "A ball is thrown up. What is its acceleration at the top?"
+    correct_answer: "g downward."
+    answer: "9.8 m/s^2 downward."
+    working: "Gravity still acts, only the velocity is zero there."
+  - id: hw_none_03
+    label: none
+    question_type: explanation
+    stem: "A truck and a car collide. Compare the forces on each."
+    correct_answer: "Equal and opposite."
+    answer: "Equal and opposite."
+    working: "Newton's third law; the car accelerates more because of its smaller mass."
+  - id: hw_none_04
+    label: none
+    question_type: explanation
+    stem: "A ball bounces lower each time. Where does the energy go?"
+    correct_answer: "Heat and sound."
+    answer: "It turns into heat and sound."
+    working: "Energy is conserved but some is transformed in each collision."
+  - id: hw_none_05
+    label: none
+    question_type: explanation
+    stem: "What is the weight of a 3 kg melon on Earth?"
+    correct_answer: "29.4 N"
+    answer: "29.4 N"
+    working: "Weight is m g, 3 times 9.8."

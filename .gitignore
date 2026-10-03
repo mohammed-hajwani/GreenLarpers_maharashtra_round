@@ -8,3 +8,4 @@ data/
 *.db
 *.egg-info/
 models_out/
+.cache/

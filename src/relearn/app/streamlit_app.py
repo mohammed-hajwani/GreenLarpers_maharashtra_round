@@ -11,9 +11,9 @@ from relearn.models.loader import get_active_model
 from relearn.pipeline import Tutor
 
 MODEL_NAMES = {
-    "hub_transformer": "DistilBERT (Hugging Face Hub)",
+    "v1_embedding": "MiniLM embedding hybrid (v1)",
     "baseline": "TF-IDF + logistic regression baseline",
-    "unavailable": "no model (demo replay only)",
+    "replay": "no model loaded (labeled replay only)",
 }
 
 

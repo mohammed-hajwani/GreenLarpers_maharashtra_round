@@ -2,8 +2,7 @@ import pytest
 
 from relearn.config import load_config
 from relearn.content import load_content
-from relearn.data.generator import generate_dataset
-from relearn.data.splits import split_by_template
+from relearn.data.pipeline import build_splits
 from relearn.diagnosis.diagnoser import diagnose, finalize
 from relearn.diagnosis.disambiguator import run_probes, select_probe, update_with_probe
 from relearn.diagnosis.probe_eval import probing_lift
@@ -48,6 +47,6 @@ def test_diagnose_runs() -> None:
 @pytest.mark.parametrize("split", ["val", "test"])
 def test_probing_does_not_hurt(split: str) -> None:
     cfg = load_config()
-    splits = split_by_template(generate_dataset(cfg), cfg)
+    splits = build_splits(cfg)
     result = probing_lift(splits[split], get_active_model().model, cfg.seed)
     assert result["lift_points"] >= 0

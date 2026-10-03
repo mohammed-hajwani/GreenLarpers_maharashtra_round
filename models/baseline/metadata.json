@@ -1,0 +1,91 @@
+{
+  "name": "baseline_tfidf_logreg",
+  "version": "1",
+  "training_date": "2026-10-03T12:10:27+00:00",
+  "training_dataset": {
+    "data_provenance": "synthetic",
+    "source": "content/question_templates rendered by data/generator.py, cleaned and deduplicated",
+    "fingerprint": "eaa721f39836",
+    "split_sizes": {
+      "train": 1097,
+      "val": 568,
+      "test": 631
+    },
+    "split_method": "by question template"
+  },
+  "feature_method": "TF-IDF word 1-2 grams + char_wb 3-5 grams, logistic regression (balanced)",
+  "classes": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05",
+    "M06",
+    "M07",
+    "M08",
+    "M09",
+    "M10",
+    "M11",
+    "M12",
+    "none"
+  ],
+  "calibration": {
+    "temperature": 0.6,
+    "val_ece_before": 0.132849900426968,
+    "val_ece_after": 0.12603272450118153
+  },
+  "val_macro_f1": 0.5742159596242535,
+  "metrics": {
+    "val": {
+      "model_only": {
+        "n": 568,
+        "accuracy": 0.6056338028169014,
+        "macro_precision": 0.6529873523308489,
+        "macro_recall": 0.6170673076923077,
+        "macro_f1": 0.5742159596242535
+      },
+      "with_answer_key": {
+        "n": 568,
+        "accuracy": 0.7693661971830986,
+        "macro_precision": 0.7403338659415174,
+        "macro_recall": 0.7809726331360947,
+        "macro_f1": 0.7223189220355113
+      },
+      "ece_calibrated": 0.12603272450118153
+    },
+    "test": {
+      "model_only": {
+        "n": 631,
+        "accuracy": 0.6719492868462758,
+        "macro_precision": 0.8074632806392464,
+        "macro_recall": 0.6726348171297893,
+        "macro_f1": 0.6830297543239582
+      },
+      "with_answer_key": {
+        "n": 631,
+        "accuracy": 0.8716323296354992,
+        "macro_precision": 0.8933074416420206,
+        "macro_recall": 0.8758779911288863,
+        "macro_f1": 0.8670524098706565
+      },
+      "ece_calibrated": 0.11670503179007677
+    },
+    "handwritten": {
+      "model_only": {
+        "n": 65,
+        "accuracy": 0.7230769230769231,
+        "macro_precision": 0.9251748251748252,
+        "macro_recall": 0.723076923076923,
+        "macro_f1": 0.775010175010175
+      },
+      "with_answer_key": {
+        "n": 65,
+        "accuracy": 0.8,
+        "macro_precision": 0.9303167420814481,
+        "macro_recall": 0.8000000000000002,
+        "macro_f1": 0.8306304806304807
+      },
+      "ece_calibrated": 0.1572633063578353
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "name": "v1_embedding_minilm_hybrid",
+  "version": "1",
+  "training_date": "2026-10-03T12:11:08+00:00",
+  "training_dataset": {
+    "data_provenance": "synthetic",
+    "source": "content/question_templates rendered by data/generator.py, cleaned and deduplicated",
+    "fingerprint": "eaa721f39836",
+    "split_sizes": {
+      "train": 1097,
+      "val": 568,
+      "test": 631
+    },
+    "split_method": "by question template"
+  },
+  "feature_method": "hybrid_tfidf_minilm_logreg: sentence-transformers/all-MiniLM-L6-v2 embeddings of answer and working (2 x 384-d) + TF-IDF of stem, answer and working",
+  "classes": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05",
+    "M06",
+    "M07",
+    "M08",
+    "M09",
+    "M10",
+    "M11",
+    "M12",
+    "none"
+  ],
+  "encoder": "sentence-transformers/all-MiniLM-L6-v2",
+  "classifier": "hybrid_tfidf_minilm_logreg",
+  "candidate_val_macro_f1": {
+    "hybrid_tfidf_minilm_logreg": 0.6494889713766479,
+    "minilm_logreg": 0.5274006608735038,
+    "minilm_hist_gradient_boosting": 0.345991333197427
+  },
+  "val_macro_f1": 0.6494889713766479,
+  "calibration": {
+    "temperature": 0.65,
+    "val_ece_before": 0.11707538824397601,
+    "val_ece_after": 0.10462870587487233
+  },
+  "metrics": {
+    "val": {
+      "model_only": {
+        "n": 568,
+        "accuracy": 0.6496478873239436,
+        "macro_precision": 0.7452823565323565,
+        "macro_recall": 0.6673520578800082,
+        "macro_f1": 0.6494889713766479
+      },
+      "with_answer_key": {
+        "n": 568,
+        "accuracy": 0.75,
+        "macro_precision": 0.8555657898342711,
+        "macro_recall": 0.7527604224092518,
+        "macro_f1": 0.7410433838186952
+      },
+      "ece_calibrated": 0.10462870805860643
+    },
+    "test": {
+      "model_only": {
+        "n": 631,
+        "accuracy": 0.6085578446909667,
+        "macro_precision": 0.746090197886623,
+        "macro_recall": 0.617156723764732,
+        "macro_f1": 0.6324173642514925
+      },
+      "with_answer_key": {
+        "n": 631,
+        "accuracy": 0.7591125198098256,
+        "macro_precision": 0.840693289271939,
+        "macro_recall": 0.7733989573776553,
+        "macro_f1": 0.7747895710847617
+      },
+      "ece_calibrated": 0.14939752699078812
+    },
+    "handwritten": {
+      "model_only": {
+        "n": 65,
+        "accuracy": 0.8,
+        "macro_precision": 0.9125000000000001,
+        "macro_recall": 0.8,
+        "macro_f1": 0.8310744810744812
+      },
+      "with_answer_key": {
+        "n": 65,
+        "accuracy": 0.8307692307692308,
+        "macro_precision": 0.8987179487179486,
+        "macro_recall": 0.8307692307692308,
+        "macro_f1": 0.8460647195941313
+      },
+      "ece_calibrated": 0.1159852694953114
+    }
+  }
+}
