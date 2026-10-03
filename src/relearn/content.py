@@ -49,6 +49,7 @@ class TemplateSpec(BaseModel):
 class ConceptInfo(BaseModel):
     id: str
     name: str
+    subtitle: str = ""
     misconceptions: list[str]
     tags: list[str]
 

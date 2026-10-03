@@ -7,6 +7,7 @@ from relearn.app.insights.dashboard import render_dashboard, render_evaluation_p
 from relearn.app.insights.practice import render_practice, reset_flow
 from relearn.app.insights.trace_view import render_assessment_trace, render_practice_trace
 from relearn.app.insights.views import render_profile, render_step
+from relearn.learning.guided import DEMO_LEARNER
 from relearn.pipeline import Tutor
 
 MODEL_NAMES = {
@@ -109,7 +110,8 @@ def render_insights(tutor: Tutor, learner: str) -> None:
         st.markdown(f'<a href="?learner={learner}" target="_self">Back to the student view</a>', unsafe_allow_html=True)
     model_badge()
     if page == "Student decisions":
-        student_decisions(tutor, learner)
+        who = st.radio("Show decisions for", ["this learner", "guided demo learner"], horizontal=True)
+        student_decisions(tutor, learner if who == "this learner" else DEMO_LEARNER)
     elif page == "AI practice console":
         st.header("AI practice console")
         if tutor.model is None:

@@ -42,6 +42,7 @@ class LessonFlow:
     lockin_done: bool = False
     pending: dict = field(default_factory=dict)
     seed: int = 0
+    last_answer: str = ""
 
     @property
     def concept_name(self) -> str:
@@ -74,6 +75,7 @@ class LessonEngine:
     def _present(self, flow: LessonFlow, item: LessonItem) -> None:
         flow.item, flow.feedback, flow.phase = item, None, "question"
         flow.attempts_on_item, flow.revealed, flow.counted, flow.pending = 0, False, False, {}
+        flow.last_answer = ""
         flow.seen.add(item.question.question_id)
 
     def _practice(self, flow: LessonFlow, mix_up: str | None = None) -> LessonItem | None:
@@ -98,6 +100,7 @@ class LessonEngine:
 
     def check(self, flow: LessonFlow, answer: str, working: str = "") -> Feedback:
         item = flow.item
+        flow.last_answer = answer
         if item.kind == "practice":
             return self._check_practice(flow, answer, working)
         correct = _norm(answer) == _norm(item.answer_display)

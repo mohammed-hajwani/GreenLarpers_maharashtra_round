@@ -1,0 +1,395 @@
+:root {
+  --bg: #0F0D1A;
+  --surface: #181526;
+  --elevated: #211D33;
+  --primary: #7C5CFF;
+  --primary-strong: #6A4BEF;
+  --secondary: #A78BFA;
+  --text: #F4F2FF;
+  --text-2: #B9B3D1;
+  --muted: #8A84A6;
+  --success: #3DD68C;
+  --warning: #F5B544;
+  --error: #FF6B7A;
+  --border: #2E2A45;
+  --radius: 16px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.stApp {
+  background:
+    radial-gradient(900px 480px at 85% -10%, rgba(124, 92, 255, 0.18), transparent 60%),
+    radial-gradient(700px 420px at -10% 110%, rgba(167, 139, 250, 0.10), transparent 60%),
+    var(--bg);
+  color: var(--text);
+}
+
+[data-testid="stHeader"] {
+  background: transparent;
+}
+
+[data-testid="stToolbar"], [data-testid="stSidebarCollapsedControl"], [data-testid="stDecoration"] {
+  display: none;
+}
+
+[data-testid="stMainBlockContainer"] {
+  max-width: 760px;
+  padding: 2.5rem 1rem 3rem;
+}
+
+h1, h2, h3 {
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.stApp .rl-eyebrow {
+  color: var(--secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 0.25rem;
+}
+
+.stApp .rl-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 0.4rem;
+}
+
+.stApp .rl-subtitle {
+  color: var(--text-2);
+  font-size: 1.05rem;
+  margin: 0 0 1.25rem;
+}
+
+.stApp .rl-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.25rem 0 1.25rem;
+}
+
+.stApp .rl-progress-text {
+  color: var(--text-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.stApp .rl-dots {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.stApp .rl-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: var(--border);
+  transition: background 240ms var(--ease), transform 240ms var(--ease);
+}
+
+.stApp .rl-dot.done {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.stApp .rl-dot.current {
+  background: var(--secondary);
+  transform: scale(1.25);
+}
+
+.stApp .rl-chip {
+  display: inline-block;
+  line-height: 1.4;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  background: var(--surface);
+  margin-bottom: 0.6rem;
+}
+
+.stApp .rl-chip.accent {
+  color: var(--text);
+  border-color: transparent;
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.35), rgba(167, 139, 250, 0.25));
+}
+
+.stApp .rl-chip.mastered {
+  color: var(--success);
+  border-color: rgba(61, 214, 140, 0.4);
+}
+
+.stApp .rl-chip.review {
+  color: var(--warning);
+  border-color: rgba(245, 181, 68, 0.4);
+}
+
+.stApp .rl-question {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text);
+  margin: 0.2rem 0 0.9rem;
+}
+
+.stApp .rl-your-answer {
+  color: var(--text-2);
+  font-size: 0.95rem;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.stApp .rl-feedback {
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  margin: 0 0 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  animation: rl-rise 240ms var(--ease) both;
+}
+
+.stApp .rl-feedback .rl-feedback-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.stApp .rl-feedback.correct {
+  border-color: rgba(61, 214, 140, 0.45);
+}
+
+.stApp .rl-feedback.correct .rl-feedback-title {
+  color: var(--success);
+}
+
+.stApp .rl-feedback.incorrect .rl-feedback-title {
+  color: var(--error);
+}
+
+.stApp .rl-feedback.neutral .rl-feedback-title {
+  color: var(--secondary);
+}
+
+.stApp .rl-feedback.incorrect {
+  border-color: rgba(255, 107, 122, 0.4);
+}
+
+.stApp .rl-hint {
+  border-left: 3px solid var(--warning);
+  padding: 0.5rem 0 0.5rem 0.9rem;
+  color: var(--text);
+  margin: 0.5rem 0 0;
+  line-height: 1.55;
+}
+
+.stApp .rl-explain {
+  border-radius: 12px;
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  padding: 0.85rem 1rem;
+  margin: 0.25rem 0 0.75rem;
+  animation: rl-rise 260ms var(--ease) both;
+}
+
+.stApp .rl-explain-label {
+  color: var(--secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 0.3rem;
+}
+
+.stApp .rl-answer-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.6rem;
+}
+
+.stApp .rl-card-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.stApp .rl-card-sub {
+  color: var(--text-2);
+  font-size: 0.95rem;
+  margin: 0.2rem 0 0.4rem;
+  min-height: 3em;
+}
+
+.stApp .rl-demo {
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  border: 1px dashed rgba(167, 139, 250, 0.5);
+  color: var(--text-2);
+  margin-bottom: 1rem;
+}
+
+.stApp .rl-footer {
+  margin-top: 2.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.stApp .rl-footer a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.stApp .rl-footer a:hover, .stApp .rl-footer a:focus-visible {
+  color: var(--secondary);
+}
+
+[class*="st-key-rl-card"], .st-key-rl-question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.25rem 1rem;
+  animation: rl-rise 220ms var(--ease) both;
+}
+
+.st-key-rl-question-card {
+  background: linear-gradient(180deg, var(--elevated), var(--surface));
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+[class*="st-key-rl-card"] {
+  transition: transform 180ms var(--ease), border-color 180ms var(--ease);
+}
+
+[class*="st-key-rl-card"]:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124, 92, 255, 0.55);
+}
+
+.stButton > button, [data-testid="stFormSubmitButton"] button {
+  min-height: 44px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.55rem 1.1rem;
+  transition: transform 160ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease);
+}
+
+.stButton > button p, [data-testid="stFormSubmitButton"] button p {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+[data-testid="stBaseButton-primary"], [data-testid="stBaseButton-primaryFormSubmit"] {
+  background: var(--primary-strong);
+  border-color: var(--primary-strong);
+  color: #FFFFFF;
+}
+
+[data-testid="stBaseButton-primary"]:hover, [data-testid="stBaseButton-primaryFormSubmit"]:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+[data-testid="stBaseButton-secondary"], [data-testid="stBaseButton-secondaryFormSubmit"] {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+[data-testid="stBaseButton-secondary"]:hover, [data-testid="stBaseButton-secondaryFormSubmit"]:hover {
+  border-color: var(--secondary);
+  color: var(--text);
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, [role="radio"]:focus-visible, label:focus-within {
+  outline: 3px solid var(--primary) !important;
+  outline-offset: 2px;
+}
+
+[data-testid="stForm"] {
+  border: none;
+  padding: 0;
+}
+
+[data-testid="stRadio"] [role="radiogroup"] > div {
+  width: 100%;
+}
+
+[data-testid="stRadio"] [role="radiogroup"] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+[data-testid="stRadio"] [role="radiogroup"] label {
+  min-height: 44px;
+  align-items: center;
+  padding: 0.45rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  width: 100%;
+  margin: 0;
+  background: var(--surface);
+  transition: border-color 160ms var(--ease), background 160ms var(--ease);
+}
+
+[data-testid="stRadio"] [role="radiogroup"] label:hover {
+  border-color: var(--secondary);
+}
+
+[data-testid="stRadio"] [role="radiogroup"] label:has(input:checked) {
+  border-color: var(--primary);
+  background: rgba(124, 92, 255, 0.12);
+}
+
+[data-testid="stRadio"] [role="radiogroup"] label p {
+  font-size: 1rem;
+}
+
+[data-testid="stTextInput"] input, [data-testid="stTextArea"] textarea {
+  font-size: 1rem;
+  min-height: 44px;
+}
+
+@keyframes rl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  [data-testid="stMainBlockContainer"] {
+    padding: 1.5rem 1rem 2.5rem;
+  }
+  .stApp .rl-title {
+    font-size: 1.6rem;
+  }
+  .stApp .rl-question {
+    font-size: 1.2rem;
+  }
+  .stButton > button, [data-testid="stFormSubmitButton"], [data-testid="stFormSubmitButton"] button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

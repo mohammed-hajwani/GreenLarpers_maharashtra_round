@@ -100,29 +100,36 @@ confusable_groups:
 concepts:
   - id: force_motion
     name: Force vs Motion
+    subtitle: Why things keep moving, and what forces really do.
     misconceptions: [M01, M09, M12]
     tags: [newton_first_law, inertia, balanced_forces, net_force, forces]
   - id: free_fall
     name: Free Fall
+    subtitle: How objects fall when air gets out of the way.
     misconceptions: [M02]
     tags: [free_fall, gravity]
   - id: kinematics
     name: Velocity vs Acceleration
+    subtitle: Speed, velocity and how they change.
     misconceptions: [M03, M04]
     tags: [acceleration, kinematics, projectile]
   - id: third_law
     name: Newton's Third Law
+    subtitle: Pushes and pulls always come in pairs.
     misconceptions: [M05, M11]
     tags: [newton_third_law, collisions]
   - id: weight_normal
     name: Weight and Normal Force
+    subtitle: How heavy things are, and what holds them up.
     misconceptions: [M06, M07]
     tags: [normal_force, weight, mass, incline]
   - id: circular
     name: Circular Motion
+    subtitle: What keeps an object moving in a circle.
     misconceptions: [M08]
     tags: [circular_motion, centripetal, tension, free_body_diagram]
   - id: energy
     name: Energy Conservation
+    subtitle: Where energy goes when things slow down.
     misconceptions: [M10]
     tags: [energy_conservation, kinetic_energy]

@@ -1,0 +1,143 @@
+{
+  "375": {
+    "01_landing": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "02_question": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "03_quick_check": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "04_incorrect_hint": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "05_second_hint": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "06_revealed": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "07_correct": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "08_lock_in": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "09_live_lesson": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    }
+  },
+  "768": {
+    "01_landing": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "02_question": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "03_quick_check": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "04_incorrect_hint": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "05_second_hint": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "06_revealed": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "07_correct": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "08_lock_in": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "09_live_lesson": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    }
+  },
+  "1280": {
+    "01_landing": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "02_question": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "03_quick_check": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "04_incorrect_hint": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "05_second_hint": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "06_revealed": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "07_correct": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "08_lock_in": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "09_live_lesson": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    }
+  }
+}
