@@ -47,6 +47,8 @@ class Diagnosis(BaseModel):
     route: str = "accept"
     model_name: str = ""
     model_version: str = ""
+    novelty: float = 0.0
+    unfamiliar: bool = False
 
     @property
     def misconception(self) -> str | None:

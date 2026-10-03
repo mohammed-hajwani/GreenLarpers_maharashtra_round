@@ -191,6 +191,10 @@ def modality_stats(tutor: Tutor) -> dict:
     return stats(tutor.store)
 
 
+def review_queue(tutor: Tutor) -> list[dict]:
+    return tutor.store.review_queue()
+
+
 def reset(tutor: Tutor, learner_id: str) -> None:
     tutor.store.reset(learner_id)
 

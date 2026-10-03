@@ -99,6 +99,15 @@ def render_evaluation_page() -> None:
         st.caption(m["progress_model"]["label"])
         rows = [{"target": t, "model": r["model"], **r["test"]} for t, r in m["progress_model"]["metrics"].items()]
         st.dataframe(pd.DataFrame(rows).round(3), hide_index=True, width="stretch")
+    if "open_set" in m:
+        o = m["open_set"]
+        st.subheader("Unseen misconceptions (leave-one-misconception-out)")
+        st.caption(
+            "The v1 model is retrained 12 times, each time without one misconception, and scored on whether it "
+            f"flags that misconception's test answers as unfamiliar. Selected score: {o['selected_score']}."
+        )
+        st.dataframe(pd.DataFrame(o["scores"]).T.round(3), width="stretch")
+        st.dataframe(pd.DataFrame(o["per_misconception"]).T, width="stretch")
     if "modality_simulation" in m:
         sim = m["modality_simulation"]
         st.subheader("Adaptive teaching modality (simulated learners)")

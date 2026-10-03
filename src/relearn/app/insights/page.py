@@ -77,6 +77,15 @@ def student_decisions(tutor: Tutor, learner: str) -> None:
                 render_practice_trace(record)
             else:
                 render_assessment_trace(record)
+    queue = svc.review_queue(tutor)
+    st.subheader("Teacher review queue: unfamiliar mistakes (all learners)")
+    st.caption(
+        "Wrong answers whose novelty score is above the open-set threshold. The model may not know this mistake."
+    )
+    if queue:
+        st.dataframe(pd.DataFrame(queue), hide_index=True, width="stretch")
+    else:
+        st.caption("Nothing flagged yet.")
     stats = svc.modality_stats(tutor)
     if stats:
         st.subheader("Teaching modality outcomes learned so far (all learners)")

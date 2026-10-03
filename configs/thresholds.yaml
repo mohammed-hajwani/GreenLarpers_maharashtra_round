@@ -70,3 +70,7 @@ models:
     - threshold: 0.95
       coverage: 0.3626760563380282
       precision: 1.0
+open_set:
+  score: msp
+  threshold: 0.7828
+  split: val

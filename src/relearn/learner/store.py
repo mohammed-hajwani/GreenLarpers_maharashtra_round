@@ -216,6 +216,28 @@ class LearnerStore:
         ]
         return [{**dict(zip(keys, r[:11], strict=True)), "detail": json.loads(r[11])} for r in rows]
 
+    def review_queue(self, limit: int = 50) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT learner_id, ts, ref_id, payload FROM attempts WHERE kind = 'practice' "
+            "AND payload LIKE '%\"unfamiliar\": true%' ORDER BY id DESC LIMIT ?",
+            (limit,),
+        ).fetchall()
+        out = []
+        for learner, ts, ref, payload in rows:
+            data = json.loads(payload)
+            out.append(
+                {
+                    "learner": learner,
+                    "ts": ts,
+                    "question": ref,
+                    "answer": data.get("answer"),
+                    "working": data.get("working"),
+                    "novelty": data.get("novelty"),
+                    "model_guess": data["top"][0],
+                }
+            )
+        return out
+
     def save_trace(self, learner_id: str, kind: str, input_hash: str, record: dict) -> int:
         with self.lock:
             cursor = self.conn.execute(

@@ -187,3 +187,18 @@
   - mean interventions: adaptive 1.74, text-only 2.03
 - The student hint card shows "Picture it" (diagram) or "Try it yourself" (simulation) next to the short text hint. Insights shows the modality outcome table and the simulated comparison.
 - `Intervention` gained `modality` (PRD section 6 updated). `update_learner` moved to `learner/updates.py` to keep `pipeline.py` under 300 lines.
+
+## Final push: unseen misconceptions (open set)
+- Leave-one-misconception-out: the v1 hybrid is retrained 12 times, each without one misconception. Each fold scores the wrong answers in val and test, where the held-out misconception's answers count as "unknown" and all other misconception answers as "known".
+- Novelty scores compared:
+  - `msp`: 1 minus the highest raw misconception probability
+  - `knn`: 1 minus the mean cosine similarity to the 5 nearest training answers
+  - `combined`: average rank of the two
+  - The score is selected by validation AUROC (`msp` 0.839); the threshold is the value that flags 10% of known answers on validation.
+- Test results for `msp`:
+  - AUROC 0.712; detection 63.5% at a 28.2% false-flag rate. The 10% validation target does not transfer to test.
+  - Per misconception: M01, M02, M05, M08, M10 have AUROC 0.90–1.00.
+  - Look-alikes are absorbed by their confusable sibling: M03 into M04 (AUROC 0.20), M06 and M07 into each other.
+  - The deck should say this plainly: an unseen mistake that resembles a known one is mistaken for it.
+- At runtime, `Diagnosis.novelty` uses the same raw score and `unfamiliar` is set for wrong answers above the threshold. Measured on the deployed model: 153/573 known-misconception wrong answers in the synthetic test split are flagged (false flags), 2/60 in the hand-written set. A clearly novel answer ("the Moon's magnetism holds it") scored 0.578, below the 0.783 threshold, so it was not flagged.
+- Because of these rates, the flag never changes the student flow. It only feeds the "Teacher review queue" in Insights.

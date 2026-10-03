@@ -55,6 +55,8 @@ class Tutor:
                 "top": d.top_labels,
                 "confidence": d.confidence,
                 "route": d.route,
+                "novelty": d.novelty,
+                "unfamiliar": d.unfamiliar,
                 "template_id": question.template_id,
                 "concept": self.question_concept(question, d),
                 "difficulty": self.question_difficulty(question),

@@ -21,6 +21,11 @@ def thresholds_for(model_kind: str | None) -> dict[str, float]:
     return {**data["defaults"], **data.get("models", {}).get(model_kind or "", {})}
 
 
+def open_set_threshold() -> float | None:
+    section = _load().get("open_set")
+    return float(section["threshold"]) if section else None
+
+
 def route_for(confidence: float, thresholds: dict[str, float]) -> str:
     if confidence >= thresholds["accept"]:
         return ACCEPT

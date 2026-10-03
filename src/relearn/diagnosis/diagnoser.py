@@ -2,7 +2,7 @@ import math
 
 from relearn.config import load_config
 from relearn.content import load_content
-from relearn.diagnosis.routing import ACCEPT, route_for, thresholds_for
+from relearn.diagnosis.routing import ACCEPT, open_set_threshold, route_for, thresholds_for
 from relearn.models.base import TextClassifier
 from relearn.models.baseline import sample_text
 from relearn.models.inference import NONE, answer_key_verdict, apply_answer_key
@@ -52,7 +52,13 @@ def diagnose(question: Question, response: LearnerResponse, model: TextClassifie
     model = model or get_active_model().model
     if model is None:
         raise RuntimeError("no diagnosis model available")
-    probs = model.predict_proba([sample_text(question, response)])[0]
+    text = sample_text(question, response)
+    raw = model.predict_proba([text], calibrated=False)[0]
+    probs = model.predict_proba([text])[0]
     probs = apply_answer_key(probs, model.labels, answer_key_verdict(question, response))
     posterior = {label: float(p) for label, p in zip(model.labels, probs, strict=True)}
-    return finalize(posterior, model.name, model.version, model.kind)
+    diagnosis = finalize(posterior, model.name, model.version, model.kind)
+    novelty = 1.0 - max(float(p) for label, p in zip(model.labels, raw, strict=True) if label != NONE)
+    limit = open_set_threshold()
+    unfamiliar = limit is not None and not diagnosis.is_correct and novelty > limit
+    return diagnosis.model_copy(update={"novelty": novelty, "unfamiliar": unfamiliar})
