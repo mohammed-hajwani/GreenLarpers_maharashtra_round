@@ -24,8 +24,4 @@ def passes_reassessment(result: AssessmentResult) -> bool:
 
 
 def trap_misconceptions(items: list[AssessmentItem], answers: dict[str, str]) -> list[str]:
-    return [
-        i.trap_answer_maps_to[answers[i.item_id]]
-        for i in items
-        if answers.get(i.item_id) in i.trap_answer_maps_to
-    ]
+    return [i.trap_answer_maps_to[answers[i.item_id]] for i in items if answers.get(i.item_id) in i.trap_answer_maps_to]

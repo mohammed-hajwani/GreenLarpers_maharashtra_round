@@ -15,17 +15,12 @@ from relearn.schemas import Sample
 
 def keyed(probs: np.ndarray, labels: list[str], samples: list[Sample]) -> np.ndarray:
     return np.stack(
-        [
-            apply_answer_key(probs[i], labels, answer_key_verdict(s.question, s.response))
-            for i, s in enumerate(samples)
-        ]
+        [apply_answer_key(probs[i], labels, answer_key_verdict(s.question, s.response)) for i, s in enumerate(samples)]
     )
 
 
 def _scores(y: list[str], p: list[str], labels: list[str]) -> dict:
-    precision, recall, f1, _ = precision_recall_fscore_support(
-        y, p, labels=labels, average="macro", zero_division=0
-    )
+    precision, recall, f1, _ = precision_recall_fscore_support(y, p, labels=labels, average="macro", zero_division=0)
     return {
         "n": len(y),
         "accuracy": float(accuracy_score(y, p)) if y else 0.0,

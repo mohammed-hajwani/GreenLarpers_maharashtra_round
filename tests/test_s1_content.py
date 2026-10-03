@@ -33,9 +33,7 @@ def test_templates_per_misconception() -> None:
 def test_confusable_templates_cover_groups() -> None:
     c = load_content()
     for group, members in c.confusable_groups.items():
-        multi = [
-            t for t in c.templates if t.confusable_group == group and len(set(t.wrong) & set(members)) >= 2
-        ]
+        multi = [t for t in c.templates if t.confusable_group == group and len(set(t.wrong) & set(members)) >= 2]
         assert multi, group
 
 

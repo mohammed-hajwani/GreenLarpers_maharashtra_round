@@ -1,10 +1,13 @@
-from relearn.adaptive.difficulty import DifficultyDecision, decide_band, instantiate, pick_template
+from relearn.adaptive.difficulty import DifficultyDecision
+from relearn.adaptive.planner import concept_history, plan_next_question, target_concept
 from relearn.assessment.evaluator import evaluate_assessment, passes_reassessment
 from relearn.assessment.planner import plan_assessment, plan_retest
 from relearn.config import load_config
 from relearn.content import load_content
 from relearn.diagnosis.diagnoser import diagnose
 from relearn.diagnosis.disambiguator import ProbeChoice, ProbeStep, apply_probe, choose_probe
+from relearn.diagnosis.explain import explain
+from relearn.diagnosis.routing import thresholds_for
 from relearn.intervention.builder import build_intervention
 from relearn.intervention.checker import check_intervention
 from relearn.intervention.selector import EXHAUSTED, select_strategy
@@ -24,15 +27,15 @@ from relearn.schemas import (
     MisconceptionState,
     Question,
 )
+from relearn.trace import assessment_trace, practice_trace
 
 
 class Tutor:
-    def __init__(
-        self, store: LearnerStore, model: TextClassifier | None = None, llm: LLMClient | None = None
-    ):
+    def __init__(self, store: LearnerStore, model: TextClassifier | None = None, llm: LLMClient | None = None):
         self.store = store
         self.model = model
         self.llm = llm or StubLLMClient()
+        self.last_trace: dict | None = None
 
     def submit(self, learner_id: str, question: Question, response: LearnerResponse) -> Diagnosis:
         d = diagnose(question, response, self.model)
@@ -127,22 +130,16 @@ class Tutor:
         self.store.log(learner_id, "state", label, label, payload={"state": record.state.value})
         return record, mastery
 
-    def intervene(
-        self, learner_id: str, misconception: str, response: LearnerResponse
-    ) -> Intervention | None:
+    def intervene(self, learner_id: str, misconception: str, response: LearnerResponse) -> Intervention | None:
         record = self.store.get(learner_id, misconception)
         tried = list(record.strategies_tried)
         while (strategy := select_strategy(misconception, tried)) != EXHAUSTED:
-            iv = build_intervention(
-                misconception, strategy, response, self.store.records(learner_id), self.llm
-            )
+            iv = build_intervention(misconception, strategy, response, self.store.records(learner_id), self.llm)
             if check_intervention(iv):
                 record = on_intervention(record, strategy)
                 self.store.put(record)
                 self.store.bump_stat(misconception, strategy, "delivered")
-                self.store.log(
-                    learner_id, "intervention", strategy, misconception, payload={"state": "intervened"}
-                )
+                self.store.log(learner_id, "intervention", strategy, misconception, payload={"state": "intervened"})
                 return iv
             tried.append(strategy)
         self.store.log(learner_id, "flag_for_human", misconception, misconception)
@@ -179,14 +176,16 @@ class Tutor:
         self, learner_id: str, misconception: str, items: list[AssessmentItem], answers: dict[str, str]
     ) -> tuple[AssessmentResult, LearnerRecord]:
         result = evaluate_assessment(items, answers)
-        self._log_items(learner_id, items, result, answers)
-        record = on_assessment(self.store.get(learner_id, misconception), result)
+        updates = self._log_items(learner_id, items, result, answers)
+        before = self.store.get(learner_id, misconception)
+        record = on_assessment(before, result)
         due = None
         if passes_reassessment(result) and record.state == MisconceptionState.intervened:
             due = self.store.attempt_count(learner_id) + load_config().assessment.retest_gap
         self.store.put(record, due)
-        self.store.log(
-            learner_id, "state", misconception, misconception, payload={"state": record.state.value}
+        self.store.log(learner_id, "state", misconception, misconception, payload={"state": record.state.value})
+        self.last_trace = self._assessment_trace(
+            learner_id, "assessment", misconception, before, record, result, updates
         )
         return result, record
 
@@ -215,7 +214,7 @@ class Tutor:
     ) -> tuple[AssessmentResult, LearnerRecord]:
         answers = {item.item_id: answer}
         result = evaluate_assessment([item], answers)
-        self._log_items(learner_id, [item], result, answers)
+        updates = self._log_items(learner_id, [item], result, answers)
         before = self.store.get(learner_id, item.misconception)
         record = on_retest(before, result)
         if record.state == MisconceptionState.resolved and record.strategies_tried:
@@ -224,63 +223,58 @@ class Tutor:
         self.store.log(
             learner_id, "state", item.misconception, item.misconception, payload={"state": record.state.value}
         )
+        self.last_trace = self._assessment_trace(
+            learner_id, "retest", item.misconception, before, record, result, updates
+        )
         return result, record
 
     def update_learner(self, learner_id: str, misconception: str, result: AssessmentResult) -> LearnerRecord:
         record = self.store.get(learner_id, misconception)
-        record = (
-            on_retest(record, result) if result.retest_passed is not None else on_assessment(record, result)
-        )
+        record = on_retest(record, result) if result.retest_passed is not None else on_assessment(record, result)
         self.store.put(record)
         return record
 
     def concept_history(self, learner_id: str, concept: str) -> list[dict]:
-        return [
-            e
-            for e in self.store.timeline(learner_id)
-            if e["kind"] == "practice" and e.get("concept") == concept
-        ]
+        return concept_history(self.store, learner_id, concept)
 
     def target_concept(self, learner_id: str) -> str:
-        content = load_content()
-        mastery = self.store.all_mastery(learner_id)
-        states = {r.misconception: r.state.value for r in self.store.records(learner_id)}
-        active = [
-            c.id
-            for c in content.concepts.values()
-            if any(states.get(m) in ("active", "intervened", "relapsed") for m in c.misconceptions)
-        ]
-        pool = active or list(content.concepts)
-        order = list(content.concepts)
-        return min(pool, key=lambda c: (mastery[c].mean if c in mastery else 0.5, order.index(c)))
+        return target_concept(self.store, learner_id)
 
-    def next_question(
-        self, learner_id: str, concept: str | None = None
-    ) -> tuple[Question, DifficultyDecision]:
-        content = load_content()
-        concept = concept or self.target_concept(learner_id)
-        mastery = self.store.mastery(learner_id, concept).mean
-        history = self.concept_history(learner_id, concept)
-        states = {
-            r.misconception: r.state.value
-            for r in self.store.records(learner_id)
-            if r.misconception in content.concepts[concept].misconceptions
-        }
-        previous = history[-1].get("difficulty") if history else None
-        base, band, reasons, factors = decide_band(mastery, history, states, previous)
-        template, gap = pick_template(concept, band, [h.get("template_id", "") for h in history])
-        decision = DifficultyDecision(
-            concept=concept,
-            concept_name=content.concepts[concept].name,
-            mastery=mastery,
-            base_band=base,
-            band=band,
-            reasons=reasons + ([gap] if gap else []),
-            factors=factors,
-            template_id=template.template_id,
-            coverage_gap=gap,
+    def next_question(self, learner_id: str, concept: str | None = None) -> tuple[Question, DifficultyDecision]:
+        return plan_next_question(self.store, learner_id, concept)
+
+    def finalize_interaction(
+        self,
+        learner_id: str,
+        question: Question,
+        response: LearnerResponse,
+        initial: Diagnosis,
+        final: Diagnosis,
+        steps: list[ProbeStep],
+    ) -> dict:
+        record, mastery = self.confirm(learner_id, final, question)
+        concept = mastery.concept if mastery else self.question_concept(question, final)
+        decision = self.next_question(learner_id, concept)[1] if concept else None
+        label = final.top_labels[0][0]
+        explanation = explain(self.model, question, response, label) if self.model else {}
+        thresholds = thresholds_for(self.model.kind if self.model else None)
+        digest, trace = practice_trace(
+            question, response, initial, final, steps, record, mastery, decision, explanation, thresholds
         )
-        return instantiate(template, self.store.attempt_count(learner_id)), decision
+        return self.store.trace(self.store.save_trace(learner_id, "practice", digest, trace))
+
+    def _assessment_trace(
+        self,
+        learner_id: str,
+        kind: str,
+        misconception: str,
+        before: LearnerRecord,
+        after: LearnerRecord,
+        result: AssessmentResult,
+        updates: list[MasteryUpdate],
+    ) -> dict:
+        digest, trace = assessment_trace(kind, misconception, before, after, result, updates)
+        return self.store.trace(self.store.save_trace(learner_id, kind, digest, trace))
 
     def profile(self, learner_id: str) -> list[dict]:
         content = load_content()

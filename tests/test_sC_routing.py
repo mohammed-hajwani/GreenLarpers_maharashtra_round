@@ -40,9 +40,7 @@ def test_entropy() -> None:
 def test_diagnosis_carries_model_info() -> None:
     t = next(t for t in load_content().templates if t.template_id == "m01_puck_ice_01")
     q = make_question(t, {"m": 0.5, "v": 8})
-    d = diagnose(
-        q, LearnerResponse(question_id=q.question_id, answer="4.0 N forward", working="it needs a force")
-    )
+    d = diagnose(q, LearnerResponse(question_id=q.question_id, answer="4.0 N forward", working="it needs a force"))
     active = get_active_model().model
     assert d.model_name == active.name and d.model_version == active.version
     assert abs(sum(d.posterior.values()) - 1.0) < 1e-6

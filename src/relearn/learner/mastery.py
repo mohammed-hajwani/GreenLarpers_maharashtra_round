@@ -49,9 +49,7 @@ def apply(state: MasteryState, d_alpha: float, d_beta: float) -> MasteryState:
     return MasteryState(alpha, beta)
 
 
-def practice_evidence(
-    correct: bool, difficulty: str, diagnosis: Diagnosis | None
-) -> tuple[float, float, dict]:
+def practice_evidence(correct: bool, difficulty: str, diagnosis: Diagnosis | None) -> tuple[float, float, dict]:
     m = load_config().mastery
     weight = m.difficulty_weight.get(difficulty, 1.0)
     if correct:
@@ -67,9 +65,7 @@ def practice_evidence(
     )
 
 
-def probe_evidence(
-    answer_matches_misconception: bool, answer_matches_correct: bool
-) -> tuple[float, float, dict]:
+def probe_evidence(answer_matches_misconception: bool, answer_matches_correct: bool) -> tuple[float, float, dict]:
     m = load_config().mastery
     if answer_matches_correct:
         return m.probe, 0.0, {"probe_signal": "correct_concept"}

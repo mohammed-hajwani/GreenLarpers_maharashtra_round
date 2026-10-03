@@ -32,9 +32,7 @@ def health() -> None:
 
 def demo_page(tutor: Tutor) -> None:
     st.header("Demo mode")
-    st.caption(
-        "A scripted learner runs through the real pipeline: diagnose → probe → intervene → reassess → retest."
-    )
+    st.caption("A scripted learner runs through the real pipeline: diagnose → probe → intervene → reassess → retest.")
     cols = st.columns(3)
     if cols[0].button("Start demo", type="primary"):
         if tutor.model is None:

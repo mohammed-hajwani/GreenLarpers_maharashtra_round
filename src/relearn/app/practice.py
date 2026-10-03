@@ -1,5 +1,6 @@
 import streamlit as st
 
+from relearn.app.trace_view import render_assessment_trace, render_practice_trace
 from relearn.app.views import (
     label_name,
     render_assessment,
@@ -24,6 +25,9 @@ KEYS = [
     "round",
     "decision",
     "probe_steps",
+    "initial_diagnosis",
+    "trace_id",
+    "assessment_trace_id",
 ]
 
 
@@ -51,7 +55,7 @@ def _topic_picker(tutor: Tutor, learner: str) -> None:
     if decision is not None and st.session_state.question.template_id == decision.template_id:
         with st.container(border=True):
             st.markdown(f"**{decision.headline}**")
-            st.caption(f"Difficulty: **{decision.band}** · " + "; ".join(decision.reasons))
+            st.caption(f"Difficulty: **{decision.band}** Â· " + "; ".join(decision.reasons))
 
 
 def _custom_question() -> None:
@@ -72,7 +76,7 @@ def _custom_question() -> None:
 def _answer_form(tutor: Tutor, learner: str) -> None:
     q: Question = st.session_state.question
     st.markdown(f"### {q.stem}")
-    with st.form("answer"):
+    with st.form("answer_form"):
         if q.question_type == QuestionType.mcq:
             answer = st.radio("Your answer", q.options, index=None)
         else:
@@ -82,6 +86,8 @@ def _answer_form(tutor: Tutor, learner: str) -> None:
             response = LearnerResponse(question_id=q.question_id, answer=answer, working=working)
             st.session_state.response = response
             st.session_state.diagnosis = tutor.submit(learner, q, response)
+            st.session_state.initial_diagnosis = st.session_state.diagnosis
+            st.session_state.probe_steps = []
             st.session_state.probes_used = set()
             _advance_probe(tutor, learner)
             st.rerun()
@@ -91,7 +97,15 @@ def _advance_probe(tutor: Tutor, learner: str) -> None:
     choice = tutor.next_probe(st.session_state.diagnosis, st.session_state.probes_used)
     st.session_state.probe = choice
     if choice is None:
-        tutor.confirm(learner, st.session_state.diagnosis, st.session_state.question)
+        trace = tutor.finalize_interaction(
+            learner,
+            st.session_state.question,
+            st.session_state.response,
+            st.session_state.initial_diagnosis,
+            st.session_state.diagnosis,
+            st.session_state.probe_steps,
+        )
+        st.session_state.trace_id = trace["id"]
         st.session_state.phase = "diagnosed"
     else:
         st.session_state.phase = "probe"
@@ -101,14 +115,12 @@ def _probe_form(tutor: Tutor, learner: str) -> None:
     choice = st.session_state.probe
     probe = choice.probe
     st.info("Your answer fits two closely related ideas. One quick question to tell them apart:")
-    with st.form("probe"):
+    with st.form("probe_form"):
         st.markdown(f"**{probe.stem}**")
         answer = st.radio("Choose", probe.options, index=None, label_visibility="collapsed", key="probe_ans")
         if st.form_submit_button("Answer probe") and answer:
             st.session_state.probes_used.add(probe.probe_id)
-            st.session_state.diagnosis, step = tutor.answer_probe(
-                learner, st.session_state.diagnosis, choice, answer
-            )
+            st.session_state.diagnosis, step = tutor.answer_probe(learner, st.session_state.diagnosis, choice, answer)
             st.session_state.setdefault("probe_steps", []).append(step)
             _advance_probe(tutor, learner)
             st.rerun()
@@ -119,13 +131,9 @@ def _assessment_form(tutor: Tutor, learner: str, m: str) -> None:
     with st.form(f"assess_{st.session_state.get('round', 0)}"):
         answers = {}
         for i in items:
-            answers[i.item_id] = st.radio(
-                i.stem, i.options, index=None, key=f"a_{i.item_id}_{st.session_state.round}"
-            )
+            answers[i.item_id] = st.radio(i.stem, i.options, index=None, key=f"a_{i.item_id}_{st.session_state.round}")
         if st.form_submit_button("Submit answers", type="primary"):
-            result, record = tutor.submit_assessment(
-                learner, m, items, {k: v or "" for k, v in answers.items()}
-            )
+            result, record = tutor.submit_assessment(learner, m, items, {k: v or "" for k, v in answers.items()})
             rows = [
                 {
                     "kind": i.kind,
@@ -142,6 +150,7 @@ def _assessment_form(tutor: Tutor, learner: str, m: str) -> None:
                 "state": record.state.value,
                 "pending_retest_in": tutor.pending_retest(learner, m),
             }
+            st.session_state.assessment_trace_id = tutor.last_trace["id"]
             st.session_state.phase = "assessed"
             st.rerun()
 
@@ -174,6 +183,8 @@ def render_practice(tutor: Tutor, learner: str) -> None:
     if phase == "probe":
         _probe_form(tutor, learner)
         return
+    if st.session_state.get("trace_id"):
+        render_practice_trace(tutor.store.trace(st.session_state.trace_id))
     if d.is_correct:
         return
     m = d.top_labels[0][0]
@@ -197,6 +208,8 @@ def render_practice(tutor: Tutor, learner: str) -> None:
     if phase == "assessed":
         result = st.session_state.last_result
         render_assessment(result)
+        if st.session_state.get("assessment_trace_id"):
+            render_assessment_trace(tutor.store.trace(st.session_state.assessment_trace_id))
         if result["state"] in ("active", "relapsed") and st.button("Try another explanation", type="primary"):
             st.session_state.intervention = tutor.intervene(learner, m, r)
             st.session_state.phase = "intervened"

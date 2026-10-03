@@ -69,9 +69,7 @@ def test_one_of_three_fails() -> None:
 
 def test_resolution_needs_retest() -> None:
     items = plan_assessment("M01")
-    record = on_assessment(
-        _intervened(), evaluate_assessment(items, _answers(items, {i.item_id for i in items}))
-    )
+    record = on_assessment(_intervened(), evaluate_assessment(items, _answers(items, {i.item_id for i in items})))
     assert record.state == MisconceptionState.intervened
     retest = plan_retest("M01")
     failed = on_retest(record, evaluate_assessment([retest], {retest.item_id: retest.options[1]}))

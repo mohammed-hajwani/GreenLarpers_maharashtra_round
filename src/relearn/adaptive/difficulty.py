@@ -98,9 +98,7 @@ def pick_template(concept: str, band: str, recent_template_ids: list[str]) -> tu
 
 def instantiate(template: TemplateSpec, attempt_index: int) -> Question:
     keys = list(template.params)
-    params = {
-        k: template.params[k][(attempt_index + i) % len(template.params[k])] for i, k in enumerate(keys)
-    }
+    params = {k: template.params[k][(attempt_index + i) % len(template.params[k])] for i, k in enumerate(keys)}
     return make_question(template, params)
 
 
@@ -115,7 +113,5 @@ def coverage_report() -> dict:
             if content.concept_of(t.primary) == concept.id:
                 counts[t.difficulty] += 1
         table[concept.id] = counts
-        gaps.extend(
-            f"{concept.name}: {b} has {n} template(s), want {need}" for b, n in counts.items() if n < need
-        )
+        gaps.extend(f"{concept.name}: {b} has {n} template(s), want {need}" for b, n in counts.items() if n < need)
     return {"counts": table, "gaps": gaps, "min_templates_per_band": need}

@@ -29,9 +29,7 @@ def calibrate(logits: np.ndarray, targets: np.ndarray) -> dict:
     }
 
 
-def _metadata(
-    name: str, version: str, feature_method: str, model: TextClassifier, splits: dict, extra: dict
-) -> dict:
+def _metadata(name: str, version: str, feature_method: str, model: TextClassifier, splits: dict, extra: dict) -> dict:
     all_samples = splits["train"] + splits["val"] + splits["test"]
     return {
         "name": name,
@@ -84,9 +82,7 @@ def _exemplars(train: list[Sample], vectors: np.ndarray, per_class: int, seed: i
     return out
 
 
-def train_embedding_versioned(
-    splits: dict[str, list[Sample]], cfg: Config, cache: EmbeddingCache
-) -> TextClassifier:
+def train_embedding_versioned(splits: dict[str, list[Sample]], cfg: Config, cache: EmbeddingCache) -> TextClassifier:
     e = cfg.embedding
     texts = {k: texts_of(v) for k, v in splits.items()}
     vectors = {k: response_vectors(v, e.encoder, cache) for k, v in texts.items()}

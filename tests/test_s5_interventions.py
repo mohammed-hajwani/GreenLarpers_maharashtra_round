@@ -23,9 +23,7 @@ def test_every_strategy_valid() -> None:
 
 def test_checker_rejects() -> None:
     concept = load_content().misconceptions["M01"].correct_concept
-    assert not check_intervention(
-        Intervention(misconception="M01", strategy="x", text="", follow_up_prompt="")
-    )
+    assert not check_intervention(Intervention(misconception="M01", strategy="x", text="", follow_up_prompt=""))
     long = Intervention(misconception="M01", strategy="x", text=concept + " word" * 300, follow_up_prompt="")
     assert not check_intervention(long)
     bad = Intervention(

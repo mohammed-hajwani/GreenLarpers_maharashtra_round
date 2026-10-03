@@ -18,16 +18,10 @@ def simulated_answer(rng: random.Random, probe: Probe, true_label: str, noise: f
 
 def random_chooser(rng: random.Random):
     def choose(diagnosis: Diagnosis, used: set[str]) -> ProbeChoice | None:
-        if (
-            diagnosis.route == ACCEPT
-            or diagnosis.is_correct
-            or len(used) >= load_config().disambiguation.max_probes
-        ):
+        if diagnosis.route == ACCEPT or diagnosis.is_correct or len(used) >= load_config().disambiguation.max_probes:
             return None
         top = diagnosis.top_labels[0][0]
-        pool = [
-            p for p in load_content().probes if p.probe_id not in used and top in p.expected_answer_by_label
-        ]
+        pool = [p for p in load_content().probes if p.probe_id not in used and top in p.expected_answer_by_label]
         if not pool:
             return None
         probe = rng.choice(pool)
@@ -52,9 +46,7 @@ def compare_probing(samples: list[Sample], model: TextClassifier, seed: int) -> 
             if kind is not None:
                 chooser = random_chooser(chooser_rng) if kind == "random" else choose_probe
                 label = s.misconception_label
-                d, steps = run_probes(
-                    d, lambda p, label=label, r=rng: simulated_answer(r, p, label, noise), chooser
-                )
+                d, steps = run_probes(d, lambda p, label=label, r=rng: simulated_answer(r, p, label, noise), chooser)
                 probes_used += len(steps)
                 entropy_drop += sum(st.information_gain for st in steps)
             correct += d.top_labels[0][0] == s.misconception_label

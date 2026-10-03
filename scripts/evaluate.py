@@ -53,9 +53,7 @@ def main() -> None:
             "test": evaluate_model(model, splits["test"]),
             "handwritten": evaluate_model(model, handwritten),
         }
-        plot_confusion(
-            result["test"], f"{kind} test (held-out templates)", str(reports / f"confusion_{kind}_test.png")
-        )
+        plot_confusion(result["test"], f"{kind} test (held-out templates)", str(reports / f"confusion_{kind}_test.png"))
         plot_confusion(
             result["handwritten"],
             f"{kind} hand-written set",
@@ -74,10 +72,7 @@ def main() -> None:
             "model": kind,
             "eval_set": split,
             "mode": mode,
-            **{
-                k: models[kind][split][mode][k]
-                for k in ("accuracy", "macro_precision", "macro_recall", "macro_f1")
-            },
+            **{k: models[kind][split][mode][k] for k in ("accuracy", "macro_precision", "macro_recall", "macro_f1")},
         }
         for kind in models
         for split in ("test", "handwritten")

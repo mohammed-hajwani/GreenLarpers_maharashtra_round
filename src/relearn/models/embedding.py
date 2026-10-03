@@ -45,9 +45,7 @@ class EmbeddingCache:
             np.savez_compressed(self.path, **self.store)
 
 
-def embed(
-    texts: list[str], encoder_name: str = DEFAULT_ENCODER, cache: EmbeddingCache | None = None
-) -> np.ndarray:
+def embed(texts: list[str], encoder_name: str = DEFAULT_ENCODER, cache: EmbeddingCache | None = None) -> np.ndarray:
     if cache is None:
         cache = EmbeddingCache()
     keys = [text_key(t) for t in texts]

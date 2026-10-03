@@ -99,3 +99,14 @@
   - The change from the previous difficulty is limited to one band.
 - Target concept: the lowest-mastery concept that has an active, intervened or relapsed misconception, otherwise the lowest-mastery concept overall. Template choice prefers the least recently used template in the chosen band, falling back to the nearest band with a reason. Parameters cycle by attempt count.
 - The Practice page's random question picker was replaced by the adaptive engine. The UI shows the headline ("...mastery of X is currently N%.", using the stored value) and the rule reasons.
+
+## Upgrade stage H: explainability and decision trace
+- Explanations are computed from the models only:
+  - Both models: TF-IDF word-feature contributions (tf-idf value × class coefficient). For v1 these come from the TF-IDF block of the hybrid.
+  - v1 only: the nearest training exemplars for the predicted class (25 stored per class), by cosine similarity of the answer+working embeddings.
+  - v1 only: word occlusion, which removes each working word (up to 40) and measures the drop in the calibrated probability of the predicted label.
+  - No LLM is involved. Feature contributions sometimes highlight stem words (for example "rolls"); this is shown honestly as what drove the model.
+- The `decision_trace` SQLite table stores one row per interaction (practice, assessment, retest) with an input hash and a JSON record. A practice record holds the model name and version, thresholds, initial and final top-3 with calibrated confidence, route, entropy, each probe (expected gain, runners-up, answer, entropy before and after, realized gain), misconception state, the mastery update before and after, the next difficulty with its reason, and the explanation.
+- The UI renders only what `store.trace(id)` returns; `test_app_renders_stored_trace` asserts the rendered table equals the view model of the stored row.
+- `pipeline.py` was split (trace building into `trace.py`, question planning into `adaptive/planner.py`) to stay under 300 lines. Ruff line length raised to 120.
+- Warm latency on the dev CPU: diagnosis 0.03 s, explanation 0.06 s. Cold model load: 7.8 s.

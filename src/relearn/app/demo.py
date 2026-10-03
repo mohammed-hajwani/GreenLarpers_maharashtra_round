@@ -27,8 +27,7 @@ def _wrong(item: AssessmentItem) -> str:
 
 def _item_rows(items: list[AssessmentItem], answers: dict, correct: dict) -> list[dict]:
     return [
-        {"kind": i.kind, "stem": i.stem, "answer": answers[i.item_id], "correct": correct[i.item_id]}
-        for i in items
+        {"kind": i.kind, "stem": i.stem, "answer": answers[i.item_id], "correct": correct[i.item_id]} for i in items
     ]
 
 
@@ -97,13 +96,9 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
     iv = tutor.intervene(learner, m, response)
     steps.append({"kind": "intervention", "title": "3. Targeted intervention", "data": iv.model_dump()})
     r1 = _round(tutor, learner, m, script["round_1_correct_kinds"])
-    steps.append(
-        {"kind": "assessment", "title": "4. Reassessment: passes follow-ups, fails the trap", "data": r1}
-    )
+    steps.append({"kind": "assessment", "title": "4. Reassessment: passes follow-ups, fails the trap", "data": r1})
     iv2 = tutor.intervene(learner, m, response)
-    steps.append(
-        {"kind": "intervention", "title": "5. Escalation to a second strategy", "data": iv2.model_dump()}
-    )
+    steps.append({"kind": "intervention", "title": "5. Escalation to a second strategy", "data": iv2.model_dump()})
     r2 = _round(tutor, learner, m, None if script["round_2_all_correct"] else [])
     steps.append({"kind": "assessment", "title": "6. Reassessment: transfer and trap passed", "data": r2})
     fillers = []
@@ -112,9 +107,7 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
         fd = tutor.submit(learner, fq, LearnerResponse(question_id=fq.question_id, answer=fq.correct_answer))
         tutor.confirm(learner, fd, fq)
         fillers.append({"stem": fq.stem, "answer": fq.correct_answer, "correct": fd.is_correct})
-    steps.append(
-        {"kind": "practice", "title": "7. Other practice in between (spacing)", "data": {"rows": fillers}}
-    )
+    steps.append({"kind": "practice", "title": "7. Other practice in between (spacing)", "data": {"rows": fillers}})
     due = tutor.due_retests(learner)
     _, item = next(x for x in due if x[0] == m)
     answer = item.correct_answer if script["retest_correct"] else _wrong(item)

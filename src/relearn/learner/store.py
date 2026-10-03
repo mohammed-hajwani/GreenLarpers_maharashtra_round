@@ -37,6 +37,10 @@ SCHEMA = [
     ),
 ]
 
+TRACE_TABLE = (
+    "CREATE TABLE IF NOT EXISTS decision_trace (id INTEGER PRIMARY KEY AUTOINCREMENT, learner_id TEXT NOT NULL, "
+    "ts TEXT NOT NULL, kind TEXT NOT NULL, input_hash TEXT NOT NULL, record TEXT NOT NULL)"
+)
 COUNTED_KINDS = ("practice", "transfer", "trap", "retest")
 
 
@@ -45,7 +49,7 @@ class LearnerStore:
         self.path = str(path)
         self.lock = threading.Lock()
         self.conn = sqlite3.connect(self.path, check_same_thread=False)
-        for statement in SCHEMA:
+        for statement in [*SCHEMA, TRACE_TABLE]:
             self.conn.execute(statement)
         self.conn.commit()
 
@@ -91,8 +95,7 @@ class LearnerStore:
 
     def timeline(self, learner_id: str) -> list[dict]:
         rows = self.conn.execute(
-            "SELECT ts, kind, ref_id, misconception, correct, payload FROM attempts "
-            "WHERE learner_id = ? ORDER BY id",
+            "SELECT ts, kind, ref_id, misconception, correct, payload FROM attempts WHERE learner_id = ? ORDER BY id",
             (learner_id,),
         ).fetchall()
         return [
@@ -145,8 +148,7 @@ class LearnerStore:
                 (misconception, strategy),
             )
             self.conn.execute(
-                f"UPDATE intervention_stats SET {column} = {column} + 1 "
-                "WHERE misconception = ? AND strategy = ?",
+                f"UPDATE intervention_stats SET {column} = {column} + 1 WHERE misconception = ? AND strategy = ?",
                 (misconception, strategy),
             )
             self.conn.commit()
@@ -214,8 +216,29 @@ class LearnerStore:
         ]
         return [{**dict(zip(keys, r[:11], strict=True)), "detail": json.loads(r[11])} for r in rows]
 
+    def save_trace(self, learner_id: str, kind: str, input_hash: str, record: dict) -> int:
+        with self.lock:
+            cursor = self.conn.execute(
+                "INSERT INTO decision_trace (learner_id, ts, kind, input_hash, record) VALUES (?, ?, ?, ?, ?)",
+                (learner_id, now(), kind, input_hash, json.dumps(record)),
+            )
+            self.conn.commit()
+            return int(cursor.lastrowid)
+
+    def trace(self, trace_id: int) -> dict:
+        row = self.conn.execute(
+            "SELECT id, ts, kind, input_hash, record FROM decision_trace WHERE id = ?", (trace_id,)
+        ).fetchone()
+        return {"id": row[0], "ts": row[1], "kind": row[2], "input_hash": row[3], **json.loads(row[4])}
+
+    def traces(self, learner_id: str) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT id FROM decision_trace WHERE learner_id = ? ORDER BY id", (learner_id,)
+        ).fetchall()
+        return [self.trace(r[0]) for r in rows]
+
     def reset(self, learner_id: str) -> None:
         with self.lock:
-            for table in ("attempts", "learner_state", "concept_mastery", "mastery_log"):
+            for table in ("attempts", "learner_state", "concept_mastery", "mastery_log", "decision_trace"):
                 self.conn.execute(f"DELETE FROM {table} WHERE learner_id = ?", (learner_id,))
             self.conn.commit()

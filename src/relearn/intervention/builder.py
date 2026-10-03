@@ -46,9 +46,7 @@ def build_intervention(
         correct_concept=content.misconceptions[misconception].correct_concept,
     )
     if load_config().intervention.llm_personalize if personalize is None else personalize:
-        wrapper = personal_wrapper(
-            misconception, strategy, spec.template, response, llm, cache or DEFAULT_CACHE
-        )
+        wrapper = personal_wrapper(misconception, strategy, spec.template, response, llm, cache or DEFAULT_CACHE)
         text = wrapper + " " + text
     return Intervention(
         misconception=misconception, strategy=strategy, text=text, follow_up_prompt=spec.follow_up_prompt

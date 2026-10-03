@@ -62,9 +62,7 @@ def status_line(state: str, trap_passed, pending) -> None:
     elif trap_passed is False:
         st.error("Status: NOT RESOLVED — the trap item exposed the misconception. Escalating strategy.")
     elif state == "intervened" and pending is not None:
-        st.warning(
-            f"Status: not yet resolved — passed reassessment, retest due after {pending} more attempts."
-        )
+        st.warning(f"Status: not yet resolved — passed reassessment, retest due after {pending} more attempts.")
     else:
         st.error(f"Status: NOT RESOLVED ({state}).")
 

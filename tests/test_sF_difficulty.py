@@ -67,9 +67,7 @@ def test_tutor_next_question_uses_stored_mastery(tmp_path) -> None:
         d = tutor.submit(
             "L",
             q,
-            LearnerResponse(
-                question_id=q.question_id, answer="definitely wrong", working="a force keeps it moving"
-            ),
+            LearnerResponse(question_id=q.question_id, answer="definitely wrong", working="a force keeps it moving"),
         )
         tutor.confirm("L", d, q)
     q, decision = tutor.next_question("L", "force_motion")

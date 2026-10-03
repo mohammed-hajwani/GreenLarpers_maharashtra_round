@@ -69,9 +69,7 @@ def expected_information_gain(posterior: dict[str, float], probe: Probe) -> floa
 def rank_probes(diagnosis: Diagnosis, used: set[str] | None = None) -> list[tuple[Probe, float]]:
     used = used or set()
     posterior = _posterior(diagnosis)
-    scored = [
-        (p, expected_information_gain(posterior, p)) for p in load_content().probes if p.probe_id not in used
-    ]
+    scored = [(p, expected_information_gain(posterior, p)) for p in load_content().probes if p.probe_id not in used]
     return sorted(scored, key=lambda x: (-x[1], x[0].probe_id))
 
 
