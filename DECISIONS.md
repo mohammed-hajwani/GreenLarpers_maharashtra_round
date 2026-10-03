@@ -110,3 +110,9 @@
 - The UI renders only what `store.trace(id)` returns; `test_app_renders_stored_trace` asserts the rendered table equals the view model of the stored row.
 - `pipeline.py` was split (trace building into `trace.py`, question planning into `adaptive/planner.py`) to stay under 300 lines. Ruff line length raised to 120.
 - Warm latency on the dev CPU: diagnosis 0.03 s, explanation 0.06 s. Cold model load: 7.8 s.
+
+## Upgrade stage J: dashboards
+- `analytics.dashboard_data` reads only the store: concept mastery, the mastery log, the attempts timeline and decision traces. When a learner has no history the page shows an empty state, never placeholder numbers. "Intervention effectiveness" is concept mastery before the first item and after the last item of each post-intervention reassessment or retest, taken from that interaction's trace.
+- The Model Evaluation page reads only `reports/metrics.json` and `models/*/metadata.json`. Confusion matrices and classification reports come from the JSON, and the page shows "evaluation not run" when the file is missing.
+- `.streamlit/config.toml` disables the file watcher. With it on, Streamlit's watcher walked the torch and transformers modules and cold start took about 90 s; with it off, the health check shows the v1 model in about 10 s.
+- Bug fix: two UI strings had been mojibaked by a cp1252 read/write in an edit script; they were repaired and all later edit scripts run with `PYTHONUTF8=1`.

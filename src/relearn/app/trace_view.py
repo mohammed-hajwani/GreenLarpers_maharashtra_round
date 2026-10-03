@@ -61,13 +61,13 @@ def render_why(record: dict) -> None:
     exp = record.get("explanation") or {}
     if exp.get("influential_features"):
         st.markdown("**Influential features** (TF-IDF weight × coefficient):")
-        st.dataframe(pd.DataFrame(exp["influential_features"]), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(exp["influential_features"]), hide_index=True, width="stretch")
     if exp.get("occlusion"):
         st.markdown("**Word importance** (drop in predicted-label probability when the word is removed):")
-        st.dataframe(pd.DataFrame(exp["occlusion"]), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(exp["occlusion"]), hide_index=True, width="stretch")
     if exp.get("similar_examples"):
         st.markdown("**Most similar training examples** (cosine similarity of answer and working embeddings):")
-        st.dataframe(pd.DataFrame(exp["similar_examples"]), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(exp["similar_examples"]), hide_index=True, width="stretch")
     for p in record["probes"]:
         st.markdown(
             f"**Probe reason:** `{p['probe_id']}` had the highest expected information gain "

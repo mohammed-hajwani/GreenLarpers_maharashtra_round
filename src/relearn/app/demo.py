@@ -59,6 +59,8 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
     q = _question(p["template_id"], p["params"])
     response = LearnerResponse(question_id=q.question_id, answer=p["answer"], working=p["working"])
     d = tutor.submit(learner, q, response)
+    initial = d
+    probe_steps = []
     steps.append(
         {
             "kind": "diagnosis",
@@ -78,6 +80,7 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
         used.add(probe.probe_id)
         before = d.top_labels
         d, step = tutor.answer_probe(learner, d, choice, answer)
+        probe_steps.append(step)
         steps.append(
             {
                 "kind": "probe",
@@ -91,7 +94,7 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
                 },
             }
         )
-    tutor.confirm(learner, d, q)
+    tutor.finalize_interaction(learner, q, response, initial, d, probe_steps)
     m = d.top_labels[0][0]
     iv = tutor.intervene(learner, m, response)
     steps.append({"kind": "intervention", "title": "3. Targeted intervention", "data": iv.model_dump()})
@@ -104,8 +107,9 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
     fillers = []
     for f in script["filler_practice"]:
         fq = _question(f["template_id"], f["params"])
-        fd = tutor.submit(learner, fq, LearnerResponse(question_id=fq.question_id, answer=fq.correct_answer))
-        tutor.confirm(learner, fd, fq)
+        fr = LearnerResponse(question_id=fq.question_id, answer=fq.correct_answer)
+        fd = tutor.submit(learner, fq, fr)
+        tutor.finalize_interaction(learner, fq, fr, fd, fd, [])
         fillers.append({"stem": fq.stem, "answer": fq.correct_answer, "correct": fd.is_correct})
     steps.append({"kind": "practice", "title": "7. Other practice in between (spacing)", "data": {"rows": fillers}})
     due = tutor.due_retests(learner)

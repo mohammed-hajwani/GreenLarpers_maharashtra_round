@@ -2,6 +2,7 @@ import uuid
 
 import streamlit as st
 
+from relearn.app.dashboard import render_dashboard, render_evaluation_page
 from relearn.app.demo import load_script, run_demo
 from relearn.app.practice import render_practice, reset_flow
 from relearn.app.views import render_profile, render_step
@@ -60,7 +61,7 @@ def demo_page(tutor: Tutor) -> None:
 def sidebar(tutor: Tutor) -> str:
     with st.sidebar:
         st.title("Re:Learn")
-        page = st.radio("Page", ["Practice", "Profile", "Demo mode"])
+        page = st.radio("Page", ["Practice", "Dashboard", "Profile", "Model Evaluation", "Demo mode"])
         st.caption(f"Learner: `{st.session_state.learner_id}`")
         if st.button("Reset demo"):
             tutor.store.reset(st.session_state.learner_id)
@@ -88,6 +89,13 @@ def main() -> None:
             st.error("No diagnosis model could be loaded. Use Demo mode to replay a recorded session.")
         else:
             render_practice(tutor, learner)
+    elif page == "Dashboard":
+        st.header("Learning analytics")
+        who = st.radio("Learner", ["you", "demo learner"], horizontal=True)
+        render_dashboard(tutor.store, learner if who == "you" else load_script()["learner_id"])
+    elif page == "Model Evaluation":
+        st.header("Model evaluation")
+        render_evaluation_page()
     elif page == "Profile":
         st.header("Learner profile")
         render_profile({"rows": tutor.profile(learner), "timeline": tutor.store.timeline(learner)})

@@ -70,7 +70,7 @@ def status_line(state: str, trap_passed, pending) -> None:
 def render_assessment(data: dict) -> None:
     rows = pd.DataFrame(data["items"])
     rows["correct"] = rows["correct"].map({True: "✅", False: "❌"})
-    st.dataframe(rows, hide_index=True, use_container_width=True)
+    st.dataframe(rows, hide_index=True, width="stretch")
     st.markdown(f"Transfer: **{data['transfer']}** · Trap passed: **{data['trap_passed']}**")
     status_line(data["state"], data["trap_passed"], data.get("pending_retest_in"))
 
@@ -78,7 +78,7 @@ def render_assessment(data: dict) -> None:
 def render_practice_rows(data: dict) -> None:
     rows = pd.DataFrame(data["rows"])
     rows["correct"] = rows["correct"].map({True: "✅", False: "❌"})
-    st.dataframe(rows, hide_index=True, use_container_width=True)
+    st.dataframe(rows, hide_index=True, width="stretch")
 
 
 def render_retest(data: dict) -> None:
@@ -94,7 +94,7 @@ def render_profile(data: dict) -> None:
         return
     table = pd.DataFrame(rows)
     table["state"] = table["state"].str.upper()
-    st.dataframe(table, hide_index=True, use_container_width=True)
+    st.dataframe(table, hide_index=True, width="stretch")
     st.bar_chart(table.set_index("misconception")["posterior_held"], y_label="P(held)")
     events = [
         {
@@ -107,7 +107,7 @@ def render_profile(data: dict) -> None:
         for i, e in enumerate(data["timeline"])
     ]
     with st.expander("Timeline", expanded=True):
-        st.dataframe(pd.DataFrame(events), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(events), hide_index=True, width="stretch")
 
 
 RENDERERS = {

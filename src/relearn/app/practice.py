@@ -45,7 +45,7 @@ def _topic_picker(tutor: Tutor, learner: str) -> None:
         options,
         format_func=lambda c: "Adaptive: let the system choose" if c == "auto" else content.concepts[c].name,
     )
-    if cols[1].button("Next question", use_container_width=True) or "question" not in st.session_state:
+    if cols[1].button("Next question", width="stretch") or "question" not in st.session_state:
         reset_flow()
         question, decision = tutor.next_question(learner, None if concept == "auto" else concept)
         st.session_state.question = question
@@ -55,7 +55,7 @@ def _topic_picker(tutor: Tutor, learner: str) -> None:
     if decision is not None and st.session_state.question.template_id == decision.template_id:
         with st.container(border=True):
             st.markdown(f"**{decision.headline}**")
-            st.caption(f"Difficulty: **{decision.band}** Â· " + "; ".join(decision.reasons))
+            st.caption(f"Difficulty: **{decision.band}** · " + "; ".join(decision.reasons))
 
 
 def _custom_question() -> None:
