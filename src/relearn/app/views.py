@@ -27,11 +27,22 @@ def render_diagnosis(data: dict) -> None:
         st.markdown(f"**Question:** {data['stem']}")
         st.markdown(f"**Answer:** `{data['answer']}`  \n**Working:** _{data.get('working') or '—'}_")
     if data["is_correct"]:
-        st.success("Correct. No misconception detected.")
+        if data.get("has_answer_key", True):
+            st.success("Correct. No misconception detected.")
+        else:
+            st.info(
+                f"No misconception detected in your reasoning (model confidence {data.get('confidence', 0):.0%}). "
+                "This is your own question with no answer key, so correctness itself is not verified."
+            )
         return
-    top = data["top_labels"][0][0]
+    top = next((label for label, _ in data["top_labels"] if label != "none"), data["top_labels"][0][0])
     info = load_content().misconceptions[top]
-    confidence = data.get("confidence") or data["top_labels"][0][1]
+    if data["top_labels"][0][0] == "none":
+        st.warning(
+            f"Uncertain: the model leans towards no misconception ({data['top_labels'][0][1]:.0%}), which is too "
+            f"low to call your answer correct. The closest misconception candidate is shown below."
+        )
+    confidence = next(p for label, p in data["top_labels"] if label == top)
     st.error(f"Likely misconception: **{label_name(top)}** — calibrated confidence {confidence:.1%}")
     st.caption(info.description)
     render_top_labels(data["top_labels"])

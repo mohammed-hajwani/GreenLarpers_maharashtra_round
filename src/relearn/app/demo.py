@@ -122,7 +122,7 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
     steps.extend(cards)
     trace = svc.finalize(tutor, learner, q, response, initial, d, probe_steps)
     steps.append({"kind": "trace", "title": "3. AI decision trace for this answer", "data": trace})
-    m = d.top_labels[0][0]
+    m = d.misconception
     iv = svc.intervention(tutor, learner, m, response)
     steps.append({"kind": "intervention", "title": "4. Targeted intervention", "data": iv.model_dump()})
     r1 = _round(tutor, learner, m, script["round_1_correct_kinds"])

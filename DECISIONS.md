@@ -166,3 +166,10 @@
 - `relearn.services` is a module of plain functions: `create_tutor`, `active_model`, `predict`, `explain_prediction`, `diagnose`, `next_probe`, `answer_probe`, `finalize`, `intervention`, `plan_assessment`, `submit_assessment`, `due_retests`, `pending_retest`, `submit_retest`, `next_question`, `mastery`, `progress`, `profile`, `timeline`, `trace`, `reset`, `dashboard` and `evaluate`. Every Streamlit module calls these. A test parses the UI's imports and fails if it imports models, diagnosis, the store, analytics or pipeline internals (only the `Tutor` type is allowed).
 - No FastAPI wrapper was added; it is optional in the spec and not deployed.
 - `pipeline.py` moved the profile builder to `learner/profile.py` and the retrieval call to `rag/retriever.retrieve_for` to stay under 300 lines.
+
+## Fix: non-answers and uncertain "correct" predictions
+- Problem found in manual testing: on a custom question, "idk" with no reasoning was shown as "Correct. No misconception detected." Text with no misconception signal defaults to the `none` class, and custom questions have no answer key to check against.
+- Screening (`diagnosis/screening.py`): non-answers ("idk", "I don't know", "not sure", "?", and similar) with no real reasoning are not diagnosed or graded; the learner is asked for a best guess and a reason. Custom questions require at least 3 words of reasoning.
+- For custom questions without an answer key, a `none` prediction is shown as "No misconception detected in your reasoning ... correctness is not verified", not "Correct".
+- `none` now counts as correct only when its calibrated probability is at least the probe threshold (0.50). Below that the route is `uncertain` and the leading misconception becomes the working hypothesis (new `Diagnosis.misconception` property). Before this, `none` at 41% (with M02 at 30%) was accepted as correct.
+- Because low-confidence `none` answers are now probed instead of accepted, the probing simulation changed. Info-gain probes now beat random in all 4 settings: v1 test 0.726 → random 0.855 → info-gain 0.886; baseline test 0.820 → 0.928 → 0.945. The validation numbers are unchanged.

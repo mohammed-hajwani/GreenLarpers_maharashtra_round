@@ -57,7 +57,7 @@ def practice_evidence(correct: bool, difficulty: str, diagnosis: Diagnosis | Non
     confidence = 0.0
     label = None
     if diagnosis is not None and not diagnosis.is_correct:
-        label, confidence = diagnosis.top_labels[0]
+        label, confidence = diagnosis.misconception, diagnosis.misconception_confidence
     return (
         0.0,
         m.wrong + m.misconception_weight * confidence,

@@ -83,11 +83,11 @@ Probe selection on simulated learners (confusable subset, mean accuracy over 5 s
 | Model / split | No probe | Random relevant probe | Information-gain probe |
 |---|---|---|---|
 | v1 / val | 0.628 | 0.831 | **0.876** |
-| v1 / test | 0.726 | **0.818** | 0.806 |
+| v1 / test | 0.726 | 0.855 | **0.886** |
 | baseline / val | 0.831 | 0.963 | **0.965** |
-| baseline / test | 0.820 | 0.900 | **0.904** |
+| baseline / test | 0.820 | 0.928 | **0.945** |
 
-Information gain beats random in 3 of 4 settings. Simulated learners answer by the same expected-answer map the likelihood uses, so these lifts are upper bounds.
+Information gain beats random in all 4 settings. Simulated learners answer by the same expected-answer map the likelihood uses, so these lifts are upper bounds.
 
 Progress predictor (1000 held-out simulated learners): reach mastery AUC 0.974 (base rate 0.684); misconception persists AUC 0.885 (base rate 0.096, so its 0.90 accuracy is no better than always predicting "no").
 

@@ -48,6 +48,17 @@ class Diagnosis(BaseModel):
     model_name: str = ""
     model_version: str = ""
 
+    @property
+    def misconception(self) -> str | None:
+        if self.is_correct:
+            return None
+        return next((label for label, _ in self.top_labels if label != "none"), None)
+
+    @property
+    def misconception_confidence(self) -> float:
+        label = self.misconception
+        return next((p for name, p in self.top_labels if name == label), 0.0)
+
 
 class Probe(BaseModel):
     probe_id: str

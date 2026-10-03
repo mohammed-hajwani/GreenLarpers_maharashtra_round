@@ -46,7 +46,7 @@ class Tutor:
             learner_id,
             "practice",
             question.question_id,
-            None if d.is_correct else d.top_labels[0][0],
+            d.misconception,
             d.is_correct,
             {
                 "answer": response.answer,
@@ -74,7 +74,7 @@ class Tutor:
         content = load_content()
         concept = content.concept_of_template(question.template_id)
         if concept is None and not diagnosis.is_correct:
-            concept = content.concept_of(diagnosis.top_labels[0][0])
+            concept = content.concept_of(diagnosis.misconception)
         return concept
 
     def question_difficulty(self, question: Question) -> str:
@@ -88,7 +88,7 @@ class Tutor:
         self, learner_id: str, diagnosis: Diagnosis, choice: ProbeChoice, answer: str
     ) -> tuple[Diagnosis, ProbeStep]:
         updated, step = apply_probe(diagnosis, choice, answer)
-        top = diagnosis.top_labels[0][0]
+        top = diagnosis.misconception or diagnosis.top_labels[0][0]
         expected = choice.probe.expected_answer_by_label
         step_mastery = self._mastery(
             learner_id,
@@ -127,7 +127,9 @@ class Tutor:
             )
         if diagnosis.is_correct:
             return None, mastery
-        label, confidence = diagnosis.top_labels[0]
+        label, confidence = diagnosis.misconception, diagnosis.misconception_confidence
+        if label is None:
+            return None, mastery
         record = on_diagnosis(self.store.get(learner_id, label), confidence)
         self.store.put(record)
         self.store.log(learner_id, "state", label, label, payload={"state": record.state.value})

@@ -4,6 +4,7 @@ from relearn.config import load_config
 from relearn.diagnosis.diagnoser import diagnose as model_diagnose
 from relearn.diagnosis.disambiguator import ProbeChoice, ProbeStep
 from relearn.diagnosis.explain import explain
+from relearn.diagnosis.screening import has_answer_key, screen_response
 from relearn.learner.store import LearnerStore
 from relearn.llm.anthropic_client import make_llm
 from relearn.models.loader import ActiveModel, get_active_model
@@ -24,6 +25,14 @@ from relearn.schemas import (
 def create_tutor(db_path: str | None = None) -> Tutor:
     path = db_path or load_config().db_path()
     return Tutor(LearnerStore(path), get_active_model().model, make_llm())
+
+
+def screen(question: Question, response: LearnerResponse) -> str | None:
+    return screen_response(question, response)
+
+
+def has_key(question: Question) -> bool:
+    return has_answer_key(question)
 
 
 def active_model() -> ActiveModel:

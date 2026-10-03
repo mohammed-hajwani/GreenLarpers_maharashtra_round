@@ -82,9 +82,19 @@ def _answer_form(tutor: Tutor, learner: str) -> None:
             answer = st.radio("Your answer", q.options, index=None)
         else:
             answer = st.text_input("Your answer")
-        working = st.text_area("Explain your reasoning", height=90)
-        if st.form_submit_button("Submit", type="primary") and answer:
+        label = (
+            "Explain your reasoning" if svc.has_key(q) else "Explain your reasoning (required for your own question)"
+        )
+        working = st.text_area(label, height=90)
+        submitted = st.form_submit_button("Submit", type="primary")
+        if submitted and not answer:
+            st.warning("Enter an answer first.")
+        if submitted and answer:
             response = LearnerResponse(question_id=q.question_id, answer=answer, working=working)
+            problem = svc.screen(q, response)
+            if problem:
+                st.warning(problem)
+                return
             st.session_state.response = response
             st.session_state.diagnosis = svc.diagnose(tutor, learner, q, response)
             st.session_state.initial_diagnosis = st.session_state.diagnosis
@@ -183,7 +193,15 @@ def render_practice(tutor: Tutor, learner: str) -> None:
     d = st.session_state.diagnosis
     r = st.session_state.response
     st.markdown(f"### {st.session_state.question.stem}")
-    render_diagnosis({**d.model_dump(), "stem": "", "answer": r.answer, "working": r.working})
+    render_diagnosis(
+        {
+            **d.model_dump(),
+            "stem": "",
+            "answer": r.answer,
+            "working": r.working,
+            "has_answer_key": svc.has_key(st.session_state.question),
+        }
+    )
     if phase == "probe":
         _probe_form(tutor, learner)
         return
@@ -191,7 +209,9 @@ def render_practice(tutor: Tutor, learner: str) -> None:
         render_practice_trace(svc.trace(tutor, st.session_state.trace_id))
     if d.is_correct:
         return
-    m = d.top_labels[0][0]
+    m = d.misconception
+    if m is None:
+        return
     if phase == "diagnosed" and st.button("Help me with this", type="primary"):
         st.session_state.intervention = svc.intervention(tutor, learner, m, r)
         st.session_state.phase = "intervened"

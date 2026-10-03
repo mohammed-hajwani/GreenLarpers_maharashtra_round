@@ -29,14 +29,16 @@ def finalize(
     ranked = sorted(dist.items(), key=lambda x: -x[1])
     top_labels = ranked[: cfg.diagnosis.top_k]
     first, confidence = top_labels[0]
-    is_correct = first == NONE
     kind = model_kind or KIND_BY_NAME.get(model_name)
-    route = ACCEPT if is_correct else route_for(confidence, thresholds_for(kind))
+    thresholds = thresholds_for(kind)
+    is_correct = first == NONE and confidence >= thresholds["probe"]
+    route = ACCEPT if is_correct else route_for(confidence, thresholds)
+    lead = next((label for label, _ in top_labels if label != NONE), first)
     return Diagnosis(
         top_labels=top_labels,
         is_correct=is_correct,
         ambiguous=route != ACCEPT,
-        confusable_group=content.group_of(first),
+        confusable_group=content.group_of(lead),
         posterior=dist,
         confidence=confidence,
         entropy=entropy_bits(dist),

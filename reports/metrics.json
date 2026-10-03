@@ -38,7 +38,7 @@
         },
         "test": {
           "n": 416,
-          "routed_to_probe": 138,
+          "routed_to_probe": 171,
           "seeds": [
             42,
             43,
@@ -53,20 +53,20 @@
             "entropy_drop_bits_per_probe_mean": 0.0
           },
           "random_probe": {
-            "accuracy_mean": 0.8182692307692307,
-            "accuracy_std": 0.0032607355688102136,
-            "probes_asked_mean": 210.8,
-            "entropy_drop_bits_per_probe_mean": 0.5136203975902317,
-            "lift_points": 9.230769230769232
+            "accuracy_mean": 0.8552884615384615,
+            "accuracy_std": 0.006521471137620461,
+            "probes_asked_mean": 263.2,
+            "entropy_drop_bits_per_probe_mean": 0.43847189852133445,
+            "lift_points": 12.932692307692307
           },
           "information_gain_probe": {
-            "accuracy_mean": 0.80625,
-            "accuracy_std": 0.00907113570390058,
-            "probes_asked_mean": 202.8,
-            "entropy_drop_bits_per_probe_mean": 0.4813755572078388,
-            "lift_points": 8.028846153846159
+            "accuracy_mean": 0.8860576923076923,
+            "accuracy_std": 0.010153226962472542,
+            "probes_asked_mean": 244.8,
+            "entropy_drop_bits_per_probe_mean": 0.5059166960206158,
+            "lift_points": 16.009615384615383
           },
-          "information_gain_beats_random": false
+          "information_gain_beats_random": true
         }
       },
       "baseline": {
@@ -104,7 +104,7 @@
         },
         "test": {
           "n": 416,
-          "routed_to_probe": 168,
+          "routed_to_probe": 185,
           "seeds": [
             42,
             43,
@@ -119,18 +119,18 @@
             "entropy_drop_bits_per_probe_mean": 0.0
           },
           "random_probe": {
-            "accuracy_mean": 0.8995192307692308,
-            "accuracy_std": 0.006866758104368101,
-            "probes_asked_mean": 271,
-            "entropy_drop_bits_per_probe_mean": 0.5783320896330632,
-            "lift_points": 7.980769230769235
+            "accuracy_mean": 0.9283653846153846,
+            "accuracy_std": 0.006866758104368134,
+            "probes_asked_mean": 299.6,
+            "entropy_drop_bits_per_probe_mean": 0.5866638003933987,
+            "lift_points": 10.86538461538462
           },
           "information_gain_probe": {
-            "accuracy_mean": 0.9043269230769231,
-            "accuracy_std": 0.013288725924120429,
-            "probes_asked_mean": 268,
-            "entropy_drop_bits_per_probe_mean": 0.6062310299577424,
-            "lift_points": 8.461538461538465
+            "accuracy_mean": 0.9447115384615384,
+            "accuracy_std": 0.00729122638851111,
+            "probes_asked_mean": 286.2,
+            "entropy_drop_bits_per_probe_mean": 0.6253168693626892,
+            "lift_points": 12.5
           },
           "information_gain_beats_random": true
         }
