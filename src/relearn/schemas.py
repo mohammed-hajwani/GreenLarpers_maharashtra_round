@@ -41,6 +41,12 @@ class Diagnosis(BaseModel):
     is_correct: bool
     ambiguous: bool
     confusable_group: str | None = None
+    posterior: dict[str, float] = Field(default_factory=dict)
+    confidence: float = 0.0
+    entropy: float = 0.0
+    route: str = "accept"
+    model_name: str = ""
+    model_version: str = ""
 
 
 class Probe(BaseModel):

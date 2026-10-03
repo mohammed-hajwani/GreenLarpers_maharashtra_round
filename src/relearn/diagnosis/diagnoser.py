@@ -1,28 +1,54 @@
+import math
+
 from relearn.config import load_config
 from relearn.content import load_content
-from relearn.models.baseline import BaselineModel, sample_text
-from relearn.models.inference import NONE, answer_key_verdict, apply_answer_key, top_k
+from relearn.diagnosis.routing import ACCEPT, route_for, thresholds_for
+from relearn.models.base import TextClassifier
+from relearn.models.baseline import sample_text
+from relearn.models.inference import NONE, answer_key_verdict, apply_answer_key
 from relearn.models.loader import get_active_model
 from relearn.schemas import Diagnosis, LearnerResponse, Question
 
 
-def finalize(top_labels: list[tuple[str, float]]) -> Diagnosis:
+def entropy_bits(posterior: dict[str, float]) -> float:
+    return float(-sum(p * math.log2(p) for p in posterior.values() if p > 0))
+
+
+def finalize(
+    posterior: dict[str, float] | list[tuple[str, float]],
+    model_name: str = "",
+    model_version: str = "",
+    model_kind: str | None = None,
+) -> Diagnosis:
     cfg = load_config()
     content = load_content()
-    top_labels = sorted(top_labels, key=lambda x: -x[1])
-    first = top_labels[0][0]
-    group = content.group_of(first)
-    rivals = [p for label, p in top_labels[1:] if group is not None and content.group_of(label) == group]
-    ambiguous = bool(rivals) and top_labels[0][1] - rivals[0] < cfg.diagnosis.tau
+    dist = dict(posterior)
+    total = sum(dist.values()) or 1.0
+    dist = {k: v / total for k, v in dist.items()}
+    ranked = sorted(dist.items(), key=lambda x: -x[1])
+    top_labels = ranked[: cfg.diagnosis.top_k]
+    first, confidence = top_labels[0]
+    is_correct = first == NONE
+    route = ACCEPT if is_correct else route_for(confidence, thresholds_for(model_kind))
     return Diagnosis(
-        top_labels=top_labels, is_correct=first == NONE, ambiguous=ambiguous, confusable_group=group
+        top_labels=top_labels,
+        is_correct=is_correct,
+        ambiguous=route != ACCEPT,
+        confusable_group=content.group_of(first),
+        posterior=dist,
+        confidence=confidence,
+        entropy=entropy_bits(dist),
+        route=route,
+        model_name=model_name,
+        model_version=model_version,
     )
 
 
-def diagnose(question: Question, response: LearnerResponse, model: BaselineModel | None = None) -> Diagnosis:
+def diagnose(question: Question, response: LearnerResponse, model: TextClassifier | None = None) -> Diagnosis:
     model = model or get_active_model().model
     if model is None:
         raise RuntimeError("no diagnosis model available")
     probs = model.predict_proba([sample_text(question, response)])[0]
     probs = apply_answer_key(probs, model.labels, answer_key_verdict(question, response))
-    return finalize(top_k(probs, model.labels, load_config().diagnosis.top_k))
+    posterior = {label: float(p) for label, p in zip(model.labels, probs, strict=True)}
+    return finalize(posterior, model.name, model.version, model.kind)

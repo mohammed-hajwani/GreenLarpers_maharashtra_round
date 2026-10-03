@@ -43,11 +43,7 @@ def main() -> None:
     run([sys.executable, "-m", "ruff", "check", "src", "scripts", "tests", "app.py"])
     check_no_comments()
     files = tests_for(int(args.stage)) if args.stage.isdigit() else []
-    run(
-        [sys.executable, "-m", "pytest", "-q", *files]
-        if files
-        else [sys.executable, "-m", "pytest", "-q"]
-    )
+    run([sys.executable, "-m", "pytest", "-q", *files] if files else [sys.executable, "-m", "pytest", "-q"])
     print(f"gate {args.stage} passed")
 
 

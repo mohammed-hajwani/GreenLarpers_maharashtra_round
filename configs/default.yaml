@@ -24,7 +24,6 @@ transformer:
   batch_size: 16
   lr: 5.0e-5
 diagnosis:
-  tau: 0.2
   top_k: 3
   confident_threshold: 0.5
 disambiguation:

@@ -1,0 +1,72 @@
+defaults:
+  accept: 0.8
+  probe: 0.5
+tuning:
+  split: val
+  target_accept_precision: 0.95
+  grid:
+  - 0.6
+  - 0.65
+  - 0.7
+  - 0.75
+  - 0.8
+  - 0.85
+  - 0.9
+  - 0.95
+models:
+  v1_embedding:
+    accept: 0.7
+    probe: 0.5
+    val_table:
+    - threshold: 0.6
+      coverage: 0.7640845070422535
+      precision: 0.8847926267281107
+    - threshold: 0.65
+      coverage: 0.7359154929577465
+      precision: 0.9186602870813397
+    - threshold: 0.7
+      coverage: 0.6654929577464789
+      precision: 0.9656084656084656
+    - threshold: 0.75
+      coverage: 0.5933098591549296
+      precision: 0.9940652818991098
+    - threshold: 0.8
+      coverage: 0.5422535211267606
+      precision: 1.0
+    - threshold: 0.85
+      coverage: 0.4982394366197183
+      precision: 1.0
+    - threshold: 0.9
+      coverage: 0.426056338028169
+      precision: 1.0
+    - threshold: 0.95
+      coverage: 0.3873239436619718
+      precision: 1.0
+  baseline:
+    accept: 0.8
+    probe: 0.5
+    val_table:
+    - threshold: 0.6
+      coverage: 0.801056338028169
+      precision: 0.8703296703296703
+    - threshold: 0.65
+      coverage: 0.7623239436619719
+      precision: 0.8891454965357968
+    - threshold: 0.7
+      coverage: 0.7200704225352113
+      precision: 0.8948655256723717
+    - threshold: 0.75
+      coverage: 0.6566901408450704
+      precision: 0.9302949061662198
+    - threshold: 0.8
+      coverage: 0.5950704225352113
+      precision: 0.9704142011834319
+    - threshold: 0.85
+      coverage: 0.5088028169014085
+      precision: 0.9688581314878892
+    - threshold: 0.9
+      coverage: 0.4137323943661972
+      precision: 1.0
+    - threshold: 0.95
+      coverage: 0.3626760563380282
+      precision: 1.0

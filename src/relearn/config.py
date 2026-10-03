@@ -50,7 +50,6 @@ class TransformerConfig(BaseModel):
 
 
 class DiagnosisConfig(BaseModel):
-    tau: float
     top_k: int
     confident_threshold: float
 

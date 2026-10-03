@@ -11,6 +11,7 @@ class TextClassifier:
     name: str = "classifier"
     version: str = "0"
     temperature: float = 1.0
+    kind: str | None = None
 
     @property
     def labels(self) -> list[str]:

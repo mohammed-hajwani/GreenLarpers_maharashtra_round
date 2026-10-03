@@ -16,10 +16,15 @@ def select_probe(diagnosis: Diagnosis, used: set[str] | None = None) -> Probe | 
     content = load_content()
     first = diagnosis.top_labels[0][0]
     second = next(
-        label
-        for label, _ in diagnosis.top_labels[1:]
-        if content.group_of(label) == diagnosis.confusable_group
+        (
+            label
+            for label, _ in diagnosis.top_labels[1:]
+            if content.group_of(label) == diagnosis.confusable_group
+        ),
+        None,
     )
+    if second is None:
+        return None
     candidates = [
         p
         for p in content.probes

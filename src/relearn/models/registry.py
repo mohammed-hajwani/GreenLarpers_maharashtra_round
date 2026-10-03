@@ -53,8 +53,10 @@ def save_model(kind: str, model: TextClassifier, metadata: dict) -> None:
 def load_model(kind: str) -> TextClassifier:
     payload = joblib.load(model_dir(kind) / MODEL_FILE)
     if kind == BASELINE:
-        return BaselineModel(payload["pipeline"], payload["temperature"], payload["version"])
-    return EmbeddingModel(
+        model = BaselineModel(payload["pipeline"], payload["temperature"], payload["version"])
+        model.kind = BASELINE
+        return model
+    model = EmbeddingModel(
         payload["clf"],
         payload["encoder_name"],
         payload["temperature"],
@@ -62,3 +64,5 @@ def load_model(kind: str) -> TextClassifier:
         payload["exemplars"],
         payload.get("tfidf"),
     )
+    model.kind = EMBEDDING
+    return model

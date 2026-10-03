@@ -54,3 +54,9 @@
 - The hand-written test set (`content/handwritten_test.yaml`, 65 items, 5 per label) was written by the project team in phrasing different from the templates. It is not real student data and is used only for evaluation.
 - Loader fallback chain: `v1_embedding` (warm-up encode) → `baseline` → labeled replay. `RELEARN_FORCE_MODEL=baseline|none` forces a tier for testing.
 - The demo input changed to "The force from the hit keeps it moving forward.", which is ambiguous under v1 (M09 0.59, M01 0.40).
+
+## Upgrade stage C: calibration and routing
+- Calibration stays as temperature scaling fitted on validation NLL, because both classifiers produce logits. Validation ECE: baseline 0.133 → 0.126 (T=0.6), v1 0.117 → 0.105 (T=0.65). On the synthetic test split, the baseline improves (0.195 → 0.117) but v1 gets worse (0.093 → 0.149). On the hand-written set, v1 improves (0.179 → 0.116). All values are in `reports/metrics.json`.
+- Routing replaces the PRD's tau gap rule. Confidence at or above the accept threshold → accept. From 0.50 up to the accept threshold → probe. Below 0.50 → uncertain, which routes to a probe if one is informative, otherwise to review.
+- Thresholds were tuned on validation by `scripts/tune_thresholds.py`: accept is the smallest grid value whose accepted predictions reach 0.95 precision on validation, using the answer-keyed probabilities that diagnosis actually uses. Result: v1 accept 0.70 (val precision 0.966, coverage 0.67), baseline accept 0.80 (precision 0.970, coverage 0.60), probe 0.50 for both. Saved in `configs/thresholds.yaml`; defaults are 0.80 and 0.50.
+- `Diagnosis` gained `posterior`, `confidence`, `entropy`, `route`, `model_name` and `model_version`, all defaulted (PRD section 6 updated). `ambiguous` now means `route != accept`.

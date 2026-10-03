@@ -12,7 +12,7 @@ from relearn.models.loader import get_active_model
 def test_ambiguous_flag() -> None:
     d = finalize([("M01", 0.45), ("M09", 0.40), ("M02", 0.15)])
     assert d.ambiguous and d.confusable_group == "CG2"
-    assert not finalize([("M01", 0.45), ("M02", 0.40), ("M03", 0.15)]).ambiguous
+    assert finalize([("M01", 0.45), ("M02", 0.40), ("M03", 0.15)]).route == "uncertain"
     assert not finalize([("M01", 0.80), ("M09", 0.15), ("M02", 0.05)]).ambiguous
 
 

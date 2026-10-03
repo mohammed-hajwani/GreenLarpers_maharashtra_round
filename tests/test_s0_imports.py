@@ -24,7 +24,7 @@ def test_packages_import() -> None:
 def test_config_loads() -> None:
     cfg = load_config()
     assert cfg.seed == 42
-    assert cfg.diagnosis.tau == 0.2
+    assert cfg.diagnosis.top_k == 3
     assert cfg.loops["disambiguation"]["max_probes"] == 2
 
 
