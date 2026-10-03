@@ -198,7 +198,7 @@
 - Test results for `msp`:
   - AUROC 0.712; detection 63.5% at a 28.2% false-flag rate. The 10% validation target does not transfer to test.
   - Per misconception: M01, M02, M05, M08, M10 have AUROC 0.90–1.00.
-  - Look-alikes are absorbed by their confusable sibling: M03 into M04 (AUROC 0.20), M06 and M07 into each other.
+  - Look-alikes are absorbed by their confusable sibling: M03 into M04 (AUROC 0.20) and M06 into M07 (0.41). M07 (0.44) is mostly read as a correct answer.
   - The deck should say this plainly: an unseen mistake that resembles a known one is mistaken for it.
 - At runtime, `Diagnosis.novelty` uses the same raw score and `unfamiliar` is set for wrong answers above the threshold. Measured on the deployed model: 153/573 known-misconception wrong answers in the synthetic test split are flagged (false flags), 2/60 in the hand-written set. A clearly novel answer ("the Moon's magnetism holds it") scored 0.578, below the 0.783 threshold, so it was not flagged.
 - Because of these rates, the flag never changes the student flow. It only feeds the "Teacher review queue" in Insights.
@@ -210,3 +210,10 @@
 - Evidence: clear gives +1.5 to mastery alpha, tricky gives +1.0 to beta, "almost there" gives none. Each check is logged as an `explain_back` event.
 - Explain-back is an extra signal and never a resolution gate; resolution is unchanged.
 - Evaluation (`scripts/explain_eval.py`, 24 hand-written explanations, 1 sound and 1 holding per misconception): 11/12 holding explanations not cleared (9 tricky, 2 almost); 9/12 sound explanations accepted as clear; 1/12 sound wrongly marked tricky (M04). The bands were picked from a 6-pair pilot that overlaps this set, which is noted in the report.
+
+## Final push: misconception map, UI revamp and deck
+- Student journey map: an SVG of the 7 concepts with a status icon and word for each (not started, in progress, mastered, come back to this), so colour is never the only signal. Below 640px it swaps to a plain list.
+- Class misconception map (Insights, first page): bubbles sized by how many learners showed each misconception, a green core for the share resolved, dashed links between look-alikes, and the best teaching mode once one has outcomes.
+- Landing page: feature chips and the journey map; the completion card shows the updated map.
+- Deck: `scripts/deck_assets.py` captures real screenshots from the running app and `scripts/build_deck.js` (pptxgenjs) builds `docs/deck/ReLearn_pitch.pptx`. Every number is read from `reports/metrics.json` at build time. Simulated results are labelled as simulated on the slide.
+
