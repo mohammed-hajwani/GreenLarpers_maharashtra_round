@@ -134,3 +134,18 @@
 - An active-model badge appears on every page (green v1, orange baseline, red replay).
 - Under the baseline fallback, one correct free-text spacing answer (a free-fall explanation) is misdiagnosed. The demo still completes; the behavior is real and left visible.
 - No API key is needed anywhere: `StubLLMClient` is the default and `llm_personalize` is false.
+
+## Upgrade stage G: progress prediction (stretch)
+- No real student data exists, so the predictor is trained on simulated trajectories from `relearn.progress.simulator`. The generative assumptions are stored verbatim in `models/progress/metadata.json` and `metrics.json`:
+  - latent skill drawn from Beta(2, 2)
+  - 60% of learners hold the misconception
+  - holding it multiplies the chance of a correct answer by 0.45
+  - each intervention ends the misconception with a per-learner probability between 0.2 and 0.7
+  - each correct answer raises skill by 0.01 to 0.06
+- The simulator uses the app's real mastery-update and difficulty-engine functions, so the features are computable from a real learner's stored history (`progress/features.py`).
+- Features cover the first 10 practice steps. Targets are mastery of at least 0.7 after 10 more steps, and the misconception still being held at that point. Splits are 2400 train, 600 val and 1000 test simulated learners, each with its own seed. The model is chosen by validation AUC; logistic regression was picked for both targets.
+- Held-out simulated test:
+  - reach mastery: AUC 0.974, Brier 0.060, accuracy 0.916, base rate 0.684
+  - persistence: AUC 0.885, Brier 0.072, accuracy 0.900, base rate 0.096
+  - Persistence accuracy is no better than always predicting "no"; AUC is the informative number.
+  - These are not real-world numbers, and every UI surface shows "Estimate based on simulated learners, not validated on real students."

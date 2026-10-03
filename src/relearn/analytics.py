@@ -2,12 +2,13 @@ import json
 from collections import Counter
 from pathlib import Path
 
+from relearn.adaptive.difficulty import BAND_LEVELS
 from relearn.config import load_config
 from relearn.content import load_content
 from relearn.learner.store import LearnerStore
 from relearn.models.registry import BASELINE, EMBEDDING, read_metadata
-
-BAND_LEVEL = {"easy": 1, "medium": 2, "hard": 3}
+from relearn.progress.features import learner_features
+from relearn.progress.model import LABEL, predict
 
 
 def dashboard_data(store: LearnerStore, learner_id: str) -> dict:
@@ -58,11 +59,31 @@ def dashboard_data(store: LearnerStore, learner_id: str) -> dict:
             }
             for t in assessments
         ],
+        "progress_estimates": progress_estimates(store, learner_id, list(mastery)),
+        "progress_label": LABEL,
         "difficulty_progression": [
-            {"attempt": i + 1, "difficulty": e["difficulty"], "level": BAND_LEVEL.get(e["difficulty"], 0)}
+            {"attempt": i + 1, "difficulty": e["difficulty"], "level": BAND_LEVELS.get(e["difficulty"], 0)}
             for i, e in enumerate(e for e in practice if e.get("difficulty"))
         ],
     }
+
+
+def progress_estimates(store: LearnerStore, learner_id: str, concepts: list[str]) -> list[dict]:
+    content = load_content()
+    rows = []
+    for concept in concepts:
+        feats = learner_features(store, learner_id, concept)
+        estimate = predict(feats) if feats else None
+        if estimate:
+            rows.append(
+                {
+                    "concept": content.concepts[concept].name,
+                    "p_reach_mastery": estimate["reach_mastery"],
+                    "p_misconception_persists": estimate["misconception_persists"],
+                    "practice_attempts": int(feats["attempts"]),
+                }
+            )
+    return rows
 
 
 def evaluation_data(metrics_path: Path | None = None) -> dict:

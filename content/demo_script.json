@@ -155,7 +155,7 @@
       "title": "3. AI decision trace for this answer",
       "data": {
         "id": 1,
-        "ts": "2026-10-03T12:40:23+00:00",
+        "ts": "2026-10-03T12:43:39+00:00",
         "kind": "practice",
         "input_hash": "78c7afb2364e4994",
         "question_id": "m09_kicked_ball_02__m0.45_v6",
@@ -306,6 +306,7 @@
             "difficulty": "medium",
             "misconception": "M01",
             "confidence": 0.9466410241110583,
+            "correct": false,
             "log_id": 2
           },
           "before": 0.5,
@@ -442,7 +443,7 @@
         "mastery_after": 0.39903699564394257,
         "trace": {
           "id": 2,
-          "ts": "2026-10-03T12:40:23+00:00",
+          "ts": "2026-10-03T12:43:39+00:00",
           "kind": "assessment",
           "input_hash": "05c365883fd92246",
           "misconception": "M01",
@@ -468,6 +469,7 @@
               "beta_after": 2.888241793387727,
               "detail": {
                 "item_kind": "transfer",
+                "correct": true,
                 "log_id": 3
               },
               "before": 0.2533800246565977,
@@ -483,6 +485,7 @@
               "beta_after": 2.831594539586095,
               "detail": {
                 "item_kind": "transfer",
+                "correct": true,
                 "log_id": 4
               },
               "before": 0.4639732394837807,
@@ -498,6 +501,7 @@
               "beta_after": 3.7766467033985123,
               "detail": {
                 "item_kind": "transfer",
+                "correct": false,
                 "log_id": 5
               },
               "before": 0.5827665078458054,
@@ -513,6 +517,7 @@
               "beta_after": 5.693347302296557,
               "detail": {
                 "item_kind": "trap",
+                "correct": false,
                 "log_id": 6
               },
               "before": 0.5058683328073137,
@@ -571,7 +576,7 @@
         "mastery_after": 0.6529044210017071,
         "trace": {
           "id": 3,
-          "ts": "2026-10-03T12:40:23+00:00",
+          "ts": "2026-10-03T12:43:39+00:00",
           "kind": "assessment",
           "input_hash": "551df47552376c24",
           "misconception": "M01",
@@ -597,6 +602,7 @@
               "beta_after": 5.55254688322766,
               "detail": {
                 "item_kind": "transfer",
+                "correct": true,
                 "log_id": 7
               },
               "before": 0.39903699564394257,
@@ -612,6 +618,7 @@
               "beta_after": 5.4159704767308305,
               "detail": {
                 "item_kind": "transfer",
+                "correct": true,
                 "log_id": 8
               },
               "before": 0.4834597742294861,
@@ -627,6 +634,7 @@
               "beta_after": 5.283491362428905,
               "detail": {
                 "item_kind": "transfer",
+                "correct": true,
                 "log_id": 9
               },
               "before": 0.5481800593496302,
@@ -642,6 +650,7 @@
               "beta_after": 5.154986621556038,
               "detail": {
                 "item_kind": "trap",
+                "correct": true,
                 "log_id": 10
               },
               "before": 0.5993530795444318,
@@ -723,7 +732,7 @@
         ],
         "timeline": [
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "practice",
             "ref_id": "m09_kicked_ball_02__m0.45_v6",
             "misconception": "M09",
@@ -751,7 +760,7 @@
             "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "probe",
             "ref_id": "p_cg2_01",
             "misconception": null,
@@ -790,7 +799,7 @@
             ]
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -798,7 +807,7 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "intervention",
             "ref_id": "counterexample",
             "misconception": "M01",
@@ -806,7 +815,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -814,7 +823,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -822,7 +831,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t3",
             "misconception": "M01",
@@ -830,7 +839,7 @@
             "answer": "Gravity is bigger than air resistance"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap1",
             "misconception": "M01",
@@ -838,7 +847,7 @@
             "answer": "A forward force that keeps it moving"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -846,7 +855,7 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "intervention",
             "ref_id": "fbd_walkthrough",
             "misconception": "M01",
@@ -854,7 +863,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t4",
             "misconception": "M01",
@@ -862,7 +871,7 @@
             "answer": "300 N"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -870,7 +879,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -878,7 +887,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap2",
             "misconception": "M01",
@@ -886,7 +895,7 @@
             "answer": "No, they are equal"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:39+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -894,7 +903,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:40+00:00",
             "kind": "practice",
             "ref_id": "m06_push_down_03__F50_m5",
             "misconception": null,
@@ -922,7 +931,7 @@
             "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:40+00:00",
             "kind": "practice",
             "ref_id": "m02_cliff_rocks_03__h20_m12_m220",
             "misconception": null,
@@ -950,7 +959,7 @@
             "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:40+00:00",
             "kind": "practice",
             "ref_id": "m03_stone_top_03__v18",
             "misconception": null,
@@ -978,7 +987,7 @@
             "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:40+00:00",
             "kind": "retest",
             "ref_id": "i_m01_r1",
             "misconception": "M01",
@@ -986,7 +995,7 @@
             "answer": "None"
           },
           {
-            "ts": "2026-10-03T12:40:23+00:00",
+            "ts": "2026-10-03T12:43:40+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -1144,6 +1153,33 @@
               "state_after": "resolved"
             }
           ],
+          "progress_estimates": [
+            {
+              "concept": "Force vs Motion",
+              "p_reach_mastery": 0.7730420931893713,
+              "p_misconception_persists": 0.050205984390568566,
+              "practice_attempts": 1
+            },
+            {
+              "concept": "Free Fall",
+              "p_reach_mastery": 0.6381256672166364,
+              "p_misconception_persists": 0.005109682081801618,
+              "practice_attempts": 1
+            },
+            {
+              "concept": "Velocity vs Acceleration",
+              "p_reach_mastery": 0.6381256672166364,
+              "p_misconception_persists": 0.005109682081801618,
+              "practice_attempts": 1
+            },
+            {
+              "concept": "Weight and Normal Force",
+              "p_reach_mastery": 0.6381256672166364,
+              "p_misconception_persists": 0.005109682081801618,
+              "practice_attempts": 1
+            }
+          ],
+          "progress_label": "Estimate based on simulated learners, not validated on real students.",
           "difficulty_progression": [
             {
               "attempt": 1,

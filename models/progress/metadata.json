@@ -1,0 +1,82 @@
+{
+  "name": "progress_predictor",
+  "version": "1",
+  "training_date": "2026-10-03T12:42:37+00:00",
+  "training_dataset": {
+    "data_provenance": "simulated learner trajectories",
+    "generator": "relearn.progress.simulator",
+    "assumptions": {
+      "skill_prior": "Beta(2, 2) latent skill per learner for the target concept",
+      "holds_misconception_probability": 0.6,
+      "p_correct": "sigmoid(6 * (skill - difficulty_offset)) * (0.45 if holding the misconception else 1.0)",
+      "difficulty_offsets": {
+        "easy": -0.15,
+        "medium": 0.05,
+        "hard": 0.25
+      },
+      "diagnosis_confidence": "U(0.55, 0.95) when the wrong answer comes from the held misconception, else U(0.2, 0.6)",
+      "probe": "asked when confidence < 0.7; answer matches the misconception with p=0.9 when held, 0.1 otherwise",
+      "intervention": "after 2 diagnosed wrong answers; abandons the misconception with p=abandon_rate (U(0.2, 0.7))",
+      "learning": "skill += learn_rate (U(0.01, 0.06)) after each correct answer, capped at 1",
+      "reassessment": "after each intervention: 3 transfer + 1 trap, correctness from the same p_correct at medium",
+      "horizon": "10 observed steps, outcome measured after 10 further steps",
+      "mastery_target": 0.7
+    },
+    "split_sizes": {
+      "train": 2400,
+      "val": 600,
+      "test": 1000
+    },
+    "seed": 42
+  },
+  "feature_method": "history features over the first 10 practice steps",
+  "features": [
+    "attempts",
+    "accuracy",
+    "recent_accuracy",
+    "misconception_rate",
+    "mean_wrong_confidence",
+    "mastery",
+    "mastery_slope",
+    "probe_consistent_rate",
+    "interventions",
+    "assessment_accuracy",
+    "mean_difficulty",
+    "difficulty_trend"
+  ],
+  "targets": [
+    "reach_mastery",
+    "misconception_persists"
+  ],
+  "metrics": {
+    "reach_mastery": {
+      "model": "logistic_regression",
+      "val_auc": {
+        "logistic_regression": 0.9845238534252806,
+        "hist_gradient_boosting": 0.978217846123588
+      },
+      "test": {
+        "n": 1000,
+        "base_rate": 0.684,
+        "auc": 0.9737582352505736,
+        "brier": 0.05956321318583648,
+        "accuracy": 0.916
+      }
+    },
+    "misconception_persists": {
+      "model": "logistic_regression",
+      "val_auc": {
+        "logistic_regression": 0.8903693056169837,
+        "hist_gradient_boosting": 0.8730097302078726
+      },
+      "test": {
+        "n": 1000,
+        "base_rate": 0.096,
+        "auc": 0.8845178834808259,
+        "brier": 0.07214429250812279,
+        "accuracy": 0.9
+      }
+    }
+  },
+  "label": "Estimate based on simulated learners, not validated on real students."
+}

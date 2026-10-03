@@ -49,6 +49,12 @@ def render_dashboard(store: LearnerStore, learner_id: str) -> None:
         data["intervention_effectiveness"],
         lambda r: st.dataframe(pd.DataFrame(r), hide_index=True, width="stretch"),
     )
+    st.subheader("Learning progress estimate")
+    st.caption(data["progress_label"])
+    if data["progress_estimates"]:
+        st.dataframe(pd.DataFrame(data["progress_estimates"]).round(3), hide_index=True, width="stretch")
+    else:
+        st.caption(EMPTY)
     _section(
         "Difficulty progression (1 easy, 2 medium, 3 hard)",
         data["difficulty_progression"],
@@ -88,6 +94,11 @@ def render_evaluation_page() -> None:
                     )
                     st.dataframe(cm, width="stretch")
                     st.code(result[split]["classification_report"])
+    if "progress_model" in m:
+        st.subheader("Progress predictor (simulated learners)")
+        st.caption(m["progress_model"]["label"])
+        rows = [{"target": t, "model": r["model"], **r["test"]} for t, r in m["progress_model"]["metrics"].items()]
+        st.dataframe(pd.DataFrame(rows).round(3), hide_index=True, width="stretch")
     if "probing" in m:
         st.subheader("Probe selection on simulated learners")
         st.caption(m["probing"]["method"])

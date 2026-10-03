@@ -53,7 +53,7 @@ def practice_evidence(correct: bool, difficulty: str, diagnosis: Diagnosis | Non
     m = load_config().mastery
     weight = m.difficulty_weight.get(difficulty, 1.0)
     if correct:
-        return m.correct * weight, 0.0, {"difficulty": difficulty, "weight": weight}
+        return m.correct * weight, 0.0, {"difficulty": difficulty, "weight": weight, "correct": True}
     confidence = 0.0
     label = None
     if diagnosis is not None and not diagnosis.is_correct:
@@ -61,7 +61,7 @@ def practice_evidence(correct: bool, difficulty: str, diagnosis: Diagnosis | Non
     return (
         0.0,
         m.wrong + m.misconception_weight * confidence,
-        {"difficulty": difficulty, "misconception": label, "confidence": confidence},
+        {"difficulty": difficulty, "misconception": label, "confidence": confidence, "correct": False},
     )
 
 
@@ -82,7 +82,11 @@ def item_evidence(kind: str, correct: bool) -> tuple[float, float, dict]:
         "retest": (m.retest_pass, m.retest_fail),
     }
     up, down = table[kind]
-    return (up, 0.0, {"item_kind": kind}) if correct else (0.0, down, {"item_kind": kind})
+    return (
+        (up, 0.0, {"item_kind": kind, "correct": True})
+        if correct
+        else (0.0, down, {"item_kind": kind, "correct": False})
+    )
 
 
 def update(

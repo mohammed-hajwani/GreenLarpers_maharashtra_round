@@ -6,6 +6,7 @@ from relearn.data.generator import make_question
 from relearn.schemas import Question
 
 BANDS = ["easy", "medium", "hard"]
+BAND_LEVELS = {"easy": 1, "medium": 2, "hard": 3}
 ACTIVE_STATES = {"active", "intervened", "relapsed"}
 
 
