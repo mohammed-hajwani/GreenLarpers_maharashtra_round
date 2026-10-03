@@ -8,8 +8,8 @@ from relearn.diagnosis.diagnoser import diagnose
 from relearn.diagnosis.disambiguator import ProbeChoice, ProbeStep, apply_probe, choose_probe
 from relearn.diagnosis.explain import explain
 from relearn.diagnosis.routing import thresholds_for
-from relearn.intervention.builder import build_intervention
 from relearn.intervention.checker import check_intervention
+from relearn.intervention.grounded import build_grounded_intervention
 from relearn.intervention.selector import EXHAUSTED, select_strategy
 from relearn.learner.mastery import MasteryUpdate, item_evidence, practice_evidence, probe_evidence, update
 from relearn.learner.state import on_assessment, on_diagnosis, on_intervention, on_retest, posterior_mean
@@ -17,6 +17,7 @@ from relearn.learner.store import LearnerStore
 from relearn.llm.base import LLMClient
 from relearn.llm.stub import StubLLMClient
 from relearn.models.base import TextClassifier
+from relearn.rag.retriever import get_retriever
 from relearn.schemas import (
     AssessmentItem,
     AssessmentResult,
@@ -35,6 +36,7 @@ class Tutor:
         self.store = store
         self.model = model
         self.llm = llm or StubLLMClient()
+        self.retriever = None
         self.last_trace: dict | None = None
 
     def submit(self, learner_id: str, question: Question, response: LearnerResponse) -> Diagnosis:
@@ -134,16 +136,34 @@ class Tutor:
         record = self.store.get(learner_id, misconception)
         tried = list(record.strategies_tried)
         while (strategy := select_strategy(misconception, tried)) != EXHAUSTED:
-            iv = build_intervention(misconception, strategy, response, self.store.records(learner_id), self.llm)
+            passages = self.retrieve(misconception, response)
+            concept = load_content().concept_of(misconception)
+            mastery = self.store.mastery(learner_id, concept).mean if concept else None
+            iv, mode = build_grounded_intervention(misconception, strategy, response, self.llm, passages, mastery)
+            iv = iv.model_copy(update={"mode": mode, "sources": passages})
             if check_intervention(iv):
                 record = on_intervention(record, strategy)
                 self.store.put(record)
                 self.store.bump_stat(misconception, strategy, "delivered")
-                self.store.log(learner_id, "intervention", strategy, misconception, payload={"state": "intervened"})
+                self.store.log(
+                    learner_id,
+                    "intervention",
+                    strategy,
+                    misconception,
+                    payload={"state": "intervened", "mode": mode, "sources": [p["passage_id"] for p in passages]},
+                )
                 return iv
             tried.append(strategy)
         self.store.log(learner_id, "flag_for_human", misconception, misconception)
         return None
+
+    def retrieve(self, misconception: str, response: LearnerResponse) -> list[dict]:
+        try:
+            retriever = self.retriever or get_retriever()
+            query = f"{load_content().misconceptions[misconception].description}. {response.answer}. {response.working}"
+            return retriever.retrieve(query, misconception)
+        except Exception:
+            return []
 
     def plan(self, learner_id: str, misconception: str) -> list[AssessmentItem]:
         return plan_assessment(misconception, self.store.seen_items(learner_id))

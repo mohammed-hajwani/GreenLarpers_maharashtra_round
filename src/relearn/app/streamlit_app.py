@@ -8,6 +8,7 @@ from relearn.app.practice import render_practice, reset_flow
 from relearn.app.views import render_profile, render_step
 from relearn.config import load_config
 from relearn.learner.store import LearnerStore
+from relearn.llm.anthropic_client import make_llm
 from relearn.models.loader import get_active_model
 from relearn.pipeline import Tutor
 
@@ -21,7 +22,7 @@ MODEL_NAMES = {
 @st.cache_resource
 def get_tutor() -> Tutor:
     active = get_active_model()
-    return Tutor(LearnerStore(load_config().db_path()), active.model)
+    return Tutor(LearnerStore(load_config().db_path()), active.model, make_llm())
 
 
 def health() -> None:

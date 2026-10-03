@@ -62,6 +62,8 @@ class Intervention(BaseModel):
     strategy: str
     text: str
     follow_up_prompt: str
+    mode: str = "template"
+    sources: list[dict] = Field(default_factory=list)
 
 
 class AssessmentItem(BaseModel):

@@ -11,5 +11,6 @@ streamlit==1.65.0
 huggingface_hub
 torch
 sentence-transformers
+anthropic
 pytest
 ruff

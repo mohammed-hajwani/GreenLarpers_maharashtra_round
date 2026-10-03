@@ -67,6 +67,13 @@ def render_intervention(data: dict) -> None:
     st.markdown(f"**Strategy:** `{data['strategy']}` targeting {label_name(data['misconception'])}")
     st.info(data["text"])
     st.markdown(f"**Think about it:** {data['follow_up_prompt']}")
+    sources = data.get("sources") or []
+    mode = data.get("mode", "template")
+    with st.expander(f"Sources used for this intervention ({mode})"):
+        if not sources:
+            st.caption("No retrieved passages.")
+        for s in sources:
+            st.markdown(f"- `{s['passage_id']}` ({s['source']}, cosine {s['cosine']:.3f}): {s['text']}")
 
 
 def status_line(state: str, trap_passed, pending) -> None:

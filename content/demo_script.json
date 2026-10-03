@@ -155,7 +155,7 @@
       "title": "3. AI decision trace for this answer",
       "data": {
         "id": 1,
-        "ts": "2026-10-03T12:43:39+00:00",
+        "ts": "2026-10-03T12:45:29+00:00",
         "kind": "practice",
         "input_hash": "78c7afb2364e4994",
         "question_id": "m09_kicked_ball_02__m0.45_v6",
@@ -401,8 +401,29 @@
       "data": {
         "misconception": "M01",
         "strategy": "counterexample",
-        "text": "You answered \"2.7 N\" and wrote: \"The force from the hit keeps it moving forward.\". Consider a hockey puck on perfectly frictionless ice: after the stick leaves it, nothing pushes it, yet it glides on at the same speed. Things slow down in everyday life only because friction and drag act backward. An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
-        "follow_up_prompt": "If friction disappeared completely, what force would a sliding box need to keep its speed?"
+        "text": "You answered \"2.7 N\" and wrote: \"The force from the hit keeps it moving forward.\". Consider a hockey puck on perfectly frictionless ice: after the stick leaves it, nothing pushes it, yet it glides on at the same speed. Things slow down in everyday life only because friction and drag act backward. An object moving at constant velocity has zero net force; no force is needed to keep it moving. Related idea: Misconception: Believes a net force is needed to keep constant velocity. Correct idea: An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
+        "follow_up_prompt": "If friction disappeared completely, what force would a sliding box need to keep its speed?",
+        "mode": "template_with_retrieval",
+        "sources": [
+          {
+            "passage_id": "M01:definition",
+            "source": "misconceptions.yaml",
+            "text": "Misconception: Believes a net force is needed to keep constant velocity. Correct idea: An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
+            "cosine": 0.723189115524292
+          },
+          {
+            "passage_id": "M01:fbd_walkthrough",
+            "source": "interventions.yaml",
+            "text": "Let's draw the forces instead of guessing. List every object touching the moving body and the force each one exerts. At constant velocity the forward arrows and backward arrows must be the same length, because acceleration is zero and F_net = m a. Your answer adds an extra forward arrow that nothing is providing.",
+            "cosine": 0.575664758682251
+          },
+          {
+            "passage_id": "M12:definition",
+            "source": "misconceptions.yaml",
+            "text": "Misconception: Believes net force direction always matches velocity direction. Correct idea: Net force points along the acceleration, which can differ from the direction of the velocity.",
+            "cosine": 0.5938675403594971
+          }
+        ]
       }
     },
     {
@@ -443,7 +464,7 @@
         "mastery_after": 0.39903699564394257,
         "trace": {
           "id": 2,
-          "ts": "2026-10-03T12:43:39+00:00",
+          "ts": "2026-10-03T12:45:30+00:00",
           "kind": "assessment",
           "input_hash": "05c365883fd92246",
           "misconception": "M01",
@@ -534,8 +555,29 @@
       "data": {
         "misconception": "M01",
         "strategy": "fbd_walkthrough",
-        "text": "Let's draw the forces instead of guessing. List every object touching the moving body and the force each one exerts. At constant velocity the forward arrows and backward arrows must be the same length, because acceleration is zero and F_net = m a. Your answer \"2.7 N\" adds an extra forward arrow that nothing is providing. An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
-        "follow_up_prompt": "Sketch the forces on a car cruising at steady speed. Which arrows are equal?"
+        "text": "Let's draw the forces instead of guessing. List every object touching the moving body and the force each one exerts. At constant velocity the forward arrows and backward arrows must be the same length, because acceleration is zero and F_net = m a. Your answer \"2.7 N\" adds an extra forward arrow that nothing is providing. An object moving at constant velocity has zero net force; no force is needed to keep it moving. Related idea: Misconception: Believes a net force is needed to keep constant velocity. Correct idea: An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
+        "follow_up_prompt": "Sketch the forces on a car cruising at steady speed. Which arrows are equal?",
+        "mode": "template_with_retrieval",
+        "sources": [
+          {
+            "passage_id": "M01:definition",
+            "source": "misconceptions.yaml",
+            "text": "Misconception: Believes a net force is needed to keep constant velocity. Correct idea: An object moving at constant velocity has zero net force; no force is needed to keep it moving.",
+            "cosine": 0.723189115524292
+          },
+          {
+            "passage_id": "M01:fbd_walkthrough",
+            "source": "interventions.yaml",
+            "text": "Let's draw the forces instead of guessing. List every object touching the moving body and the force each one exerts. At constant velocity the forward arrows and backward arrows must be the same length, because acceleration is zero and F_net = m a. Your answer adds an extra forward arrow that nothing is providing.",
+            "cosine": 0.575664758682251
+          },
+          {
+            "passage_id": "M12:definition",
+            "source": "misconceptions.yaml",
+            "text": "Misconception: Believes net force direction always matches velocity direction. Correct idea: Net force points along the acceleration, which can differ from the direction of the velocity.",
+            "cosine": 0.5938675403594971
+          }
+        ]
       }
     },
     {
@@ -576,7 +618,7 @@
         "mastery_after": 0.6529044210017071,
         "trace": {
           "id": 3,
-          "ts": "2026-10-03T12:43:39+00:00",
+          "ts": "2026-10-03T12:45:30+00:00",
           "kind": "assessment",
           "input_hash": "551df47552376c24",
           "misconception": "M01",
@@ -732,7 +774,7 @@
         ],
         "timeline": [
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:29+00:00",
             "kind": "practice",
             "ref_id": "m09_kicked_ball_02__m0.45_v6",
             "misconception": "M09",
@@ -760,7 +802,7 @@
             "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:29+00:00",
             "kind": "probe",
             "ref_id": "p_cg2_01",
             "misconception": null,
@@ -799,7 +841,7 @@
             ]
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:29+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -807,15 +849,21 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "intervention",
             "ref_id": "counterexample",
             "misconception": "M01",
             "correct": null,
-            "state": "intervened"
+            "state": "intervened",
+            "mode": "template_with_retrieval",
+            "sources": [
+              "M01:definition",
+              "M01:fbd_walkthrough",
+              "M12:definition"
+            ]
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -823,7 +871,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -831,7 +879,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t3",
             "misconception": "M01",
@@ -839,7 +887,7 @@
             "answer": "Gravity is bigger than air resistance"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap1",
             "misconception": "M01",
@@ -847,7 +895,7 @@
             "answer": "A forward force that keeps it moving"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -855,15 +903,21 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "intervention",
             "ref_id": "fbd_walkthrough",
             "misconception": "M01",
             "correct": null,
-            "state": "intervened"
+            "state": "intervened",
+            "mode": "template_with_retrieval",
+            "sources": [
+              "M01:definition",
+              "M01:fbd_walkthrough",
+              "M12:definition"
+            ]
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t4",
             "misconception": "M01",
@@ -871,7 +925,7 @@
             "answer": "300 N"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -879,7 +933,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -887,7 +941,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap2",
             "misconception": "M01",
@@ -895,7 +949,7 @@
             "answer": "No, they are equal"
           },
           {
-            "ts": "2026-10-03T12:43:39+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -903,7 +957,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:43:40+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "practice",
             "ref_id": "m06_push_down_03__F50_m5",
             "misconception": null,
@@ -931,7 +985,7 @@
             "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:43:40+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "practice",
             "ref_id": "m02_cliff_rocks_03__h20_m12_m220",
             "misconception": null,
@@ -959,7 +1013,7 @@
             "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:43:40+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "practice",
             "ref_id": "m03_stone_top_03__v18",
             "misconception": null,
@@ -987,7 +1041,7 @@
             "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:43:40+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "retest",
             "ref_id": "i_m01_r1",
             "misconception": "M01",
@@ -995,7 +1049,7 @@
             "answer": "None"
           },
           {
-            "ts": "2026-10-03T12:43:40+00:00",
+            "ts": "2026-10-03T12:45:30+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",

@@ -149,3 +149,15 @@
   - persistence: AUC 0.885, Brier 0.072, accuracy 0.900, base rate 0.096
   - Persistence accuracy is no better than always predicting "no"; AUC is the informative number.
   - These are not real-world numbers, and every UI surface shows "Estimate based on simulated learners, not validated on real students."
+
+## Upgrade stage I: grounded interventions (stretch)
+- The classifier decides which misconception it is; the intervention step only decides how to explain it. The LLM never classifies.
+- The retrieval corpus has 114 passages: misconception definitions with their correct idea, intervention templates with placeholders removed, and item-bank stems with their answers. They are embedded with the same MiniLM encoder and cached in `.cache/rag_index.npz`, keyed by a corpus hash. Retrieval is cosine top-3, restricted to the diagnosed misconception's concept, with a small bonus for the misconception itself.
+- With `ANTHROPIC_API_KEY` set, `make_llm()` returns `AnthropicClient`:
+  - model `claude-opus-5-5`, overridable with `RELEARN_LLM_MODEL`
+  - effort low, 5 s timeout, no retries
+  - server-side refusal fallback `fallbacks: "default"`
+  - any error, timeout, refusal or empty answer raises and falls back to the template
+  - its output must pass `check_intervention` (non-empty, at most 250 words, contains the stored correct-concept sentence verbatim, no forbidden claim)
+- Without a key, the stub keeps the template and appends one retrieved "Related idea" passage when the checker still passes. The UI lists "Sources used for this intervention" with passage id, file and cosine.
+- `Intervention` gained `mode` and `sources` (PRD section 6 updated). The grounded path and the fallback paths are tested with a fake LLM; no test calls the network.
