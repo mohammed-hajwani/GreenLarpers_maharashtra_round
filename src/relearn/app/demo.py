@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from relearn.analytics import dashboard_data
 from relearn.config import ROOT
 from relearn.content import load_content
 from relearn.data.generator import make_question
@@ -25,12 +26,6 @@ def _wrong(item: AssessmentItem) -> str:
     return next(o for o in item.options if o != item.correct_answer)
 
 
-def _item_rows(items: list[AssessmentItem], answers: dict, correct: dict) -> list[dict]:
-    return [
-        {"kind": i.kind, "stem": i.stem, "answer": answers[i.item_id], "correct": correct[i.item_id]} for i in items
-    ]
-
-
 def _round(tutor: Tutor, learner: str, m: str, correct_kinds: list[str] | None) -> dict:
     items = tutor.plan(learner, m)
     answers = {}
@@ -41,13 +36,70 @@ def _round(tutor: Tutor, learner: str, m: str, correct_kinds: list[str] | None) 
             remaining.remove(i.kind)
         answers[i.item_id] = i.correct_answer if ok else _wrong(i)
     result, record = tutor.submit_assessment(learner, m, items, answers)
+    trace = tutor.last_trace
     return {
-        "items": _item_rows(items, answers, result.item_correct),
+        "items": [
+            {"kind": i.kind, "stem": i.stem, "answer": answers[i.item_id], "correct": result.item_correct[i.item_id]}
+            for i in items
+        ],
         "transfer": f"{result.transfer_correct}/{result.transfer_total}",
         "trap_passed": result.trap_passed,
         "state": record.state.value,
         "pending_retest_in": tutor.pending_retest(learner, m),
+        "mastery_before": trace["mastery_updates"][0]["before"],
+        "mastery_after": trace["mastery_updates"][-1]["after"],
+        "trace": trace,
     }
+
+
+def _probe_phase(tutor: Tutor, learner: str, d, held: str) -> tuple:
+    used: set[str] = set()
+    probe_steps, cards = [], []
+    while (choice := tutor.next_probe(d, used)) is not None:
+        probe = choice.probe
+        answer = probe.expected_answer_by_label.get(held, probe.options[0])
+        used.add(probe.probe_id)
+        before = d.top_labels
+        d, step = tutor.answer_probe(learner, d, choice, answer)
+        probe_steps.append(step)
+        cards.append(
+            {
+                "kind": "probe",
+                "title": "2. Diagnostic probe chosen by expected information gain",
+                "data": {
+                    "stem": probe.stem,
+                    "options": probe.options,
+                    "answer": answer,
+                    "before": before,
+                    "expected_gain": step.expected_gain,
+                    "runners_up": step.runners_up,
+                    "entropy_before": step.entropy_before,
+                    "entropy_after": step.entropy_after,
+                    **d.model_dump(),
+                },
+            }
+        )
+    return d, probe_steps, cards
+
+
+def _spacing(tutor: Tutor, learner: str, concepts: list[str]) -> list[dict]:
+    rows = []
+    for concept in concepts:
+        q, decision = tutor.next_question(learner, concept)
+        r = LearnerResponse(question_id=q.question_id, answer=q.correct_answer)
+        d = tutor.submit(learner, q, r)
+        trace = tutor.finalize_interaction(learner, q, r, d, d, [])
+        rows.append(
+            {
+                "why": decision.headline,
+                "difficulty": decision.band,
+                "stem": q.stem,
+                "answer": q.correct_answer,
+                "correct": d.is_correct,
+                "mastery_after": trace["mastery"]["after"],
+            }
+        )
+    return rows
 
 
 def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
@@ -58,81 +110,64 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
     p = script["practice"]
     q = _question(p["template_id"], p["params"])
     response = LearnerResponse(question_id=q.question_id, answer=p["answer"], working=p["working"])
-    d = tutor.submit(learner, q, response)
-    initial = d
-    probe_steps = []
+    initial = tutor.submit(learner, q, response)
     steps.append(
         {
             "kind": "diagnosis",
             "title": "1. Learner submits a wrong answer",
-            "data": {
-                "stem": q.stem,
-                "answer": response.answer,
-                "working": response.working,
-                **d.model_dump(),
-            },
+            "data": {"stem": q.stem, "answer": response.answer, "working": response.working, **initial.model_dump()},
         }
     )
-    used: set[str] = set()
-    while (choice := tutor.next_probe(d, used)) is not None:
-        probe = choice.probe
-        answer = probe.expected_answer_by_label.get(script["held_misconception"], probe.options[0])
-        used.add(probe.probe_id)
-        before = d.top_labels
-        d, step = tutor.answer_probe(learner, d, choice, answer)
-        probe_steps.append(step)
-        steps.append(
-            {
-                "kind": "probe",
-                "title": "2. Top labels are close, so a probe separates them",
-                "data": {
-                    "stem": probe.stem,
-                    "options": probe.options,
-                    "answer": answer,
-                    "before": before,
-                    **d.model_dump(),
-                },
-            }
-        )
-    tutor.finalize_interaction(learner, q, response, initial, d, probe_steps)
+    d, probe_steps, cards = _probe_phase(tutor, learner, initial, script["held_misconception"])
+    steps.extend(cards)
+    trace = tutor.finalize_interaction(learner, q, response, initial, d, probe_steps)
+    steps.append({"kind": "trace", "title": "3. AI decision trace for this answer", "data": trace})
     m = d.top_labels[0][0]
     iv = tutor.intervene(learner, m, response)
-    steps.append({"kind": "intervention", "title": "3. Targeted intervention", "data": iv.model_dump()})
+    steps.append({"kind": "intervention", "title": "4. Targeted intervention", "data": iv.model_dump()})
     r1 = _round(tutor, learner, m, script["round_1_correct_kinds"])
-    steps.append({"kind": "assessment", "title": "4. Reassessment: passes follow-ups, fails the trap", "data": r1})
+    steps.append({"kind": "assessment", "title": "5. Reassessment: passes follow-ups, fails the trap", "data": r1})
     iv2 = tutor.intervene(learner, m, response)
-    steps.append({"kind": "intervention", "title": "5. Escalation to a second strategy", "data": iv2.model_dump()})
+    steps.append({"kind": "intervention", "title": "6. Escalation to a second strategy", "data": iv2.model_dump()})
     r2 = _round(tutor, learner, m, None if script["round_2_all_correct"] else [])
-    steps.append({"kind": "assessment", "title": "6. Reassessment: transfer and trap passed", "data": r2})
-    fillers = []
-    for f in script["filler_practice"]:
-        fq = _question(f["template_id"], f["params"])
-        fr = LearnerResponse(question_id=fq.question_id, answer=fq.correct_answer)
-        fd = tutor.submit(learner, fq, fr)
-        tutor.finalize_interaction(learner, fq, fr, fd, fd, [])
-        fillers.append({"stem": fq.stem, "answer": fq.correct_answer, "correct": fd.is_correct})
-    steps.append({"kind": "practice", "title": "7. Other practice in between (spacing)", "data": {"rows": fillers}})
-    due = tutor.due_retests(learner)
-    _, item = next(x for x in due if x[0] == m)
+    steps.append({"kind": "assessment", "title": "7. Reassessment: transfer and trap passed", "data": r2})
+    rows = _spacing(tutor, learner, script["spacing_concepts"])
+    steps.append({"kind": "practice", "title": "8. Adaptive practice in between (spacing)", "data": {"rows": rows}})
+    _, item = next(x for x in tutor.due_retests(learner) if x[0] == m)
     answer = item.correct_answer if script["retest_correct"] else _wrong(item)
     result, record = tutor.submit_retest(learner, item, answer)
+    retest_trace = tutor.last_trace
     steps.append(
         {
             "kind": "retest",
-            "title": "8. Delayed retest",
+            "title": "9. Delayed retest",
             "data": {
                 "stem": item.stem,
                 "answer": answer,
                 "correct": result.retest_passed,
                 "state": record.state.value,
+                "mastery_before": retest_trace["mastery_updates"][0]["before"],
+                "mastery_after": retest_trace["mastery_updates"][-1]["after"],
             },
+        }
+    )
+    _, decision = tutor.next_question(learner)
+    steps.append(
+        {
+            "kind": "next",
+            "title": "10. Adaptive next question",
+            "data": {"headline": decision.headline, "band": decision.band, "reasons": decision.reasons},
         }
     )
     steps.append(
         {
             "kind": "profile",
-            "title": "9. Learner profile",
-            "data": {"rows": tutor.profile(learner), "timeline": tutor.store.timeline(learner)},
+            "title": "11. Learner profile and dashboard",
+            "data": {
+                "rows": tutor.profile(learner),
+                "timeline": tutor.store.timeline(learner),
+                "dashboard": dashboard_data(tutor.store, learner),
+            },
         }
     )
     return steps

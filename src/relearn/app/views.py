@@ -31,16 +31,29 @@ def render_diagnosis(data: dict) -> None:
         return
     top = data["top_labels"][0][0]
     info = load_content().misconceptions[top]
-    st.error(f"Likely misconception: **{label_name(top)}**")
+    confidence = data.get("confidence") or data["top_labels"][0][1]
+    st.error(f"Likely misconception: **{label_name(top)}** — calibrated confidence {confidence:.1%}")
     st.caption(info.description)
     render_top_labels(data["top_labels"])
-    if data["ambiguous"]:
-        st.warning(f"Top labels are close and both belong to confusable group {data['confusable_group']}.")
+    route = data.get("route", "accept")
+    if route == "probe":
+        st.warning(
+            "Confidence is below the accept threshold, so the system asks a diagnostic probe. "
+            f"Entropy {data.get('entropy', 0):.3f} bits."
+        )
+    elif route == "uncertain":
+        st.warning("Confidence is below 50%: diagnosis is uncertain and routed to a probe or review.")
 
 
 def render_probe(data: dict) -> None:
     st.markdown(f"**Probe:** {data['stem']}")
     st.markdown(f"Learner chose: `{data['answer']}`")
+    if "expected_gain" in data:
+        runners = ", ".join(f"{pid} ({g:.3f})" for pid, g in data["runners_up"]) or "none"
+        st.markdown(
+            f"Expected information gain **{data['expected_gain']:.3f} bits** (runners-up: {runners}). "
+            f"Entropy **{data['entropy_before']:.3f} → {data['entropy_after']:.3f} bits**."
+        )
     cols = st.columns(2)
     with cols[0]:
         st.caption("Before probe")
@@ -72,6 +85,8 @@ def render_assessment(data: dict) -> None:
     rows["correct"] = rows["correct"].map({True: "✅", False: "❌"})
     st.dataframe(rows, hide_index=True, width="stretch")
     st.markdown(f"Transfer: **{data['transfer']}** · Trap passed: **{data['trap_passed']}**")
+    if "mastery_before" in data:
+        st.markdown(f"Concept mastery: **{data['mastery_before']:.1%} → {data['mastery_after']:.1%}**")
     status_line(data["state"], data["trap_passed"], data.get("pending_retest_in"))
 
 
@@ -84,6 +99,8 @@ def render_practice_rows(data: dict) -> None:
 def render_retest(data: dict) -> None:
     st.markdown(f"**Retest:** {data['stem']}")
     st.markdown(f"Learner answered `{data['answer']}` — {'correct' if data['correct'] else 'wrong'}")
+    if "mastery_before" in data:
+        st.markdown(f"Concept mastery: **{data['mastery_before']:.1%} → {data['mastery_after']:.1%}**")
     status_line(data["state"], None, None)
 
 
@@ -106,8 +123,32 @@ def render_profile(data: dict) -> None:
         }
         for i, e in enumerate(data["timeline"])
     ]
-    with st.expander("Timeline", expanded=True):
+    with st.expander("Timeline", expanded=False):
         st.dataframe(pd.DataFrame(events), hide_index=True, width="stretch")
+    dash = data.get("dashboard")
+    if dash and not dash["empty"]:
+        st.markdown(f"**Overall mastery:** {dash['overall_mastery']:.1%}")
+        st.bar_chart(pd.DataFrame(dash["concept_mastery"]).set_index("concept")["mastery"], y_label="mastery")
+        st.line_chart(
+            pd.DataFrame(dash["mastery_over_time"])
+            .pivot_table(index="step", columns="concept", values="mastery")
+            .ffill()
+        )
+
+
+def render_trace_step(data: dict) -> None:
+    from relearn.app.trace_view import render_practice_trace
+
+    m = data.get("mastery")
+    if m:
+        concept = load_content().concepts[m["concept"]].name
+        st.markdown(f"**{concept}** mastery {m['before']:.1%} → {m['after']:.1%} after this answer.")
+    render_practice_trace(data)
+
+
+def render_next(data: dict) -> None:
+    st.info(data["headline"])
+    st.caption(f"Difficulty: **{data['band']}** · " + "; ".join(data["reasons"]))
 
 
 RENDERERS = {
@@ -118,6 +159,8 @@ RENDERERS = {
     "practice": render_practice_rows,
     "retest": render_retest,
     "profile": render_profile,
+    "trace": render_trace_step,
+    "next": render_next,
 }
 
 

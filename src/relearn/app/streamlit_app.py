@@ -12,7 +12,7 @@ from relearn.models.loader import get_active_model
 from relearn.pipeline import Tutor
 
 MODEL_NAMES = {
-    "v1_embedding": "MiniLM embedding hybrid (v1)",
+    "v1_embedding": "MiniLM embedding hybrid",
     "baseline": "TF-IDF + logistic regression baseline",
     "replay": "no model loaded (labeled replay only)",
 }
@@ -33,7 +33,10 @@ def health() -> None:
 
 def demo_page(tutor: Tutor) -> None:
     st.header("Demo mode")
-    st.caption("A scripted learner runs through the real pipeline: diagnose → probe → intervene → reassess → retest.")
+    st.caption(
+        "A scripted learner runs through the real pipeline: diagnose → information-gain probe → decision trace → "
+        "intervene → reassess (trap) → escalate → reassess → adaptive spacing → delayed retest → dashboard."
+    )
     cols = st.columns(3)
     if cols[0].button("Start demo", type="primary"):
         if tutor.model is None:
@@ -52,10 +55,22 @@ def demo_page(tutor: Tutor) -> None:
     if cols[2].button("Show all"):
         st.session_state.demo_idx = idx = len(steps)
     if st.session_state.get("demo_replay"):
-        st.warning("Model unavailable: replaying recorded outputs.")
+        st.error(
+            "REPLAY: no model could be loaded, so these are recorded outputs from an earlier real run, "
+            "not live inference."
+        )
     for step in steps[:idx]:
         with st.container(border=True):
             render_step(step)
+
+
+BADGE_COLOR = {"v1_embedding": "green", "baseline": "orange", "replay": "red"}
+
+
+def model_badge() -> None:
+    active = get_active_model()
+    version = f" v{active.model.version}" if active.model else ""
+    st.markdown(f":{BADGE_COLOR[active.source]}-badge[Active model: {MODEL_NAMES[active.source]}{version}]")
 
 
 def sidebar(tutor: Tutor) -> str:
@@ -82,6 +97,7 @@ def main() -> None:
         st.session_state.learner_id = "learner-" + uuid.uuid4().hex[:8]
     tutor = get_tutor()
     page = sidebar(tutor)
+    model_badge()
     learner = st.session_state.learner_id
     if page == "Practice":
         st.header("Practice")

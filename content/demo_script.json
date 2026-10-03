@@ -15,29 +15,10 @@
     "transfer"
   ],
   "round_2_all_correct": true,
-  "filler_practice": [
-    {
-      "template_id": "m07_flour_weight_02",
-      "params": {
-        "m": 2
-      },
-      "correct": true
-    },
-    {
-      "template_id": "m02_moon_hammer_02",
-      "params": {
-        "m": 1
-      },
-      "correct": true
-    },
-    {
-      "template_id": "m04_cyclist_02",
-      "params": {
-        "v": 6,
-        "t": 20
-      },
-      "correct": true
-    }
+  "spacing_concepts": [
+    "weight_normal",
+    "free_fall",
+    "kinematics"
   ],
   "retest_correct": true,
   "recorded_steps": [
@@ -89,7 +70,7 @@
     },
     {
       "kind": "probe",
-      "title": "2. Top labels are close, so a probe separates them",
+      "title": "2. Diagnostic probe chosen by expected information gain",
       "data": {
         "stem": "A spacecraft drifts at constant velocity in deep space with its engines off. What happens next?",
         "options": [
@@ -113,6 +94,23 @@
             0.00452621154287176
           ]
         ],
+        "expected_gain": 0.7207789164457468,
+        "runners_up": [
+          [
+            "p_cg2_02",
+            0.7208
+          ],
+          [
+            "p_cg2_03",
+            0.0133
+          ],
+          [
+            "p_cg4_02",
+            0.0012
+          ]
+        ],
+        "entropy_before": 1.0434605427007662,
+        "entropy_after": 0.31984174570672447,
         "top_labels": [
           [
             "M01",
@@ -153,8 +151,252 @@
       }
     },
     {
+      "kind": "trace",
+      "title": "3. AI decision trace for this answer",
+      "data": {
+        "id": 1,
+        "ts": "2026-10-03T12:40:23+00:00",
+        "kind": "practice",
+        "input_hash": "78c7afb2364e4994",
+        "question_id": "m09_kicked_ball_02__m0.45_v6",
+        "question": "A 0.45 kg ball is kicked and then rolls along frictionless ground at 6 m/s after leaving the foot. What horizontal force acts on the ball while it rolls?",
+        "answer": "2.7 N",
+        "working": "The force from the hit keeps it moving forward.",
+        "model_name": "v1_embedding_minilm_hybrid",
+        "model_version": "1",
+        "thresholds": {
+          "accept": 0.7,
+          "probe": 0.5,
+          "val_table": [
+            {
+              "threshold": 0.6,
+              "coverage": 0.7640845070422535,
+              "precision": 0.8847926267281107
+            },
+            {
+              "threshold": 0.65,
+              "coverage": 0.7359154929577465,
+              "precision": 0.9186602870813397
+            },
+            {
+              "threshold": 0.7,
+              "coverage": 0.6654929577464789,
+              "precision": 0.9656084656084656
+            },
+            {
+              "threshold": 0.75,
+              "coverage": 0.5933098591549296,
+              "precision": 0.9940652818991098
+            },
+            {
+              "threshold": 0.8,
+              "coverage": 0.5422535211267606,
+              "precision": 1.0
+            },
+            {
+              "threshold": 0.85,
+              "coverage": 0.4982394366197183,
+              "precision": 1.0
+            },
+            {
+              "threshold": 0.9,
+              "coverage": 0.426056338028169,
+              "precision": 1.0
+            },
+            {
+              "threshold": 0.95,
+              "coverage": 0.3873239436619718,
+              "precision": 1.0
+            }
+          ]
+        },
+        "initial": {
+          "predicted": "M09",
+          "top_predictions": [
+            [
+              "M09",
+              0.5894498797926502
+            ],
+            [
+              "M01",
+              0.40336909884701744
+            ],
+            [
+              "M12",
+              0.00452621154287176
+            ]
+          ],
+          "confidence": 0.5894498797926502,
+          "route": "probe",
+          "entropy": 1.0434605427007662,
+          "is_correct": false
+        },
+        "probes": [
+          {
+            "probe_id": "p_cg2_01",
+            "expected_information_gain": 0.7207789164457468,
+            "runners_up": [
+              [
+                "p_cg2_02",
+                0.7208
+              ],
+              [
+                "p_cg2_03",
+                0.0133
+              ],
+              [
+                "p_cg4_02",
+                0.0012
+              ]
+            ],
+            "answer": "It slows down, because nothing is pushing it anymore",
+            "entropy_before": 1.0434605427007662,
+            "entropy_after": 0.31984174570672447,
+            "information_gain": 0.7236187969940417,
+            "confidence_before": 0.5894498797926502,
+            "confidence_after": 0.9466410241110583,
+            "mastery": {
+              "concept": "force_motion",
+              "event": "probe",
+              "ref_id": "p_cg2_01",
+              "alpha_before": 1.0,
+              "beta_before": 1.0,
+              "alpha_after": 1.0,
+              "beta_after": 1.0,
+              "detail": {
+                "probe_signal": "uninformative",
+                "log_id": 1
+              },
+              "before": 0.5,
+              "after": 0.5
+            }
+          }
+        ],
+        "final": {
+          "predicted": "M01",
+          "top_predictions": [
+            [
+              "M01",
+              0.9466410241110583
+            ],
+            [
+              "M09",
+              0.05123489090265189
+            ],
+            [
+              "M06",
+              0.0005234223599679956
+            ]
+          ],
+          "confidence": 0.9466410241110583,
+          "route": "accept",
+          "entropy": 0.31984174570672447,
+          "is_correct": false
+        },
+        "misconception_state": "active",
+        "mastery": {
+          "concept": "force_motion",
+          "event": "practice",
+          "ref_id": "m09_kicked_ball_02__m0.45_v6",
+          "alpha_before": 1.0,
+          "beta_before": 1.0,
+          "alpha_after": 1.0,
+          "beta_after": 2.9466410241110585,
+          "detail": {
+            "difficulty": "medium",
+            "misconception": "M01",
+            "confidence": 0.9466410241110583,
+            "log_id": 2
+          },
+          "before": 0.5,
+          "after": 0.2533800246565977
+        },
+        "next_difficulty": {
+          "concept": "force_motion",
+          "concept_name": "Force vs Motion",
+          "mastery": 0.2533800246565977,
+          "band": "easy",
+          "headline": "Next question selected because your mastery of Force vs Motion is currently 25%.",
+          "reasons": [
+            "mastery 25% maps to the easy band"
+          ]
+        },
+        "explanation": {
+          "label": "M01",
+          "model_name": "v1_embedding_minilm_hybrid",
+          "methods": [
+            "tfidf_coefficients",
+            "nearest_training_examples",
+            "token_occlusion"
+          ],
+          "influential_features": [
+            {
+              "feature": "it",
+              "contribution": 0.0534
+            },
+            {
+              "feature": "it moving",
+              "contribution": 0.0528
+            },
+            {
+              "feature": "forward",
+              "contribution": 0.0506
+            },
+            {
+              "feature": "moving",
+              "contribution": 0.0502
+            },
+            {
+              "feature": "rolls",
+              "contribution": 0.0475
+            },
+            {
+              "feature": "keeps it",
+              "contribution": 0.0405
+            }
+          ],
+          "similar_examples": [
+            {
+              "text": "a 0.45 kg ball is kicked and then rolls along frictionless ground at 6 m/s after leaving the foot. what horizontal force acts on the ball while it rolls? [sep] 2.7 n || i think a force is needed to keep the ball rolling at 6 m/s.",
+              "cosine": 0.762
+            },
+            {
+              "text": "a 0.4 kg ball is kicked and then rolls along frictionless ground at 8 m/s after leaving the foot. what horizontal force acts on the ball while it rolls? [sep] 3.2 n || basically it keeps moving, so something must be pushing it forward.",
+              "cosine": 0.7448
+            },
+            {
+              "text": "a 0.45 kg ball is kicked and then rolls along frictionless ground at 10 m/s after leaving the foot. what horizontal force acts on the ball while it rolls? [sep] 4.5 n || basically it keeps moving, so something must be pushing it forward.",
+              "cosine": 0.7209
+            }
+          ],
+          "occlusion": [
+            {
+              "word": "keeps",
+              "probability_drop": 0.2798
+            },
+            {
+              "word": "forward.",
+              "probability_drop": 0.1782
+            },
+            {
+              "word": "moving",
+              "probability_drop": 0.0895
+            },
+            {
+              "word": "it",
+              "probability_drop": 0.0739
+            },
+            {
+              "word": "from",
+              "probability_drop": 0.0284
+            }
+          ]
+        }
+      }
+    },
+    {
       "kind": "intervention",
-      "title": "3. Targeted intervention",
+      "title": "4. Targeted intervention",
       "data": {
         "misconception": "M01",
         "strategy": "counterexample",
@@ -164,7 +406,7 @@
     },
     {
       "kind": "assessment",
-      "title": "4. Reassessment: passes follow-ups, fails the trap",
+      "title": "5. Reassessment: passes follow-ups, fails the trap",
       "data": {
         "items": [
           {
@@ -195,12 +437,95 @@
         "transfer": "2/3",
         "trap_passed": false,
         "state": "active",
-        "pending_retest_in": null
+        "pending_retest_in": null,
+        "mastery_before": 0.2533800246565977,
+        "mastery_after": 0.39903699564394257,
+        "trace": {
+          "id": 2,
+          "ts": "2026-10-03T12:40:23+00:00",
+          "kind": "assessment",
+          "input_hash": "05c365883fd92246",
+          "misconception": "M01",
+          "state_before": "intervened",
+          "state_after": "active",
+          "transfer": "2/3",
+          "trap_passed": false,
+          "retest_passed": null,
+          "items": {
+            "i_m01_t1": true,
+            "i_m01_t2": true,
+            "i_m01_t3": false,
+            "i_m01_trap1": false
+          },
+          "mastery_updates": [
+            {
+              "concept": "force_motion",
+              "event": "transfer",
+              "ref_id": "i_m01_t1",
+              "alpha_before": 1.0,
+              "beta_before": 2.9466410241110585,
+              "alpha_after": 2.5,
+              "beta_after": 2.888241793387727,
+              "detail": {
+                "item_kind": "transfer",
+                "log_id": 3
+              },
+              "before": 0.2533800246565977,
+              "after": 0.4639732394837807
+            },
+            {
+              "concept": "force_motion",
+              "event": "transfer",
+              "ref_id": "i_m01_t2",
+              "alpha_before": 2.5,
+              "beta_before": 2.888241793387727,
+              "alpha_after": 3.955,
+              "beta_after": 2.831594539586095,
+              "detail": {
+                "item_kind": "transfer",
+                "log_id": 4
+              },
+              "before": 0.4639732394837807,
+              "after": 0.5827665078458054
+            },
+            {
+              "concept": "force_motion",
+              "event": "transfer",
+              "ref_id": "i_m01_t3",
+              "alpha_before": 3.955,
+              "beta_before": 2.831594539586095,
+              "alpha_after": 3.86635,
+              "beta_after": 3.7766467033985123,
+              "detail": {
+                "item_kind": "transfer",
+                "log_id": 5
+              },
+              "before": 0.5827665078458054,
+              "after": 0.5058683328073137
+            },
+            {
+              "concept": "force_motion",
+              "event": "trap",
+              "ref_id": "i_m01_trap1",
+              "alpha_before": 3.86635,
+              "beta_before": 3.7766467033985123,
+              "alpha_after": 3.7803595,
+              "beta_after": 5.693347302296557,
+              "detail": {
+                "item_kind": "trap",
+                "log_id": 6
+              },
+              "before": 0.5058683328073137,
+              "after": 0.39903699564394257
+            }
+          ],
+          "resolution_rule": "resolved only after >=2/3 transfer correct, trap passed, and a delayed retest passed"
+        }
       }
     },
     {
       "kind": "intervention",
-      "title": "5. Escalation to a second strategy",
+      "title": "6. Escalation to a second strategy",
       "data": {
         "misconception": "M01",
         "strategy": "fbd_walkthrough",
@@ -210,7 +535,7 @@
     },
     {
       "kind": "assessment",
-      "title": "6. Reassessment: transfer and trap passed",
+      "title": "7. Reassessment: transfer and trap passed",
       "data": {
         "items": [
           {
@@ -241,45 +566,150 @@
         "transfer": "3/3",
         "trap_passed": true,
         "state": "intervened",
-        "pending_retest_in": 3
+        "pending_retest_in": 3,
+        "mastery_before": 0.39903699564394257,
+        "mastery_after": 0.6529044210017071,
+        "trace": {
+          "id": 3,
+          "ts": "2026-10-03T12:40:23+00:00",
+          "kind": "assessment",
+          "input_hash": "551df47552376c24",
+          "misconception": "M01",
+          "state_before": "intervened",
+          "state_after": "intervened",
+          "transfer": "3/3",
+          "trap_passed": true,
+          "retest_passed": null,
+          "items": {
+            "i_m01_t4": true,
+            "i_m01_t1": true,
+            "i_m01_t2": true,
+            "i_m01_trap2": true
+          },
+          "mastery_updates": [
+            {
+              "concept": "force_motion",
+              "event": "transfer",
+              "ref_id": "i_m01_t4",
+              "alpha_before": 3.7803595,
+              "beta_before": 5.693347302296557,
+              "alpha_after": 5.1969487149999996,
+              "beta_after": 5.55254688322766,
+              "detail": {
+                "item_kind": "transfer",
+                "log_id": 7
+              },
+              "before": 0.39903699564394257,
+              "after": 0.4834597742294861
+            },
+            {
+              "concept": "force_motion",
+              "event": "transfer",
+              "ref_id": "i_m01_t1",
+              "alpha_before": 5.1969487149999996,
+              "beta_before": 5.55254688322766,
+              "alpha_after": 6.57104025355,
+              "beta_after": 5.4159704767308305,
+              "detail": {
+                "item_kind": "transfer",
+                "log_id": 8
+              },
+              "before": 0.4834597742294861,
+              "after": 0.5481800593496302
+            },
+            {
+              "concept": "force_motion",
+              "event": "transfer",
+              "ref_id": "i_m01_t2",
+              "alpha_before": 6.57104025355,
+              "beta_before": 5.4159704767308305,
+              "alpha_after": 7.903909045943499,
+              "beta_after": 5.283491362428905,
+              "detail": {
+                "item_kind": "transfer",
+                "log_id": 9
+              },
+              "before": 0.5481800593496302,
+              "after": 0.5993530795444318
+            },
+            {
+              "concept": "force_motion",
+              "event": "trap",
+              "ref_id": "i_m01_trap2",
+              "alpha_before": 7.903909045943499,
+              "beta_before": 5.283491362428905,
+              "alpha_after": 9.696791774565195,
+              "beta_after": 5.154986621556038,
+              "detail": {
+                "item_kind": "trap",
+                "log_id": 10
+              },
+              "before": 0.5993530795444318,
+              "after": 0.6529044210017071
+            }
+          ],
+          "resolution_rule": "resolved only after >=2/3 transfer correct, trap passed, and a delayed retest passed"
+        }
       }
     },
     {
       "kind": "practice",
-      "title": "7. Other practice in between (spacing)",
+      "title": "8. Adaptive practice in between (spacing)",
       "data": {
         "rows": [
           {
-            "stem": "What is the weight of a 2 kg bag of flour on Earth? Use g = 9.8.",
-            "answer": "19.6 N",
-            "correct": true
+            "why": "Next question selected because your mastery of Weight and Normal Force is currently 50%.",
+            "difficulty": "medium",
+            "stem": "A 5 kg box sits on the floor while you push straight down on it with 50 N. The normal force on the box is:",
+            "answer": "Greater than its weight",
+            "correct": true,
+            "mastery_after": 0.6666666666666666
           },
           {
-            "stem": "An astronaut on the Moon drops a 1 kg hammer and a feather at the same time from the same height. What happens?",
-            "answer": "They land at the same time",
-            "correct": true
+            "why": "Next question selected because your mastery of Free Fall is currently 50%.",
+            "difficulty": "medium",
+            "stem": "Two rocks of masses 2 kg and 20 kg are dropped together from a 20 m cliff. Ignoring air resistance, explain which one lands first.",
+            "answer": "Both land at the same time.",
+            "correct": true,
+            "mastery_after": 0.6666666666666666
           },
           {
-            "stem": "A cyclist rides in a straight line at a constant 6 m/s for 20 s. What is the cyclist's acceleration?",
-            "answer": "0 m/s^2",
-            "correct": true
+            "why": "Next question selected because your mastery of Velocity vs Acceleration is currently 50%.",
+            "difficulty": "medium",
+            "stem": "A stone is thrown upward at 18 m/s. Describe its acceleration at the instant it reaches maximum height.",
+            "answer": "It is 9.8 m/s^2 downward.",
+            "correct": true,
+            "mastery_after": 0.6666666666666666
           }
         ]
       }
     },
     {
       "kind": "retest",
-      "title": "8. Delayed retest",
+      "title": "9. Delayed retest",
       "data": {
         "stem": "A rock drifts through deep space at 800 m/s with nothing near it. What force is needed to keep it at 800 m/s?",
         "answer": "None",
         "correct": true,
-        "state": "resolved"
+        "state": "resolved",
+        "mastery_before": 0.6529044210017071,
+        "mastery_after": 0.6945057528732284
+      }
+    },
+    {
+      "kind": "next",
+      "title": "10. Adaptive next question",
+      "data": {
+        "headline": "Next question selected because your mastery of Newton's Third Law is currently 50%.",
+        "band": "medium",
+        "reasons": [
+          "mastery 50% maps to the medium band"
+        ]
       }
     },
     {
       "kind": "profile",
-      "title": "9. Learner profile",
+      "title": "11. Learner profile and dashboard",
       "data": {
         "rows": [
           {
@@ -293,7 +723,7 @@
         ],
         "timeline": [
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "practice",
             "ref_id": "m09_kicked_ball_02__m0.45_v6",
             "misconception": "M09",
@@ -313,10 +743,15 @@
                 "M12",
                 0.00452621154287176
               ]
-            ]
+            ],
+            "confidence": 0.5894498797926502,
+            "route": "probe",
+            "template_id": "m09_kicked_ball_02",
+            "concept": "force_motion",
+            "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "probe",
             "ref_id": "p_cg2_01",
             "misconception": null,
@@ -355,7 +790,7 @@
             ]
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -363,7 +798,7 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "intervention",
             "ref_id": "counterexample",
             "misconception": "M01",
@@ -371,7 +806,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -379,7 +814,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -387,7 +822,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t3",
             "misconception": "M01",
@@ -395,7 +830,7 @@
             "answer": "Gravity is bigger than air resistance"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap1",
             "misconception": "M01",
@@ -403,7 +838,7 @@
             "answer": "A forward force that keeps it moving"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -411,7 +846,7 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "intervention",
             "ref_id": "fbd_walkthrough",
             "misconception": "M01",
@@ -419,7 +854,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t4",
             "misconception": "M01",
@@ -427,7 +862,7 @@
             "answer": "300 N"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -435,7 +870,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -443,7 +878,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap2",
             "misconception": "M01",
@@ -451,7 +886,7 @@
             "answer": "No, they are equal"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -459,12 +894,12 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "practice",
-            "ref_id": "m07_flour_weight_02__m2",
+            "ref_id": "m06_push_down_03__F50_m5",
             "misconception": null,
             "correct": true,
-            "answer": "19.6 N",
+            "answer": "Greater than its weight",
             "working": "",
             "top": [
               [
@@ -479,56 +914,71 @@
                 "M02",
                 0.0
               ]
-            ]
+            ],
+            "confidence": 1.0,
+            "route": "accept",
+            "template_id": "m06_push_down_03",
+            "concept": "weight_normal",
+            "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "practice",
-            "ref_id": "m02_moon_hammer_02__m1",
+            "ref_id": "m02_cliff_rocks_03__h20_m12_m220",
             "misconception": null,
             "correct": true,
-            "answer": "They land at the same time",
+            "answer": "Both land at the same time.",
             "working": "",
             "top": [
               [
                 "none",
-                1.0
-              ],
-              [
-                "M01",
-                0.0
+                0.8720662619827964
               ],
               [
                 "M02",
-                0.0
+                0.10534285223196893
+              ],
+              [
+                "M10",
+                0.0061768171570388474
               ]
-            ]
+            ],
+            "confidence": 0.8720662619827964,
+            "route": "accept",
+            "template_id": "m02_cliff_rocks_03",
+            "concept": "free_fall",
+            "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "practice",
-            "ref_id": "m04_cyclist_02__t20_v6",
+            "ref_id": "m03_stone_top_03__v18",
             "misconception": null,
             "correct": true,
-            "answer": "0 m/s^2",
+            "answer": "It is 9.8 m/s^2 downward.",
             "working": "",
             "top": [
               [
                 "none",
-                1.0
+                0.9396990321970311
               ],
               [
-                "M01",
-                0.0
+                "M04",
+                0.035851669600106086
               ],
               [
-                "M02",
-                0.0
+                "M03",
+                0.0059247760564870924
               ]
-            ]
+            ],
+            "confidence": 0.9396990321970311,
+            "route": "accept",
+            "template_id": "m03_stone_top_03",
+            "concept": "kinematics",
+            "difficulty": "medium"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "retest",
             "ref_id": "i_m01_r1",
             "misconception": "M01",
@@ -536,14 +986,187 @@
             "answer": "None"
           },
           {
-            "ts": "2026-10-03T12:18:58+00:00",
+            "ts": "2026-10-03T12:40:23+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
             "correct": null,
             "state": "resolved"
           }
-        ]
+        ],
+        "dashboard": {
+          "empty": false,
+          "overall_mastery": 0.673626438218307,
+          "concept_mastery": [
+            {
+              "concept": "Force vs Motion",
+              "mastery": 0.6945057528732284,
+              "evidence": 14.466225044237596
+            },
+            {
+              "concept": "Free Fall",
+              "mastery": 0.6666666666666666,
+              "evidence": 1.0
+            },
+            {
+              "concept": "Velocity vs Acceleration",
+              "mastery": 0.6666666666666666,
+              "evidence": 1.0
+            },
+            {
+              "concept": "Weight and Normal Force",
+              "mastery": 0.6666666666666666,
+              "evidence": 1.0
+            }
+          ],
+          "mastery_over_time": [
+            {
+              "step": 1,
+              "concept": "Force vs Motion",
+              "mastery": 0.5,
+              "event": "probe"
+            },
+            {
+              "step": 2,
+              "concept": "Force vs Motion",
+              "mastery": 0.2533800246565977,
+              "event": "practice"
+            },
+            {
+              "step": 3,
+              "concept": "Force vs Motion",
+              "mastery": 0.4639732394837807,
+              "event": "transfer"
+            },
+            {
+              "step": 4,
+              "concept": "Force vs Motion",
+              "mastery": 0.5827665078458054,
+              "event": "transfer"
+            },
+            {
+              "step": 5,
+              "concept": "Force vs Motion",
+              "mastery": 0.5058683328073137,
+              "event": "transfer"
+            },
+            {
+              "step": 6,
+              "concept": "Force vs Motion",
+              "mastery": 0.39903699564394257,
+              "event": "trap"
+            },
+            {
+              "step": 7,
+              "concept": "Force vs Motion",
+              "mastery": 0.4834597742294861,
+              "event": "transfer"
+            },
+            {
+              "step": 8,
+              "concept": "Force vs Motion",
+              "mastery": 0.5481800593496302,
+              "event": "transfer"
+            },
+            {
+              "step": 9,
+              "concept": "Force vs Motion",
+              "mastery": 0.5993530795444318,
+              "event": "transfer"
+            },
+            {
+              "step": 10,
+              "concept": "Force vs Motion",
+              "mastery": 0.6529044210017071,
+              "event": "trap"
+            },
+            {
+              "step": 11,
+              "concept": "Weight and Normal Force",
+              "mastery": 0.6666666666666666,
+              "event": "practice"
+            },
+            {
+              "step": 12,
+              "concept": "Free Fall",
+              "mastery": 0.6666666666666666,
+              "event": "practice"
+            },
+            {
+              "step": 13,
+              "concept": "Velocity vs Acceleration",
+              "mastery": 0.6666666666666666,
+              "event": "practice"
+            },
+            {
+              "step": 14,
+              "concept": "Force vs Motion",
+              "mastery": 0.6945057528732284,
+              "event": "retest"
+            }
+          ],
+          "misconception_distribution": {
+            "M09": 1
+          },
+          "average_confidence": 0.9396015795727215,
+          "probe_effectiveness": [
+            {
+              "probe": "p_cg2_01",
+              "entropy_before": 1.0434605427007662,
+              "entropy_after": 0.31984174570672447,
+              "confidence_before": 0.5894498797926502,
+              "confidence_after": 0.9466410241110583
+            }
+          ],
+          "intervention_effectiveness": [
+            {
+              "trace": 2,
+              "misconception": "M01",
+              "kind": "assessment",
+              "mastery_before": 0.2533800246565977,
+              "mastery_after": 0.39903699564394257,
+              "state_after": "active"
+            },
+            {
+              "trace": 3,
+              "misconception": "M01",
+              "kind": "assessment",
+              "mastery_before": 0.39903699564394257,
+              "mastery_after": 0.6529044210017071,
+              "state_after": "intervened"
+            },
+            {
+              "trace": 7,
+              "misconception": "M01",
+              "kind": "retest",
+              "mastery_before": 0.6529044210017071,
+              "mastery_after": 0.6945057528732284,
+              "state_after": "resolved"
+            }
+          ],
+          "difficulty_progression": [
+            {
+              "attempt": 1,
+              "difficulty": "medium",
+              "level": 2
+            },
+            {
+              "attempt": 2,
+              "difficulty": "medium",
+              "level": 2
+            },
+            {
+              "attempt": 3,
+              "difficulty": "medium",
+              "level": 2
+            },
+            {
+              "attempt": 4,
+              "difficulty": "medium",
+              "level": 2
+            }
+          ]
+        }
       }
     }
   ]

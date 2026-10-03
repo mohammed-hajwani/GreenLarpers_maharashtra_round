@@ -12,6 +12,11 @@ def bits(value: float) -> str:
     return f"{value:.3f} bits"
 
 
+def concept_name(concept: str) -> str:
+    info = load_content().concepts.get(concept)
+    return info.name if info else concept
+
+
 def name(label: str) -> str:
     info = load_content().misconceptions.get(label)
     return f"{label} ({info.label})" if info else "correct (none)"
@@ -46,7 +51,7 @@ def practice_rows(record: dict) -> list[tuple[str, str]]:
     ]
     m = record.get("mastery")
     if m:
-        rows.append(("Mastery", f"{m['concept']}: {pct(m['before'])} -> {pct(m['after'])}"))
+        rows.append(("Mastery", f"{concept_name(m['concept'])}: {pct(m['before'])} -> {pct(m['after'])}"))
     nd = record.get("next_difficulty")
     if nd:
         rows += [("Next difficulty", nd["band"]), ("Next difficulty reason", nd["headline"])]
@@ -75,7 +80,9 @@ def render_why(record: dict) -> None:
         )
     m = record.get("mastery")
     if m:
-        st.markdown(f"**Knowledge state change:** {m['concept']} mastery {pct(m['before'])} → {pct(m['after'])}")
+        st.markdown(
+            f"**Knowledge state change:** {concept_name(m['concept'])} mastery {pct(m['before'])} → {pct(m['after'])}"
+        )
 
 
 def render_practice_trace(record: dict) -> None:
@@ -96,7 +103,10 @@ def assessment_rows(record: dict) -> list[tuple[str, str]]:
         ("Resolution rule", record["resolution_rule"]),
     ]
     rows += [
-        (f"Mastery after {u['event']} {u['ref_id']}", f"{u['concept']}: {pct(u['before'])} -> {pct(u['after'])}")
+        (
+            f"Mastery after {u['event']} {u['ref_id']}",
+            f"{concept_name(u['concept'])}: {pct(u['before'])} -> {pct(u['after'])}",
+        )
         for u in record["mastery_updates"]
     ]
     return rows

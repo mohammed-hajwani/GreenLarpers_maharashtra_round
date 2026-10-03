@@ -116,3 +116,21 @@
 - The Model Evaluation page reads only `reports/metrics.json` and `models/*/metadata.json`. Confusion matrices and classification reports come from the JSON, and the page shows "evaluation not run" when the file is missing.
 - `.streamlit/config.toml` disables the file watcher. With it on, Streamlit's watcher walked the torch and transformers modules and cold start took about 90 s; with it off, the health check shows the v1 model in about 10 s.
 - Bug fix: two UI strings had been mojibaked by a cp1252 read/write in an edit script; they were repaired and all later edit scripts run with `PYTHONUTF8=1`.
+
+## Upgrade stage K: demo and fallback
+- The demo learner now walks 11 steps through the real pipeline:
+  1. A wrong answer, shown with calibrated confidence, route and entropy.
+  2. An information-gain probe, with expected gain, runners-up and the entropy drop.
+  3. The decision trace with its mastery change.
+  4. An intervention.
+  5. A reassessment where the trap fails, so the status is NOT RESOLVED.
+  6. Escalation to a second strategy.
+  7. A passed reassessment with mastery up and a retest scheduled.
+  8. Three adaptive spacing questions in `spacing_concepts`, each with its difficulty reason.
+  9. A delayed retest, after which the status is RESOLVED.
+  10. The adaptive next question.
+  11. The profile and dashboard.
+- Replay is used only when no model loads. It shows a red "REPLAY ... not live inference" banner and renders the steps recorded by `scripts/record_demo.py` from a real run.
+- An active-model badge appears on every page (green v1, orange baseline, red replay).
+- Under the baseline fallback, one correct free-text spacing answer (a free-fall explanation) is misdiagnosed. The demo still completes; the behavior is real and left visible.
+- No API key is needed anywhere: `StubLLMClient` is the default and `llm_personalize` is false.
