@@ -17,22 +17,20 @@ baseline:
   C: 4.0
   max_iter: 2000
   min_macro_f1: 0.6
-transformer:
-  model_name: distilbert-base-uncased
-  max_length: 256
-  epochs: 4
-  batch_size: 16
-  lr: 5.0e-5
 diagnosis:
   top_k: 3
   confident_threshold: 0.5
+  working_conflict_threshold: 0.7
 disambiguation:
   max_probes: 2
   answer_noise: 0.1
   min_expected_gain: 0.05
+  prior_floor: 0.01
 intervention:
   max_words: 250
   llm_personalize: false
+escalation:
+  max_strategies_per_misconception: 3
 assessment:
   transfer_count: 3
   trap_count: 1
@@ -44,6 +42,10 @@ learner:
   prior_beta: 1.0
   pass_beta_increment: 2.0
   fail_alpha_increment: 1.0
+open_set:
+  target_false_flag: 0.1
+  energy_temperature: 1.0
+  runtime_scores: [msp, energy]
 app:
   db_env: RELEARN_DB
   db_filename: relearn.db

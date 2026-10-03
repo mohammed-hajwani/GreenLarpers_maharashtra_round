@@ -15,7 +15,6 @@ def test_packages_import() -> None:
         "relearn.intervention",
         "relearn.assessment",
         "relearn.learner",
-        "relearn.loops",
         "relearn.app",
     ]:
         importlib.import_module(name)
@@ -25,7 +24,8 @@ def test_config_loads() -> None:
     cfg = load_config()
     assert cfg.seed == 42
     assert cfg.diagnosis.top_k == 3
-    assert cfg.loops["disambiguation"]["max_probes"] == 2
+    assert cfg.disambiguation.max_probes == 2
+    assert cfg.escalation.max_strategies_per_misconception == 3
 
 
 def test_schema_roundtrip() -> None:

@@ -189,3 +189,17 @@ def test_guided_demo_runs(engine) -> None:
     assert flow.item.kind == "practice" and flow.phase == "question"
     assert any(e["kind"] == "reveal" for e in engine.tutor.store.timeline("guided-demo"))
     assert svc.misconception_states(engine.tutor, "guided-demo")["M01"] == "intervened"
+
+
+def test_try_again_keeps_previous_hint_until_next_item(engine) -> None:
+    flow = _kicked(engine)
+    engine.check(flow, *WRONG)
+    fb = _clear_quick_checks(engine, flow)
+    engine.try_again(flow)
+    assert flow.feedback is None and flow.previous_feedback is fb
+    assert flow.previous_feedback.hint and flow.previous_feedback.visual_for
+    engine.check(flow, "0 N", "Nothing pushes it forward once it leaves the foot.")
+    _clear_quick_checks(engine, flow)
+    engine.continue_(flow)
+    if flow.phase == "question":
+        assert flow.previous_feedback is None

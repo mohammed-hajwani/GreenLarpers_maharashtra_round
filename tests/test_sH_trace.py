@@ -1,3 +1,6 @@
+import re
+from html import escape
+
 import pytest
 from conftest import insights_app
 
@@ -106,5 +109,6 @@ def test_app_renders_stored_trace(tmp_path, monkeypatch) -> None:
     from relearn.app.streamlit_app import get_tutor
 
     record = get_tutor().store.trace(tutor)
-    shown = {row["field"]: row["value"] for row in at.table[-1].value.to_dict("records")}
-    assert shown == dict(practice_rows(record))
+    card = next(m.value for m in reversed(at.markdown) if "ri-kv" in m.value)
+    shown = dict(re.findall(r'ri-kv-key">([^<]*)</span><span class="ri-kv-value">([^<]*)</span>', card))
+    assert shown == {escape(k): escape(v) for k, v in practice_rows(record)}

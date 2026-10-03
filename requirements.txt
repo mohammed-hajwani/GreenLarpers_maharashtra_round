@@ -12,5 +12,3 @@ huggingface_hub
 torch
 sentence-transformers
 anthropic
-pytest
-ruff

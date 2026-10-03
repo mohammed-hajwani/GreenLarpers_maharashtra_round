@@ -1,6 +1,11 @@
+from html import escape
+
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
+from relearn import services as svc
+from relearn.app.insights.visuals import gauge, html, prob_bars
 from relearn.content import load_content
 
 STATE_BADGE = {
@@ -18,8 +23,7 @@ def label_name(label: str) -> str:
 
 
 def render_top_labels(top_labels: list) -> None:
-    for label, p in top_labels:
-        st.progress(min(max(float(p), 0.0), 1.0), text=f"{label_name(label)} — {float(p):.0%}")
+    html(prob_bars(top_labels, label_name))
 
 
 def render_diagnosis(data: dict) -> None:
@@ -44,6 +48,7 @@ def render_diagnosis(data: dict) -> None:
         )
     confidence = next(p for label, p in data["top_labels"] if label == top)
     st.error(f"Likely misconception: **{label_name(top)}** — calibrated confidence {confidence:.1%}")
+    html(gauge(confidence))
     st.caption(info.description)
     render_top_labels(data["top_labels"])
     route = data.get("route", "accept")
@@ -78,6 +83,7 @@ def render_intervention(data: dict) -> None:
     st.markdown(f"**Strategy:** `{data['strategy']}` targeting {label_name(data['misconception'])}")
     st.info(data["text"])
     st.markdown(f"**Think about it:** {data['follow_up_prompt']}")
+    render_visuals(data["misconception"], data.get("modality", "text"))
     sources = data.get("sources") or []
     mode = data.get("mode", "template")
     with st.expander(f"Sources used for this intervention ({mode})"):
@@ -85,6 +91,23 @@ def render_intervention(data: dict) -> None:
             st.caption("No retrieved passages.")
         for s in sources:
             st.markdown(f"- `{s['passage_id']}` ({s['source']}, cosine {s['cosine']:.3f}): {s['text']}")
+
+
+def render_visuals(misconception: str, modality: str) -> None:
+    svg = svc.diagram(misconception)
+    if svg:
+        _, caption = svc.diagram_text(misconception)
+        html(
+            f'<div class="rl-visual"><p class="rl-explain-label">Force diagram for this misconception</p>{svg}'
+            f'<p class="rl-visual-caption">{escape(caption)}</p></div>'
+        )
+    page = svc.simulation(misconception)
+    if page:
+        chosen = " (the modality chosen for this learner)" if modality == "simulation" else ""
+        with st.expander(f"Interactive simulation{chosen}", expanded=modality == "simulation"):
+            components.html(page, height=430, scrolling=False)
+            st.caption(svc.simulation_caption(misconception))
+    st.caption(f"Teaching modality picked by the Thompson-sampling policy: **{modality}**")
 
 
 def status_line(state: str, trap_passed, pending) -> None:

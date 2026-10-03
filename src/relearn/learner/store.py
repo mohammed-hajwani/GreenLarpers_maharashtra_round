@@ -49,6 +49,7 @@ class LearnerStore:
         self.path = str(path)
         self.lock = threading.Lock()
         self.conn = sqlite3.connect(self.path, check_same_thread=False)
+        self.conn.execute("PRAGMA journal_mode=WAL;")
         for statement in [*SCHEMA, TRACE_TABLE]:
             self.conn.execute(statement)
         self.conn.commit()

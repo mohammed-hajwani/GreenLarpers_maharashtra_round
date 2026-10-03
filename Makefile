@@ -1,9 +1,14 @@
-PY ?= .venv/Scripts/python.exe
+ifeq ($(OS),Windows_NT)
+VENV_PY := .venv/Scripts/python.exe
+else
+VENV_PY := .venv/bin/python
+endif
+PY ?= $(if $(wildcard $(VENV_PY)),$(VENV_PY),python)
 STAGE ?= 0
 URL ?=
 
 setup:
-	$(PY) -m pip install -r requirements.txt
+	$(PY) -m pip install -r requirements-dev.txt
 	$(PY) -m pip install -e .
 
 data:

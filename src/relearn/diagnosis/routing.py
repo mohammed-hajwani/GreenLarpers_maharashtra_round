@@ -26,6 +26,11 @@ def open_set_threshold() -> float | None:
     return float(section["threshold"]) if section else None
 
 
+def open_set_score() -> str:
+    section = _load().get("open_set") or {}
+    return section.get("score", "msp")
+
+
 def route_for(confidence: float, thresholds: dict[str, float]) -> str:
     if confidence >= thresholds["accept"]:
         return ACCEPT

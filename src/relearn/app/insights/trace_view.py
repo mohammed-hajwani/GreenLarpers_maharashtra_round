@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 
+from relearn.app.insights.visuals import gauge, html, kv_card, occlusion_text, prob_bars
 from relearn.content import load_content
 
 
@@ -60,16 +61,17 @@ def practice_rows(record: dict) -> list[tuple[str, str]]:
 
 def render_why(record: dict) -> None:
     final = record["final"]
-    st.markdown(f"**Predicted:** {name(final['predicted'])} — calibrated confidence **{pct(final['confidence'])}**")
-    competing = [f"{name(label)} {pct(p)}" for label, p in final["top_predictions"][1:]]
-    st.markdown("**Competing labels:** " + (", ".join(competing) or "none"))
+    st.markdown(f"**Predicted:** {name(final['predicted'])}")
+    html(gauge(final["confidence"]))
+    st.markdown("**Calibrated probabilities** (predicted label first, then competing labels):")
+    html(prob_bars(final["top_predictions"], name))
     exp = record.get("explanation") or {}
     if exp.get("influential_features"):
         st.markdown("**Influential features** (TF-IDF weight × coefficient):")
         st.dataframe(pd.DataFrame(exp["influential_features"]), hide_index=True, width="stretch")
-    if exp.get("occlusion"):
+    if exp.get("occlusion") and record.get("working"):
         st.markdown("**Word importance** (drop in predicted-label probability when the word is removed):")
-        st.dataframe(pd.DataFrame(exp["occlusion"]), hide_index=True, width="stretch")
+        html(occlusion_text(record["working"], exp["occlusion"]))
     if exp.get("similar_examples"):
         st.markdown("**Most similar training examples** (cosine similarity of answer and working embeddings):")
         st.dataframe(pd.DataFrame(exp["similar_examples"]), hide_index=True, width="stretch")
@@ -89,7 +91,7 @@ def render_practice_trace(record: dict) -> None:
     with st.expander("Why did the AI make this prediction?"):
         render_why(record)
     with st.expander("AI Decision Trace"):
-        st.table(pd.DataFrame(practice_rows(record), columns=["field", "value"]))
+        html(kv_card(practice_rows(record)))
 
 
 def assessment_rows(record: dict) -> list[tuple[str, str]]:
@@ -114,4 +116,4 @@ def assessment_rows(record: dict) -> list[tuple[str, str]]:
 
 def render_assessment_trace(record: dict) -> None:
     with st.expander("AI Decision Trace"):
-        st.table(pd.DataFrame(assessment_rows(record), columns=["field", "value"]))
+        html(kv_card(assessment_rows(record)))

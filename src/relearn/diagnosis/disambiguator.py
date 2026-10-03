@@ -50,13 +50,21 @@ def _posterior(diagnosis: Diagnosis) -> dict[str, float]:
     return dict(diagnosis.posterior) if diagnosis.posterior else dict(diagnosis.top_labels)
 
 
+def floored(posterior: dict[str, float]) -> dict[str, float]:
+    floor = load_config().disambiguation.prior_floor
+    raised = {label: max(p, floor) for label, p in posterior.items()}
+    total = sum(raised.values()) or 1.0
+    return {label: p / total for label, p in raised.items()}
+
+
 def bayes_update(posterior: dict[str, float], probe: Probe, answer: str) -> dict[str, float]:
-    updated = {label: p * likelihood(probe, label, answer) for label, p in posterior.items()}
+    updated = {label: p * likelihood(probe, label, answer) for label, p in floored(posterior).items()}
     total = sum(updated.values()) or 1.0
     return {label: p / total for label, p in updated.items()}
 
 
 def expected_information_gain(posterior: dict[str, float], probe: Probe) -> float:
+    posterior = floored(posterior)
     h_before = entropy_bits(posterior)
     expected_after = 0.0
     for option in probe.options:
@@ -75,7 +83,8 @@ def rank_probes(diagnosis: Diagnosis, used: set[str] | None = None) -> list[tupl
 
 def choose_probe(diagnosis: Diagnosis, used: set[str] | None = None) -> ProbeChoice | None:
     d = load_config().disambiguation
-    if diagnosis.route == ACCEPT or diagnosis.is_correct or len(used or ()) >= d.max_probes:
+    settled = diagnosis.route == ACCEPT and not diagnosis.needs_probing
+    if settled or diagnosis.is_correct or len(used or ()) >= d.max_probes:
         return None
     ranked = rank_probes(diagnosis, used)
     if not ranked or ranked[0][1] < d.min_expected_gain:

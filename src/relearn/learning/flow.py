@@ -31,6 +31,7 @@ class LessonFlow:
     phase: str = "question"
     item: LessonItem | None = None
     feedback: Feedback | None = None
+    previous_feedback: Feedback | None = None
     completed: int = 0
     checks: int = 0
     attempts_on_item: int = 0
@@ -76,7 +77,7 @@ class LessonEngine:
         return flow
 
     def _present(self, flow: LessonFlow, item: LessonItem) -> None:
-        flow.item, flow.feedback, flow.phase = item, None, "question"
+        flow.item, flow.feedback, flow.phase, flow.previous_feedback = item, None, "question", None
         flow.attempts_on_item, flow.revealed, flow.counted, flow.pending = 0, False, False, {}
         flow.last_answer = ""
         flow.seen.add(item.question.question_id)
@@ -176,7 +177,7 @@ class LessonEngine:
     def try_again(self, flow: LessonFlow) -> None:
         if flow.revealed or flow.phase not in ("feedback",):
             return
-        flow.phase, flow.feedback, flow.pending = "question", None, {}
+        flow.phase, flow.previous_feedback, flow.feedback, flow.pending = "question", flow.feedback, None, {}
 
     def reveal(self, flow: LessonFlow) -> Feedback:
         item = flow.item

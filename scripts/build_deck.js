@@ -247,7 +247,7 @@ text(s, [
   { text: " ", options: { fontSize: 8, breakLine: true } },
   { text: "Measured with simulated learners who answer as their misconception predicts, so these are upper bounds.", options: { fontSize: 14, color: C.accent4 } },
 ], { x: 8.55, y: 1.85, w: 3.9, h: 4.6 });
-s.addNotes("Information gain beats a random relevant probe in all four settings we tested. The student just sees a short 'Quick check' question; the uncertainty maths stays in Insights.");
+s.addNotes("Information gain beats a random relevant probe in three of the four settings; on baseline validation it is level with random (0.965 vs 0.967). The student just sees a short 'Quick check' question; the uncertainty maths stays in Insights.");
 
 const os = M.open_set, osSel = os.scores[os.selected_score];
 s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Results" });

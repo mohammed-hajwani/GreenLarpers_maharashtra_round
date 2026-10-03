@@ -1,0 +1,190 @@
+[data-testid="stMainBlockContainer"] {
+  max-width: 1240px;
+  padding: 2rem 2rem 3rem;
+}
+
+[data-testid="stSidebarCollapsedControl"] {
+  display: flex;
+}
+
+[data-testid="stSidebar"] {
+  background: var(--surface);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-testid="stMain"] [data-testid="stRadio"] [role="radiogroup"] {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+[data-testid="stMain"] [data-testid="stRadio"] [role="radiogroup"] label,
+[data-testid="stMain"] [data-testid="stRadio"] [role="radiogroup"] > div {
+  width: auto;
+}
+
+[data-testid="stDataFrame"], [data-testid="stTable"] {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+[data-testid="stExpander"] details {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] {
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+}
+
+.stApp .ri-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  margin: 0 0 0.75rem;
+}
+
+.stApp .ri-kv {
+  padding: 0;
+}
+
+.stApp .ri-kv-row {
+  display: grid;
+  grid-template-columns: minmax(10rem, 30%) 1fr;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.92rem;
+}
+
+.stApp .ri-kv-row:last-child {
+  border-bottom: none;
+}
+
+.stApp .ri-kv-key {
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+.stApp .ri-kv-value {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.stApp .ri-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0.25rem 0 0.9rem;
+}
+
+.stApp .ri-bar-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 34%) 1fr 4.2rem;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+}
+
+.stApp .ri-bar-label {
+  color: var(--text-2);
+}
+
+.stApp .ri-bar-row.lead .ri-bar-label {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.stApp .ri-bar-track, .stApp .ri-gauge-track {
+  position: relative;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: var(--elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.stApp .ri-bar-fill, .stApp .ri-gauge-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.stApp .ri-bar-row.lead .ri-bar-fill {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.stApp .ri-bar-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.stApp .ri-gauge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0 0 0.6rem;
+}
+
+.stApp .ri-gauge .ri-gauge-track {
+  display: inline-block;
+  width: 7rem;
+}
+
+.stApp .ri-gauge.confident .ri-gauge-fill {
+  background: var(--success);
+}
+
+.stApp .ri-gauge.ambiguous .ri-gauge-fill {
+  background: var(--warning);
+}
+
+.stApp .ri-gauge.uncertain .ri-gauge-fill {
+  background: var(--error);
+}
+
+.stApp .ri-occ-text {
+  line-height: 2;
+  margin: 0;
+}
+
+.stApp mark.ri-occ {
+  color: var(--text);
+  border-radius: 6px;
+  padding: 0.1rem 0.3rem;
+}
+
+.stApp mark.ri-occ.for {
+  background: rgba(124, 92, 255, var(--a));
+}
+
+.stApp mark.ri-occ.against {
+  background: rgba(245, 181, 68, var(--a));
+}
+
+.stApp .ri-occ-legend {
+  color: var(--text-2);
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0;
+}
+
+@media (max-width: 640px) {
+  [data-testid="stMainBlockContainer"] {
+    padding: 1.25rem 1rem 2.5rem;
+  }
+  .stApp .ri-kv-row, .stApp .ri-bar-row {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}

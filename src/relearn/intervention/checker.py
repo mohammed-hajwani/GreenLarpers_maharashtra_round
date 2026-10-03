@@ -4,7 +4,7 @@ from relearn.config import load_config
 from relearn.content import load_content
 from relearn.schemas import Intervention
 
-QUOTED = re.compile(r"\"[^\"]*\"")
+QUOTED = re.compile(r'["“][^"”]*["”]|(?<=\s)\'[^\']*\'(?=\s)')
 
 
 def check_intervention(intervention: Intervention) -> bool:

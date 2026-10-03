@@ -263,7 +263,6 @@ h1, h2, h3 {
   border: 1px solid var(--border);
   padding: 0.85rem 1rem 0.5rem;
   margin: 0 0 0.75rem;
-  animation: rl-rise 260ms var(--ease) both;
 }
 
 .stApp .rl-visual svg {
@@ -326,7 +325,6 @@ h1, h2, h3 {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.25rem 1.25rem 1rem;
-  animation: rl-rise 220ms var(--ease) both;
 }
 
 .st-key-rl-question-card {
@@ -424,6 +422,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 [data-testid="stRadio"] [role="radiogroup"] label p {
   font-size: 1rem;
+}
+
+.stApp [data-testid="stExpander"] details:has(.st-key-rl-previous-hint) {
+  border: 1px solid rgba(245, 181, 68, 0.45) !important;
+  border-radius: 12px;
+  background: var(--surface);
+  margin-bottom: 0.75rem;
 }
 
 [data-testid="stTextInput"] input, [data-testid="stTextArea"] textarea {

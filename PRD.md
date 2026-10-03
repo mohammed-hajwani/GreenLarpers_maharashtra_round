@@ -181,6 +181,7 @@ class Diagnosis(BaseModel):
     model_version: str = ""
     novelty: float = 0.0
     unfamiliar: bool = False
+    needs_probing: bool = False
 
 class Probe(BaseModel):
     probe_id: str
@@ -346,7 +347,7 @@ Pages: Practice (question, answer, working input), Diagnosis (labels, confidence
 - Health check: `app.py?health=1` renders `ok` plus the active model source; `scripts/smoke_remote.py --url <url>` checks it and replays demo mode.
 - Notice in the UI footer: all training data is synthetic and the tool is a prototype.
 
-## 9. Efficiency loops (all configured in `configs/loops.yaml`)
+## 9. Efficiency loops (deferred; `configs/loops.yaml` was removed and escalation now lives in `configs/default.yaml`, see DECISIONS.md)
 
 ```yaml
 active_learning:

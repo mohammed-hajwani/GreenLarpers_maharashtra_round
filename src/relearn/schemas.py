@@ -49,6 +49,7 @@ class Diagnosis(BaseModel):
     model_version: str = ""
     novelty: float = 0.0
     unfamiliar: bool = False
+    needs_probing: bool = False
 
     @property
     def misconception(self) -> str | None:

@@ -10,6 +10,7 @@ from relearn.schemas import QuestionType
 
 CSS_PATH = Path(__file__).with_name("theme.css")
 ITEM_CHIPS = {"lockin": "One more to lock it in", "review": "Quick review"}
+PREVIOUS_TITLES = {"diagram": "Previous hint & free-body diagram", "simulation": "Previous hint & simulation"}
 STATUS_TITLES = {
     "correct": ("✓", "correct"),
     "incorrect": ("✗", "incorrect"),
@@ -101,6 +102,8 @@ def question_card(flow: LessonFlow, on_check, disabled: bool = False) -> None:
                     on_check("quick_check", choice, "")
             return
         html(f'<p class="rl-question">{escape(flow.item.question.stem)}</p>')
+        if flow.phase == "question":
+            previous_hint(flow.previous_feedback)
         if flow.phase == "feedback":
             if flow.last_answer:
                 html(f'<p class="rl-your-answer">Your answer: <strong>{escape(flow.last_answer)}</strong></p>')
@@ -113,6 +116,18 @@ def question_card(flow: LessonFlow, on_check, disabled: bool = False) -> None:
                     live_message("Pick or type an answer first.", "needs_more")
                 else:
                     on_check("answer", str(answer), working)
+
+
+def previous_hint(feedback: Feedback | None) -> None:
+    if feedback is None or feedback.status != "incorrect":
+        return
+    with_visual = feedback.modality != "text" and feedback.visual_for
+    title = PREVIOUS_TITLES.get(feedback.modality, "Previous hint") if with_visual else "Previous hint"
+    with st.expander(title, icon=":material/push_pin:"), st.container(key="rl-previous-hint"):
+        if feedback.hint:
+            html(f'<p class="rl-hint">{escape(feedback.hint)}</p>')
+        if with_visual:
+            visual_card(feedback.modality, feedback.visual_for)
 
 
 def live_message(message: str, status: str, hint: str = "") -> None:

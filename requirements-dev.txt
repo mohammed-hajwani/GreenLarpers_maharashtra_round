@@ -1,1 +1,4 @@
+-r requirements.txt
+pytest
+ruff
 playwright

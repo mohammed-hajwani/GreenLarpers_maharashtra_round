@@ -42,10 +42,11 @@ def prior() -> MasteryState:
     return MasteryState(m.prior_alpha, m.prior_beta)
 
 
-def apply(state: MasteryState, d_alpha: float, d_beta: float) -> MasteryState:
+def apply(state: MasteryState, d_alpha: float, d_beta: float, decay: bool = True) -> MasteryState:
     m = load_config().mastery
-    alpha = m.prior_alpha + m.decay * (state.alpha - m.prior_alpha) + d_alpha
-    beta = m.prior_beta + m.decay * (state.beta - m.prior_beta) + d_beta
+    factor = m.decay if decay else 1.0
+    alpha = m.prior_alpha + factor * (state.alpha - m.prior_alpha) + d_alpha
+    beta = m.prior_beta + factor * (state.beta - m.prior_beta) + d_beta
     return MasteryState(alpha, beta)
 
 
@@ -90,9 +91,15 @@ def item_evidence(kind: str, correct: bool) -> tuple[float, float, dict]:
 
 
 def update(
-    state: MasteryState, concept: str, event: str, ref_id: str, evidence: tuple[float, float, dict]
+    state: MasteryState,
+    concept: str,
+    event: str,
+    ref_id: str,
+    evidence: tuple[float, float, dict],
+    decay: bool = True,
 ) -> tuple[MasteryState, MasteryUpdate]:
     d_alpha, d_beta, detail = evidence
-    after = apply(state, d_alpha, d_beta)
+    after = apply(state, d_alpha, d_beta, decay)
+    detail = {**detail, "decayed": decay}
     record = MasteryUpdate(concept, event, ref_id, state.alpha, state.beta, after.alpha, after.beta, detail)
     return after, record

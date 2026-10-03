@@ -21,18 +21,18 @@
             "entropy_drop_bits_per_probe_mean": 0.0
           },
           "random_probe": {
-            "accuracy_mean": 0.83125,
-            "accuracy_std": 0.010269797953221861,
-            "probes_asked_mean": 197,
-            "entropy_drop_bits_per_probe_mean": 0.26654745589712536,
-            "lift_points": 20.3125
+            "accuracy_mean": 0.8325,
+            "accuracy_std": 0.009395810236483053,
+            "probes_asked_mean": 204.2,
+            "entropy_drop_bits_per_probe_mean": 0.1340799646566286,
+            "lift_points": 20.437499999999996
           },
           "information_gain_probe": {
-            "accuracy_mean": 0.875625,
-            "accuracy_std": 0.008244316223920583,
-            "probes_asked_mean": 195.4,
-            "entropy_drop_bits_per_probe_mean": 0.3468999861793359,
-            "lift_points": 24.749999999999993
+            "accuracy_mean": 0.87375,
+            "accuracy_std": 0.010933034802834932,
+            "probes_asked_mean": 196.6,
+            "entropy_drop_bits_per_probe_mean": 0.18664817218379207,
+            "lift_points": 24.5625
           },
           "information_gain_beats_random": true
         },
@@ -53,18 +53,18 @@
             "entropy_drop_bits_per_probe_mean": 0.0
           },
           "random_probe": {
-            "accuracy_mean": 0.8552884615384615,
-            "accuracy_std": 0.006521471137620461,
-            "probes_asked_mean": 263.2,
-            "entropy_drop_bits_per_probe_mean": 0.43847189852133445,
-            "lift_points": 12.932692307692307
+            "accuracy_mean": 0.8567307692307692,
+            "accuracy_std": 0.015988739565688345,
+            "probes_asked_mean": 268.4,
+            "entropy_drop_bits_per_probe_mean": 0.3557156819454862,
+            "lift_points": 13.076923076923075
           },
           "information_gain_probe": {
-            "accuracy_mean": 0.8860576923076923,
-            "accuracy_std": 0.010153226962472542,
-            "probes_asked_mean": 244.8,
-            "entropy_drop_bits_per_probe_mean": 0.5059166960206158,
-            "lift_points": 16.009615384615383
+            "accuracy_mean": 0.8798076923076923,
+            "accuracy_std": 0.01244440298610078,
+            "probes_asked_mean": 253,
+            "entropy_drop_bits_per_probe_mean": 0.39330507074513393,
+            "lift_points": 15.384615384615385
           },
           "information_gain_beats_random": true
         }
@@ -87,20 +87,20 @@
             "entropy_drop_bits_per_probe_mean": 0.0
           },
           "random_probe": {
-            "accuracy_mean": 0.963125,
-            "accuracy_std": 0.010345590848279296,
-            "probes_asked_mean": 223.4,
-            "entropy_drop_bits_per_probe_mean": 0.5028372269309722,
-            "lift_points": 13.187499999999996
+            "accuracy_mean": 0.966875,
+            "accuracy_std": 0.008052561704203208,
+            "probes_asked_mean": 225.6,
+            "entropy_drop_bits_per_probe_mean": 0.371216724393671,
+            "lift_points": 13.5625
           },
           "information_gain_probe": {
             "accuracy_mean": 0.965,
-            "accuracy_std": 0.009142961773954851,
-            "probes_asked_mean": 216.4,
-            "entropy_drop_bits_per_probe_mean": 0.5733537637432446,
+            "accuracy_std": 0.008477912478906556,
+            "probes_asked_mean": 217.2,
+            "entropy_drop_bits_per_probe_mean": 0.46752123158274195,
             "lift_points": 13.374999999999993
           },
-          "information_gain_beats_random": true
+          "information_gain_beats_random": false
         },
         "test": {
           "n": 416,
@@ -119,18 +119,18 @@
             "entropy_drop_bits_per_probe_mean": 0.0
           },
           "random_probe": {
-            "accuracy_mean": 0.9283653846153846,
-            "accuracy_std": 0.006866758104368134,
-            "probes_asked_mean": 299.6,
-            "entropy_drop_bits_per_probe_mean": 0.5866638003933987,
-            "lift_points": 10.86538461538462
+            "accuracy_mean": 0.9322115384615385,
+            "accuracy_std": 0.005133210698091958,
+            "probes_asked_mean": 304,
+            "entropy_drop_bits_per_probe_mean": 0.4766493860062792,
+            "lift_points": 11.250000000000004
           },
           "information_gain_probe": {
-            "accuracy_mean": 0.9447115384615384,
-            "accuracy_std": 0.00729122638851111,
+            "accuracy_mean": 0.9408653846153846,
+            "accuracy_std": 0.005606684514274308,
             "probes_asked_mean": 286.2,
-            "entropy_drop_bits_per_probe_mean": 0.6253168693626892,
-            "lift_points": 12.5
+            "entropy_drop_bits_per_probe_mean": 0.5430395000957496,
+            "lift_points": 12.115384615384617
           },
           "information_gain_beats_random": true
         }
@@ -2352,6 +2352,11 @@
   },
   "open_set": {
     "target_false_flag_rate_on_val": 0.1,
+    "energy_temperature": 1.0,
+    "runtime_scores": [
+      "msp",
+      "energy"
+    ],
     "scores": {
       "msp": {
         "threshold": 0.7828444112028483,
@@ -2360,6 +2365,13 @@
         "test_detection_rate": 0.6352530541012217,
         "test_false_flag_rate": 0.28240520387117246
       },
+      "energy": {
+        "threshold": -3.028373730720585,
+        "val_auroc": 0.5342797276503645,
+        "test_auroc": 0.47406495535658666,
+        "test_detection_rate": 0.08551483420593368,
+        "test_false_flag_rate": 0.10867840710772649
+      },
       "knn": {
         "threshold": 0.5243667364120483,
         "val_auroc": 0.6918697757850061,
@@ -2367,86 +2379,474 @@
         "test_detection_rate": 0.32460732984293195,
         "test_false_flag_rate": 0.20498175471997462
       },
+      "definition": {
+        "threshold": 0.5560479164123535,
+        "val_auroc": 0.7294547089094177,
+        "test_auroc": 0.8207429964234876,
+        "test_detection_rate": 0.43106457242582896,
+        "test_false_flag_rate": 0.11375535459305093
+      },
       "combined": {
         "threshold": 0.7603550295857988,
         "val_auroc": 0.8131214103337298,
         "test_auroc": 0.6796421494072327,
         "test_detection_rate": 0.3542757417102967,
         "test_false_flag_rate": 0.16817388545137235
+      },
+      "energy_definition": {
+        "threshold": 0.8658777120315582,
+        "val_auroc": 0.6553221117805872,
+        "test_auroc": 0.6914102788804688,
+        "test_detection_rate": 0.1099476439790576,
+        "test_false_flag_rate": 0.028240520387117246
+      }
+    },
+    "curves": {
+      "msp": {
+        "false_flag_rate": [
+          0.0,
+          0.05,
+          0.1,
+          0.15,
+          0.2,
+          0.25,
+          0.3,
+          0.35,
+          0.4,
+          0.45,
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          1.0
+        ],
+        "detection_rate": [
+          0.007,
+          0.288,
+          0.3892,
+          0.4276,
+          0.4503,
+          0.5236,
+          0.6579,
+          0.7068,
+          0.7277,
+          0.7435,
+          0.7696,
+          0.7801,
+          0.8202,
+          0.8377,
+          0.8551,
+          0.8778,
+          0.9529,
+          0.9791,
+          0.986,
+          1.0,
+          1.0
+        ]
+      },
+      "energy": {
+        "false_flag_rate": [
+          0.0,
+          0.05,
+          0.1,
+          0.15,
+          0.2,
+          0.25,
+          0.3,
+          0.35,
+          0.4,
+          0.45,
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          1.0
+        ],
+        "detection_rate": [
+          0.007,
+          0.0558,
+          0.0838,
+          0.1449,
+          0.1728,
+          0.2147,
+          0.2426,
+          0.2984,
+          0.3351,
+          0.3909,
+          0.4468,
+          0.5271,
+          0.5515,
+          0.5881,
+          0.6143,
+          0.7086,
+          0.801,
+          0.8569,
+          0.9616,
+          1.0,
+          1.0
+        ]
+      },
+      "knn": {
+        "false_flag_rate": [
+          0.0,
+          0.05,
+          0.1,
+          0.15,
+          0.2,
+          0.25,
+          0.3,
+          0.35,
+          0.4,
+          0.45,
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          1.0
+        ],
+        "detection_rate": [
+          0.0035,
+          0.1449,
+          0.1835,
+          0.239,
+          0.3188,
+          0.3912,
+          0.4782,
+          0.5183,
+          0.5707,
+          0.6188,
+          0.6579,
+          0.6981,
+          0.726,
+          0.7544,
+          0.7906,
+          0.8312,
+          0.897,
+          0.9389,
+          0.9634,
+          1.0,
+          1.0
+        ]
+      },
+      "definition": {
+        "false_flag_rate": [
+          0.0,
+          0.05,
+          0.1,
+          0.15,
+          0.2,
+          0.25,
+          0.3,
+          0.35,
+          0.4,
+          0.45,
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          1.0
+        ],
+        "detection_rate": [
+          0.0489,
+          0.2949,
+          0.406,
+          0.637,
+          0.6998,
+          0.7644,
+          0.8133,
+          0.8693,
+          0.9081,
+          0.918,
+          0.9354,
+          0.9354,
+          0.9372,
+          0.9372,
+          0.9407,
+          0.9407,
+          0.9511,
+          0.9634,
+          0.986,
+          1.0,
+          1.0
+        ]
+      },
+      "combined": {
+        "false_flag_rate": [
+          0.0,
+          0.05,
+          0.1,
+          0.15,
+          0.2,
+          0.25,
+          0.3,
+          0.35,
+          0.4,
+          0.45,
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          1.0
+        ],
+        "detection_rate": [
+          0.0209,
+          0.1815,
+          0.2461,
+          0.32,
+          0.4211,
+          0.5261,
+          0.5889,
+          0.6405,
+          0.7084,
+          0.7558,
+          0.7749,
+          0.7836,
+          0.7923,
+          0.8028,
+          0.829,
+          0.8709,
+          0.8901,
+          0.948,
+          0.9773,
+          1.0,
+          1.0
+        ]
+      },
+      "energy_definition": {
+        "false_flag_rate": [
+          0.0,
+          0.05,
+          0.1,
+          0.15,
+          0.2,
+          0.25,
+          0.3,
+          0.35,
+          0.4,
+          0.45,
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          1.0
+        ],
+        "detection_rate": [
+          0.0157,
+          0.1309,
+          0.2321,
+          0.3578,
+          0.4324,
+          0.482,
+          0.5462,
+          0.6155,
+          0.6724,
+          0.7227,
+          0.8063,
+          0.8464,
+          0.8604,
+          0.8778,
+          0.9005,
+          0.9232,
+          0.9354,
+          0.9651,
+          0.9668,
+          0.9878,
+          1.0
+        ]
       }
     },
     "per_misconception": {
       "M01": {
         "test_unknown_n": 38,
+        "msp_auroc": 0.9046728971962616,
+        "energy_auroc": 0.7377766847024102,
+        "knn_auroc": 0.7938022626660108,
+        "definition_auroc": 0.888539104771274,
+        "combined_auroc": 0.9027053615346778,
+        "energy_definition_auroc": 0.8851451057550417,
         "test_auroc": 0.9046728971962616,
         "detection_rate": 1.0,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 1.0
       },
       "M02": {
         "test_unknown_n": 37,
+        "msp_auroc": 0.9735780556676079,
+        "energy_auroc": 0.3967829770068576,
+        "knn_auroc": 0.9956131504638966,
+        "definition_auroc": 0.903237192416297,
+        "combined_auroc": 1.0,
+        "energy_definition_auroc": 0.7089048003227107,
         "test_auroc": 0.9735780556676079,
         "detection_rate": 1.0,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 1.0
       },
       "M03": {
         "test_unknown_n": 35,
+        "msp_auroc": 0.20414232607541158,
+        "energy_auroc": 0.12129580456718002,
+        "knn_auroc": 0.16521508231545406,
+        "definition_auroc": 0.9291024960169941,
+        "combined_auroc": 0.15122145512480084,
+        "energy_definition_auroc": 0.513595326606479,
         "test_auroc": 0.20414232607541158,
         "detection_rate": 0.0,
-        "most_confused_with": "M04"
+        "most_confused_with": "M04",
+        "zero_shot_top1": 1.0
       },
       "M04": {
         "test_unknown_n": 43,
+        "msp_auroc": 0.5648091268100044,
+        "energy_auroc": 0.3047389205792014,
+        "knn_auroc": 0.43040807371654227,
+        "definition_auroc": 0.5144361562088635,
+        "combined_auroc": 0.5138218516893374,
+        "energy_definition_auroc": 0.43473014480035105,
         "test_auroc": 0.5648091268100044,
         "detection_rate": 0.5581395348837209,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 0.5581395348837209
       },
       "M05": {
         "test_unknown_n": 59,
+        "msp_auroc": 0.9536701180505177,
+        "energy_auroc": 0.3386533007979951,
+        "knn_auroc": 0.5044186506627976,
+        "definition_auroc": 0.7984897447734616,
+        "combined_auroc": 0.7668502275275342,
+        "energy_definition_auroc": 0.5594044714106707,
         "test_auroc": 0.9536701180505177,
         "detection_rate": 1.0,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 0.7288135593220338
       },
       "M06": {
         "test_unknown_n": 70,
+        "msp_auroc": 0.41263845498437945,
+        "energy_auroc": 0.2619710309571145,
+        "knn_auroc": 0.4118432263561488,
+        "definition_auroc": 0.7637602953706333,
+        "combined_auroc": 0.38898040329451855,
+        "energy_definition_auroc": 0.5020874751491053,
         "test_auroc": 0.41263845498437945,
         "detection_rate": 0.2857142857142857,
-        "most_confused_with": "M07"
+        "most_confused_with": "M07",
+        "zero_shot_top1": 0.7142857142857143
       },
       "M07": {
         "test_unknown_n": 43,
+        "msp_auroc": 0.44221149627029394,
+        "energy_auroc": 0.4598069328652918,
+        "knn_auroc": 0.5286090390522158,
+        "definition_auroc": 0.7153137340939009,
+        "combined_auroc": 0.4730802983764809,
+        "energy_definition_auroc": 0.6248354541465554,
         "test_auroc": 0.44221149627029394,
         "detection_rate": 0.0,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 0.7674418604651163
       },
       "M08": {
         "test_unknown_n": 48,
+        "msp_auroc": 0.9190873015873016,
+        "energy_auroc": 0.518531746031746,
+        "knn_auroc": 0.3363888888888889,
+        "definition_auroc": 0.9447222222222222,
+        "combined_auroc": 0.6179365079365079,
+        "energy_definition_auroc": 0.7958928571428571,
         "test_auroc": 0.9190873015873016,
         "detection_rate": 1.0,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 1.0
       },
       "M09": {
         "test_unknown_n": 53,
+        "msp_auroc": 0.6789912917271408,
+        "energy_auroc": 0.8941219158200291,
+        "knn_auroc": 0.8294629898403484,
+        "definition_auroc": 0.8441582002902759,
+        "combined_auroc": 0.781767053701016,
+        "energy_definition_auroc": 0.9500907111756168,
         "test_auroc": 0.6789912917271408,
         "detection_rate": 0.5471698113207547,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 0.5471698113207547
       },
       "M10": {
         "test_unknown_n": 48,
+        "msp_auroc": 0.9988492063492064,
+        "energy_auroc": 0.19960317460317462,
+        "knn_auroc": 0.9084126984126983,
+        "definition_auroc": 1.0,
+        "combined_auroc": 0.9928174603174603,
+        "energy_definition_auroc": 0.6057539682539682,
         "test_auroc": 0.9988492063492064,
         "detection_rate": 1.0,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 1.0
       },
       "M11": {
         "test_unknown_n": 64,
+        "msp_auroc": 0.7643050098231827,
+        "energy_auroc": 0.8212794695481336,
+        "knn_auroc": 0.6854125736738703,
+        "definition_auroc": 0.8409258349705306,
+        "combined_auroc": 0.7469302554027506,
+        "energy_definition_auroc": 0.9099490422396856,
         "test_auroc": 0.7643050098231827,
         "detection_rate": 0.5625,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 1.0
       },
       "M12": {
         "test_unknown_n": 35,
+        "msp_auroc": 0.7179500796601168,
+        "energy_auroc": 0.628890069038768,
+        "knn_auroc": 0.8036643653744026,
+        "definition_auroc": 0.6879978757302178,
+        "combined_auroc": 0.8035847052575678,
+        "energy_definition_auroc": 0.7142060541688794,
         "test_auroc": 0.7179500796601168,
         "detection_rate": 0.7142857142857143,
-        "most_confused_with": "none"
+        "most_confused_with": "none",
+        "zero_shot_top1": 0.4
       }
     },
     "selected_score": "msp"

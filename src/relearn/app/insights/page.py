@@ -7,6 +7,7 @@ from relearn.app.insights.dashboard import render_dashboard, render_evaluation_p
 from relearn.app.insights.practice import render_practice, reset_flow
 from relearn.app.insights.trace_view import render_assessment_trace, render_practice_trace
 from relearn.app.insights.views import render_profile, render_step
+from relearn.app.insights.visuals import inject_insights_theme
 from relearn.learning.guided import DEMO_LEARNER
 from relearn.pipeline import Tutor
 
@@ -117,6 +118,7 @@ def student_decisions(tutor: Tutor, learner: str) -> None:
 
 
 def render_insights(tutor: Tutor, learner: str) -> None:
+    inject_insights_theme()
     with st.sidebar:
         st.title("Re:Learn Insights")
         st.caption("For judges and teachers")
@@ -135,7 +137,7 @@ def render_insights(tutor: Tutor, learner: str) -> None:
     if page == "Misconception map":
         st.header("Class misconception map")
         st.caption("Every learner in this store. Bubble size is how many learners showed each misconception.")
-        st.markdown(f'<div style="background:#0F0D1A">{svc.class_map(tutor)}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="ri-card">{svc.class_map(tutor)}</div>', unsafe_allow_html=True)
         data = svc.class_map_data(tutor)
         if data:
             st.dataframe(pd.DataFrame(data).T, width="stretch")

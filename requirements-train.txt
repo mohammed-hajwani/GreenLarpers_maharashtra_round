@@ -1,5 +1,2 @@
 -r requirements.txt
 torch
-transformers
-datasets
-accelerate

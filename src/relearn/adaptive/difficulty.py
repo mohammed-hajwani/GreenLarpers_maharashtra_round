@@ -92,6 +92,9 @@ def pick_template(concept: str, band: str, recent_template_ids: list[str]) -> tu
             if distance:
                 gap = f"no {band} template for this concept; used nearest band {candidates[0].difficulty}"
             break
+    if not candidates:
+        candidates = list(pool or content.templates)
+        gap = f"no templates for concept {concept}; fell back to all available templates"
     usage = {tid: i for i, tid in enumerate(recent_template_ids)}
     candidates.sort(key=lambda t: (usage.get(t.template_id, -1), t.template_id))
     return candidates[0], gap

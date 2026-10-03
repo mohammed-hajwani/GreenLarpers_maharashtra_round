@@ -41,28 +41,26 @@ class EmbeddingConfig(BaseModel):
     exemplars_per_class: int
 
 
-class TransformerConfig(BaseModel):
-    model_name: str
-    max_length: int
-    epochs: int
-    batch_size: int
-    lr: float
-
-
 class DiagnosisConfig(BaseModel):
     top_k: int
     confident_threshold: float
+    working_conflict_threshold: float
 
 
 class DisambiguationConfig(BaseModel):
     max_probes: int
     answer_noise: float
     min_expected_gain: float
+    prior_floor: float
 
 
 class InterventionConfig(BaseModel):
     max_words: int
     llm_personalize: bool
+
+
+class EscalationConfig(BaseModel):
+    max_strategies_per_misconception: int
 
 
 class AssessmentConfig(BaseModel):
@@ -104,6 +102,12 @@ class DifficultyConfig(BaseModel):
     min_templates_per_band: int
 
 
+class OpenSetConfig(BaseModel):
+    target_false_flag: float
+    energy_temperature: float
+    runtime_scores: list[str]
+
+
 class AppConfig(BaseModel):
     db_env: str
     db_filename: str
@@ -114,17 +118,17 @@ class Config(BaseModel):
     paths: PathsConfig
     data: DataConfig
     baseline: BaselineConfig
-    transformer: TransformerConfig
     embedding: EmbeddingConfig
     diagnosis: DiagnosisConfig
     disambiguation: DisambiguationConfig
     intervention: InterventionConfig
+    escalation: EscalationConfig
     assessment: AssessmentConfig
     learner: LearnerConfig
     app: AppConfig
     mastery: MasteryConfig
     difficulty: DifficultyConfig
-    loops: dict
+    open_set: OpenSetConfig
 
     def path(self, name: str) -> Path:
         return ROOT / getattr(self.paths, name)
@@ -143,6 +147,4 @@ def _read_yaml(path: Path) -> dict:
 
 @lru_cache(maxsize=1)
 def load_config() -> Config:
-    raw = _read_yaml(ROOT / "configs" / "default.yaml")
-    raw["loops"] = _read_yaml(ROOT / "configs" / "loops.yaml")
-    return Config.model_validate(raw)
+    return Config.model_validate(_read_yaml(ROOT / "configs" / "default.yaml"))

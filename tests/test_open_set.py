@@ -1,11 +1,14 @@
 import json
 
+import numpy as np
+
 from relearn.config import ROOT
 from relearn.content import load_content
 from relearn.data.generator import make_question
 from relearn.diagnosis.diagnoser import diagnose
 from relearn.diagnosis.routing import open_set_threshold
 from relearn.learner.store import LearnerStore
+from relearn.models.inference import energy
 from relearn.models.loader import get_active_model
 from relearn.pipeline import Tutor
 from relearn.schemas import LearnerResponse
@@ -17,8 +20,18 @@ def test_open_set_report() -> None:
     assert o["selected_score"] in o["scores"]
     chosen = o["scores"][o["selected_score"]]
     assert 0.5 <= chosen["test_auroc"] <= 1.0 and 0 <= chosen["test_false_flag_rate"] <= 1
-    assert chosen["val_auroc"] == max(s["val_auroc"] for s in o["scores"].values())
+    assert o["selected_score"] in o["runtime_scores"]
+    assert chosen["val_auroc"] == max(o["scores"][k]["val_auroc"] for k in o["runtime_scores"])
     assert abs(open_set_threshold() - chosen["threshold"]) < 1e-3
+    assert {"energy", "definition"} <= set(o["scores"]) and set(o["curves"]) == set(o["scores"])
+    for row in o["per_misconception"].values():
+        assert 0.0 <= row["zero_shot_top1"] <= 1.0
+
+
+def test_energy_score_is_higher_for_flatter_logits() -> None:
+    peaked = energy(np.array([[10.0, 0.0, 0.0]]), 1.0)[0]
+    flat = energy(np.array([[1.0, 1.0, 1.0]]), 1.0)[0]
+    assert flat > peaked
 
 
 def test_novelty_only_flags_wrong_answers() -> None:

@@ -5,7 +5,7 @@ EXHAUSTED = "flag_for_human"
 
 
 def strategy_order(misconception: str) -> list[str]:
-    cap = load_config().loops["escalation"]["max_strategies_per_misconception"]
+    cap = load_config().escalation.max_strategies_per_misconception
     return [s.strategy for s in load_content().interventions[misconception]][:cap]
 
 

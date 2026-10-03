@@ -2,10 +2,17 @@ import math
 
 from relearn.config import load_config
 from relearn.content import load_content
-from relearn.diagnosis.routing import ACCEPT, open_set_threshold, route_for, thresholds_for
+from relearn.diagnosis.routing import ACCEPT, PROBE, open_set_score, open_set_threshold, route_for, thresholds_for
 from relearn.models.base import TextClassifier
 from relearn.models.baseline import sample_text
-from relearn.models.inference import NONE, answer_key_verdict, apply_answer_key
+from relearn.models.inference import (
+    NONE,
+    answer_key_verdict,
+    apply_answer_key,
+    energy,
+    msp_novelty,
+    working_conflict,
+)
 from relearn.models.loader import get_active_model
 from relearn.models.registry import KIND_BY_NAME
 from relearn.schemas import Diagnosis, LearnerResponse, Question
@@ -55,10 +62,18 @@ def diagnose(question: Question, response: LearnerResponse, model: TextClassifie
     text = sample_text(question, response)
     raw = model.predict_proba([text], calibrated=False)[0]
     probs = model.predict_proba([text])[0]
-    probs = apply_answer_key(probs, model.labels, answer_key_verdict(question, response))
+    verdict = answer_key_verdict(question, response)
+    limit = load_config().diagnosis.working_conflict_threshold
+    conflict = working_conflict(probs, model.labels, verdict, limit)
+    probs = apply_answer_key(probs, model.labels, verdict, limit)
     posterior = {label: float(p) for label, p in zip(model.labels, probs, strict=True)}
     diagnosis = finalize(posterior, model.name, model.version, model.kind)
-    novelty = 1.0 - max(float(p) for label, p in zip(model.labels, raw, strict=True) if label != NONE)
+    if conflict:
+        diagnosis = diagnosis.model_copy(update={"route": PROBE, "ambiguous": True, "needs_probing": True})
+    if open_set_score() == "energy":
+        novelty = float(energy(model.logits([text]), load_config().open_set.energy_temperature)[0])
+    else:
+        novelty = msp_novelty(raw, model.labels)
     limit = open_set_threshold()
     unfamiliar = limit is not None and not diagnosis.is_correct and novelty > limit
     return diagnosis.model_copy(update={"novelty": novelty, "unfamiliar": unfamiliar})

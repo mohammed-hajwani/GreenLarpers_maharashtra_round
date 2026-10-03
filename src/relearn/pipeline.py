@@ -65,11 +65,11 @@ class Tutor:
         return d
 
     def _mastery(
-        self, learner_id: str, concept: str | None, event: str, ref_id: str, evidence: tuple
+        self, learner_id: str, concept: str | None, event: str, ref_id: str, evidence: tuple, decay: bool = True
     ) -> MasteryUpdate | None:
         if concept is None:
             return None
-        state, record = update(self.store.mastery(learner_id, concept), concept, event, ref_id, evidence)
+        state, record = update(self.store.mastery(learner_id, concept), concept, event, ref_id, evidence, decay)
         record.detail["log_id"] = self.store.save_mastery(learner_id, state, record)
         return record
 
@@ -174,15 +174,12 @@ class Tutor:
     def _log_items(
         self, learner_id: str, items: list[AssessmentItem], result: AssessmentResult, answers: dict
     ) -> list[MasteryUpdate]:
-        updates = []
+        updates, decayed = [], set()
         for i in items:
-            m = self._mastery(
-                learner_id,
-                load_content().concept_of(i.misconception),
-                i.kind,
-                i.item_id,
-                item_evidence(i.kind, result.item_correct[i.item_id]),
-            )
+            concept = load_content().concept_of(i.misconception)
+            evidence = item_evidence(i.kind, result.item_correct[i.item_id])
+            m = self._mastery(learner_id, concept, i.kind, i.item_id, evidence, concept not in decayed)
+            decayed.add(concept)
             if m is not None:
                 updates.append(m)
             self.store.log(
@@ -202,16 +199,18 @@ class Tutor:
         updates = self._log_items(learner_id, items, result, answers)
         before = self.store.get(learner_id, misconception)
         record = on_assessment(before, result)
-        due = None
-        if passes_reassessment(result) and record.state == MisconceptionState.intervened:
-            due = self.store.attempt_count(learner_id) + load_config().assessment.retest_gap
-        self.store.put(record, due)
+        self.store.put(record, self._next_retest(learner_id, passes_reassessment(result), record))
         record_outcome(self.store, learner_id, misconception, passes_reassessment(result))
         self.store.log(learner_id, "state", misconception, misconception, payload={"state": record.state.value})
         self.last_trace = self._assessment_trace(
             learner_id, "assessment", misconception, before, record, result, updates
         )
         return result, record
+
+    def _next_retest(self, learner_id: str, passed: bool, record: LearnerRecord) -> int | None:
+        if passed and record.state == MisconceptionState.intervened:
+            return self.store.attempt_count(learner_id) + load_config().assessment.retest_gap
+        return None
 
     def due_retests(self, learner_id: str) -> list[tuple[str, AssessmentItem]]:
         count = self.store.attempt_count(learner_id)
@@ -243,7 +242,7 @@ class Tutor:
         record = on_retest(before, result)
         if record.state == MisconceptionState.resolved and record.strategies_tried:
             self.store.bump_stat(item.misconception, record.strategies_tried[-1], "resolved")
-        self.store.put(record, None)
+        self.store.put(record, self._next_retest(learner_id, bool(result.retest_passed), record))
         self.store.log(
             learner_id, "state", item.misconception, item.misconception, payload={"state": record.state.value}
         )
