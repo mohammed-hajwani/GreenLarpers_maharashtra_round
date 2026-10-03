@@ -1,60 +1,123 @@
+from dataclasses import dataclass, field
+
 from relearn.config import load_config
 from relearn.content import load_content
-from relearn.diagnosis.diagnoser import finalize
+from relearn.diagnosis.diagnoser import entropy_bits, finalize
+from relearn.diagnosis.routing import ACCEPT
 from relearn.schemas import Diagnosis, Probe
 
 
-def _separates(probe: Probe, a: str, b: str) -> bool:
-    expected = probe.expected_answer_by_label
-    return a in expected and b in expected and expected[a] != expected[b]
+@dataclass
+class ProbeChoice:
+    probe: Probe
+    expected_gain: float
+    runners_up: list[tuple[str, float]] = field(default_factory=list)
+
+
+@dataclass
+class ProbeStep:
+    probe_id: str
+    answer: str
+    expected_gain: float
+    runners_up: list[tuple[str, float]]
+    entropy_before: float
+    entropy_after: float
+    confidence_before: float
+    confidence_after: float
+    top_before: list[tuple[str, float]]
+    top_after: list[tuple[str, float]]
+
+    @property
+    def information_gain(self) -> float:
+        return self.entropy_before - self.entropy_after
+
+
+def _noise() -> float:
+    return load_config().disambiguation.answer_noise
+
+
+def likelihood(probe: Probe, label: str, answer: str, noise: float | None = None) -> float:
+    noise = _noise() if noise is None else noise
+    n = len(probe.options)
+    expected = probe.expected_answer_by_label.get(label)
+    if expected is None:
+        return 1.0 / n
+    return 1.0 - noise if answer == expected else noise / (n - 1)
+
+
+def _posterior(diagnosis: Diagnosis) -> dict[str, float]:
+    return dict(diagnosis.posterior) if diagnosis.posterior else dict(diagnosis.top_labels)
+
+
+def bayes_update(posterior: dict[str, float], probe: Probe, answer: str) -> dict[str, float]:
+    updated = {label: p * likelihood(probe, label, answer) for label, p in posterior.items()}
+    total = sum(updated.values()) or 1.0
+    return {label: p / total for label, p in updated.items()}
+
+
+def expected_information_gain(posterior: dict[str, float], probe: Probe) -> float:
+    h_before = entropy_bits(posterior)
+    expected_after = 0.0
+    for option in probe.options:
+        p_option = sum(p * likelihood(probe, label, option) for label, p in posterior.items())
+        if p_option > 0:
+            expected_after += p_option * entropy_bits(bayes_update(posterior, probe, option))
+    return h_before - expected_after
+
+
+def rank_probes(diagnosis: Diagnosis, used: set[str] | None = None) -> list[tuple[Probe, float]]:
+    used = used or set()
+    posterior = _posterior(diagnosis)
+    scored = [
+        (p, expected_information_gain(posterior, p)) for p in load_content().probes if p.probe_id not in used
+    ]
+    return sorted(scored, key=lambda x: (-x[1], x[0].probe_id))
+
+
+def choose_probe(diagnosis: Diagnosis, used: set[str] | None = None) -> ProbeChoice | None:
+    d = load_config().disambiguation
+    if diagnosis.route == ACCEPT or diagnosis.is_correct or len(used or ()) >= d.max_probes:
+        return None
+    ranked = rank_probes(diagnosis, used)
+    if not ranked or ranked[0][1] < d.min_expected_gain:
+        return None
+    runners = [(p.probe_id, round(g, 4)) for p, g in ranked[1:4]]
+    return ProbeChoice(ranked[0][0], ranked[0][1], runners)
 
 
 def select_probe(diagnosis: Diagnosis, used: set[str] | None = None) -> Probe | None:
-    if not diagnosis.ambiguous or diagnosis.confusable_group is None:
-        return None
-    used = used or set()
-    content = load_content()
-    first = diagnosis.top_labels[0][0]
-    second = next(
-        (
-            label
-            for label, _ in diagnosis.top_labels[1:]
-            if content.group_of(label) == diagnosis.confusable_group
-        ),
-        None,
-    )
-    if second is None:
-        return None
-    candidates = [
-        p
-        for p in content.probes
-        if p.confusable_group == diagnosis.confusable_group and p.probe_id not in used
-    ]
-    separating = [p for p in candidates if _separates(p, first, second)]
-    pool = separating or candidates
-    return pool[0] if pool else None
+    choice = choose_probe(diagnosis, used)
+    return choice.probe if choice else None
 
 
 def update_with_probe(diagnosis: Diagnosis, probe: Probe, answer: str) -> Diagnosis:
-    d = load_config().disambiguation
-    updated = []
-    for label, p in diagnosis.top_labels:
-        expected = probe.expected_answer_by_label.get(label)
-        updated.append((label, p * (d.match_likelihood if expected == answer else d.mismatch_likelihood)))
-    total = sum(p for _, p in updated) or 1.0
-    return finalize([(label, p / total) for label, p in updated])
+    posterior = bayes_update(_posterior(diagnosis), probe, answer)
+    return finalize(posterior, diagnosis.model_name, diagnosis.model_version)
 
 
-def run_probes(diagnosis: Diagnosis, answer_fn) -> tuple[Diagnosis, list[tuple[Probe, str]]]:
-    max_probes = load_config().disambiguation.max_probes
+def apply_probe(diagnosis: Diagnosis, choice: ProbeChoice, answer: str) -> tuple[Diagnosis, ProbeStep]:
+    after = update_with_probe(diagnosis, choice.probe, answer)
+    step = ProbeStep(
+        probe_id=choice.probe.probe_id,
+        answer=answer,
+        expected_gain=choice.expected_gain,
+        runners_up=choice.runners_up,
+        entropy_before=diagnosis.entropy,
+        entropy_after=after.entropy,
+        confidence_before=diagnosis.confidence,
+        confidence_after=after.confidence,
+        top_before=diagnosis.top_labels,
+        top_after=after.top_labels,
+    )
+    return after, step
+
+
+def run_probes(diagnosis: Diagnosis, answer_fn, chooser=None) -> tuple[Diagnosis, list[ProbeStep]]:
+    chooser = chooser or choose_probe
     used: set[str] = set()
-    trail: list[tuple[Probe, str]] = []
-    while diagnosis.ambiguous and len(trail) < max_probes:
-        probe = select_probe(diagnosis, used)
-        if probe is None:
-            break
-        answer = answer_fn(probe)
-        used.add(probe.probe_id)
-        trail.append((probe, answer))
-        diagnosis = update_with_probe(diagnosis, probe, answer)
-    return diagnosis, trail
+    steps: list[ProbeStep] = []
+    while (choice := chooser(diagnosis, used)) is not None:
+        used.add(choice.probe.probe_id)
+        diagnosis, step = apply_probe(diagnosis, choice, answer_fn(choice.probe))
+        steps.append(step)
+    return diagnosis, steps

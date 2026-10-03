@@ -10,6 +10,7 @@ from relearn.models.embedding import EmbeddingModel
 
 BASELINE = "baseline"
 EMBEDDING = "v1_embedding"
+KIND_BY_NAME = {BaselineModel.name: BASELINE, EmbeddingModel.name: EMBEDDING}
 MODEL_FILE = "model.joblib"
 META_FILE = "metadata.json"
 

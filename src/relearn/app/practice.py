@@ -90,9 +90,9 @@ def _answer_form(tutor: Tutor, learner: str) -> None:
 
 
 def _advance_probe(tutor: Tutor, learner: str) -> None:
-    probe = tutor.next_probe(st.session_state.diagnosis, st.session_state.probes_used)
-    st.session_state.probe = probe
-    if probe is None:
+    choice = tutor.next_probe(st.session_state.diagnosis, st.session_state.probes_used)
+    st.session_state.probe = choice
+    if choice is None:
         tutor.confirm(learner, st.session_state.diagnosis)
         st.session_state.phase = "diagnosed"
     else:
@@ -100,16 +100,18 @@ def _advance_probe(tutor: Tutor, learner: str) -> None:
 
 
 def _probe_form(tutor: Tutor, learner: str) -> None:
-    probe = st.session_state.probe
+    choice = st.session_state.probe
+    probe = choice.probe
     st.info("Your answer fits two closely related ideas. One quick question to tell them apart:")
     with st.form("probe"):
         st.markdown(f"**{probe.stem}**")
-        choice = st.radio("Choose", probe.options, index=None, label_visibility="collapsed")
-        if st.form_submit_button("Answer probe") and choice:
+        answer = st.radio("Choose", probe.options, index=None, label_visibility="collapsed", key="probe_ans")
+        if st.form_submit_button("Answer probe") and answer:
             st.session_state.probes_used.add(probe.probe_id)
-            st.session_state.diagnosis = tutor.answer_probe(
-                learner, st.session_state.diagnosis, probe, choice
+            st.session_state.diagnosis, step = tutor.answer_probe(
+                learner, st.session_state.diagnosis, choice, answer
             )
+            st.session_state.setdefault("probe_steps", []).append(step)
             _advance_probe(tutor, learner)
             st.rerun()
 

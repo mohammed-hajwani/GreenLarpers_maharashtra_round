@@ -60,3 +60,16 @@
 - Routing replaces the PRD's tau gap rule. Confidence at or above the accept threshold → accept. From 0.50 up to the accept threshold → probe. Below 0.50 → uncertain, which routes to a probe if one is informative, otherwise to review.
 - Thresholds were tuned on validation by `scripts/tune_thresholds.py`: accept is the smallest grid value whose accepted predictions reach 0.95 precision on validation, using the answer-keyed probabilities that diagnosis actually uses. Result: v1 accept 0.70 (val precision 0.966, coverage 0.67), baseline accept 0.80 (precision 0.970, coverage 0.60), probe 0.50 for both. Saved in `configs/thresholds.yaml`; defaults are 0.80 and 0.50.
 - `Diagnosis` gained `posterior`, `confidence`, `entropy`, `route`, `model_name` and `model_version`, all defaulted (PRD section 6 updated). `ambiguous` now means `route != accept`.
+
+## Upgrade stage D: information-gain probes
+- Probe likelihood: if the probe stores an expected option for a label, the chance of that option is 1 - noise and every other option shares the noise equally (`disambiguation.answer_noise`, default 0.1). Labels the probe does not cover get a uniform likelihood, so the probe carries no information about them. This replaces the PRD's fixed 0.85 / 0.10 factors.
+- The posterior covers all 13 labels, not just the top 3. The chosen probe is the unused one with the highest expected entropy drop, and it must gain at least `min_expected_gain` (0.05 bits). Probing stops at `max_probes` (2) or when the route becomes accept.
+- Each probe step logs entropy before and after, realized gain, expected gain, the chosen probe and the top-3 runner-up probes.
+- Evaluation is in `scripts/simulate_learners.py`, written to `metrics.json` under `probing`: confusable subset, 5 seeds. Accuracy means:
+  - v1 val: no probe 0.628, random 0.831, info-gain 0.876 (info-gain better)
+  - v1 test: 0.726, 0.818, 0.806 (info-gain worse by 1.2 points)
+  - baseline val: 0.831, 0.963, 0.965
+  - baseline test: 0.820, 0.900, 0.904
+  - "Random" picks a random unused probe that covers the top-1 label, which is a stronger baseline than any random probe.
+  - Caveat: simulated learners answer using the same expected-answer map the likelihood assumes, so these lifts are optimistic upper bounds.
+- The demo learner now holds M01 and answers whatever probe is selected the way an M01 holder would, instead of using hardcoded answers per probe id.

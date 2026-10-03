@@ -9,11 +9,7 @@
     "answer": "2.7 N",
     "working": "The force from the hit keeps it moving forward."
   },
-  "probe_answers": {
-    "p_cg2_01": "It slows down, because nothing is pushing it anymore",
-    "p_cg2_02": "Something must keep pushing it up or it would instantly stop",
-    "p_cg2_03": "West, opposite the motion"
-  },
+  "held_misconception": "M01",
   "round_1_correct_kinds": [
     "transfer",
     "transfer"
@@ -68,7 +64,27 @@
         ],
         "is_correct": false,
         "ambiguous": true,
-        "confusable_group": "CG2"
+        "confusable_group": "CG2",
+        "posterior": {
+          "M01": 0.40336909884701744,
+          "M02": 0.00040234782547262743,
+          "M03": 0.0002671709540273549,
+          "M04": 8.804295325320368e-05,
+          "M05": 0.00015117092718786723,
+          "M06": 0.000802919629516119,
+          "M07": 0.0003310108009810064,
+          "M08": 0.00026995260085858826,
+          "M09": 0.5894498797926502,
+          "M10": 0.00016341877881344735,
+          "M11": 0.00017877534735042053,
+          "M12": 0.00452621154287176,
+          "none": 0.0
+        },
+        "confidence": 0.5894498797926502,
+        "entropy": 1.0434605427007662,
+        "route": "probe",
+        "model_name": "v1_embedding_minilm_hybrid",
+        "model_version": "1"
       }
     },
     {
@@ -100,20 +116,40 @@
         "top_labels": [
           [
             "M01",
-            0.8523407477638636
+            0.9466410241110583
           ],
           [
             "M09",
-            0.1465340604622044
+            0.05123489090265189
           ],
           [
-            "M12",
-            0.0011251917739320031
+            "M06",
+            0.0005234223599679956
           ]
         ],
         "is_correct": false,
         "ambiguous": false,
-        "confusable_group": "CG2"
+        "confusable_group": "CG2",
+        "posterior": {
+          "M01": 0.9466410241110583,
+          "M02": 0.0002622900731220023,
+          "M03": 0.0001741684299786963,
+          "M04": 5.739509743723189e-05,
+          "M05": 9.854814922747506e-05,
+          "M06": 0.0005234223599679956,
+          "M07": 0.00021578555095083353,
+          "M08": 0.00017598178226886153,
+          "M09": 0.05123489090265189,
+          "M10": 0.0001065325092639366,
+          "M11": 0.00011654343819025624,
+          "M12": 0.0003934175958826786,
+          "none": 0.0
+        },
+        "confidence": 0.9466410241110583,
+        "entropy": 0.31984174570672447,
+        "route": "accept",
+        "model_name": "v1_embedding_minilm_hybrid",
+        "model_version": "1"
       }
     },
     {
@@ -250,14 +286,14 @@
             "misconception": "M01",
             "label": "force_for_constant_velocity",
             "state": "resolved",
-            "posterior_held": 0.204,
+            "posterior_held": 0.208,
             "attempts": 11,
             "strategies_tried": "counterexample, fbd_walkthrough"
           }
         ],
         "timeline": [
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "practice",
             "ref_id": "m09_kicked_ball_02__m0.45_v6",
             "misconception": "M09",
@@ -280,7 +316,7 @@
             ]
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "probe",
             "ref_id": "p_cg2_01",
             "misconception": null,
@@ -289,20 +325,37 @@
             "top": [
               [
                 "M01",
-                0.8523407477638636
+                0.9466410241110583
               ],
               [
                 "M09",
-                0.1465340604622044
+                0.05123489090265189
               ],
               [
-                "M12",
-                0.0011251917739320031
+                "M06",
+                0.0005234223599679956
+              ]
+            ],
+            "expected_gain": 0.7207789164457468,
+            "entropy_before": 1.0434605427007662,
+            "entropy_after": 0.31984174570672447,
+            "runners_up": [
+              [
+                "p_cg2_02",
+                0.7208
+              ],
+              [
+                "p_cg2_03",
+                0.0133
+              ],
+              [
+                "p_cg4_02",
+                0.0012
               ]
             ]
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -310,7 +363,7 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "intervention",
             "ref_id": "counterexample",
             "misconception": "M01",
@@ -318,7 +371,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -326,7 +379,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -334,7 +387,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t3",
             "misconception": "M01",
@@ -342,7 +395,7 @@
             "answer": "Gravity is bigger than air resistance"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap1",
             "misconception": "M01",
@@ -350,7 +403,7 @@
             "answer": "A forward force that keeps it moving"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -358,7 +411,7 @@
             "state": "active"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "intervention",
             "ref_id": "fbd_walkthrough",
             "misconception": "M01",
@@ -366,7 +419,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t4",
             "misconception": "M01",
@@ -374,7 +427,7 @@
             "answer": "300 N"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t1",
             "misconception": "M01",
@@ -382,7 +435,7 @@
             "answer": "0 N"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "transfer",
             "ref_id": "i_m01_t2",
             "misconception": "M01",
@@ -390,7 +443,7 @@
             "answer": "Tension equals the weight"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "trap",
             "ref_id": "i_m01_trap2",
             "misconception": "M01",
@@ -398,7 +451,7 @@
             "answer": "No, they are equal"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",
@@ -406,7 +459,7 @@
             "state": "intervened"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "practice",
             "ref_id": "m07_flour_weight_02__m2",
             "misconception": null,
@@ -423,13 +476,13 @@
                 0.0
               ],
               [
-                "M03",
+                "M02",
                 0.0
               ]
             ]
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "practice",
             "ref_id": "m02_moon_hammer_02__m1",
             "misconception": null,
@@ -446,13 +499,13 @@
                 0.0
               ],
               [
-                "M03",
+                "M02",
                 0.0
               ]
             ]
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "practice",
             "ref_id": "m04_cyclist_02__t20_v6",
             "misconception": null,
@@ -469,13 +522,13 @@
                 0.0
               ],
               [
-                "M03",
+                "M02",
                 0.0
               ]
             ]
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "retest",
             "ref_id": "i_m01_r1",
             "misconception": "M01",
@@ -483,7 +536,7 @@
             "answer": "None"
           },
           {
-            "ts": "2026-10-03T12:13:53+00:00",
+            "ts": "2026-10-03T12:18:58+00:00",
             "kind": "state",
             "ref_id": "M01",
             "misconception": "M01",

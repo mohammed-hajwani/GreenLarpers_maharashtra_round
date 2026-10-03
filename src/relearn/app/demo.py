@@ -73,11 +73,12 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
         }
     )
     used: set[str] = set()
-    while (probe := tutor.next_probe(d, used)) is not None:
-        answer = script["probe_answers"][probe.probe_id]
+    while (choice := tutor.next_probe(d, used)) is not None:
+        probe = choice.probe
+        answer = probe.expected_answer_by_label.get(script["held_misconception"], probe.options[0])
         used.add(probe.probe_id)
         before = d.top_labels
-        d = tutor.answer_probe(learner, d, probe, answer)
+        d, step = tutor.answer_probe(learner, d, choice, answer)
         steps.append(
             {
                 "kind": "probe",

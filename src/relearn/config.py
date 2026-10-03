@@ -56,8 +56,8 @@ class DiagnosisConfig(BaseModel):
 
 class DisambiguationConfig(BaseModel):
     max_probes: int
-    match_likelihood: float
-    mismatch_likelihood: float
+    answer_noise: float
+    min_expected_gain: float
 
 
 class InterventionConfig(BaseModel):

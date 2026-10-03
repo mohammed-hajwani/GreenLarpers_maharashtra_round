@@ -28,8 +28,8 @@ diagnosis:
   confident_threshold: 0.5
 disambiguation:
   max_probes: 2
-  match_likelihood: 0.85
-  mismatch_likelihood: 0.1
+  answer_noise: 0.1
+  min_expected_gain: 0.05
 intervention:
   max_words: 250
   llm_personalize: false

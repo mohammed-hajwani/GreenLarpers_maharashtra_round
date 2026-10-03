@@ -3,7 +3,7 @@ from relearn.assessment.planner import plan_assessment, plan_retest
 from relearn.config import load_config
 from relearn.content import load_content
 from relearn.diagnosis.diagnoser import diagnose
-from relearn.diagnosis.disambiguator import select_probe, update_with_probe
+from relearn.diagnosis.disambiguator import ProbeChoice, ProbeStep, apply_probe, choose_probe
 from relearn.intervention.builder import build_intervention
 from relearn.intervention.checker import check_intervention
 from relearn.intervention.selector import EXHAUSTED, select_strategy
@@ -20,7 +20,6 @@ from relearn.schemas import (
     LearnerRecord,
     LearnerResponse,
     MisconceptionState,
-    Probe,
     Question,
 )
 
@@ -43,17 +42,27 @@ class Tutor:
         )
         return d
 
-    def next_probe(self, diagnosis: Diagnosis, used: set[str]) -> Probe | None:
-        if len(used) >= load_config().disambiguation.max_probes:
-            return None
-        return select_probe(diagnosis, used)
+    def next_probe(self, diagnosis: Diagnosis, used: set[str]) -> ProbeChoice | None:
+        return choose_probe(diagnosis, used)
 
-    def answer_probe(self, learner_id: str, diagnosis: Diagnosis, probe: Probe, answer: str) -> Diagnosis:
-        updated = update_with_probe(diagnosis, probe, answer)
+    def answer_probe(
+        self, learner_id: str, diagnosis: Diagnosis, choice: ProbeChoice, answer: str
+    ) -> tuple[Diagnosis, ProbeStep]:
+        updated, step = apply_probe(diagnosis, choice, answer)
         self.store.log(
-            learner_id, "probe", probe.probe_id, payload={"answer": answer, "top": updated.top_labels}
+            learner_id,
+            "probe",
+            choice.probe.probe_id,
+            payload={
+                "answer": answer,
+                "top": updated.top_labels,
+                "expected_gain": step.expected_gain,
+                "entropy_before": step.entropy_before,
+                "entropy_after": step.entropy_after,
+                "runners_up": step.runners_up,
+            },
         )
-        return updated
+        return updated, step
 
     def confirm(self, learner_id: str, diagnosis: Diagnosis) -> LearnerRecord | None:
         if diagnosis.is_correct:

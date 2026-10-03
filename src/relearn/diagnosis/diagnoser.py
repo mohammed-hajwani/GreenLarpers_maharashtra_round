@@ -7,6 +7,7 @@ from relearn.models.base import TextClassifier
 from relearn.models.baseline import sample_text
 from relearn.models.inference import NONE, answer_key_verdict, apply_answer_key
 from relearn.models.loader import get_active_model
+from relearn.models.registry import KIND_BY_NAME
 from relearn.schemas import Diagnosis, LearnerResponse, Question
 
 
@@ -29,7 +30,8 @@ def finalize(
     top_labels = ranked[: cfg.diagnosis.top_k]
     first, confidence = top_labels[0]
     is_correct = first == NONE
-    route = ACCEPT if is_correct else route_for(confidence, thresholds_for(model_kind))
+    kind = model_kind or KIND_BY_NAME.get(model_name)
+    route = ACCEPT if is_correct else route_for(confidence, thresholds_for(kind))
     return Diagnosis(
         top_labels=top_labels,
         is_correct=is_correct,
