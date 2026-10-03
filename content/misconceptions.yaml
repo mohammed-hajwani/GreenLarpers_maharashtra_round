@@ -1,0 +1,99 @@
+working_prefixes:
+  - ""
+  - "I think "
+  - "Because "
+  - "My reasoning: "
+  - "Well, "
+  - "Basically "
+misconceptions:
+  - id: M01
+    label: force_for_constant_velocity
+    description: Believes a net force is needed to keep constant velocity
+    confusable_group: CG2
+    correct_concept: An object moving at constant velocity has zero net force; no force is needed to keep it moving.
+    forbidden_claims:
+      - a net force is needed to keep it moving
+      - it needs a force to keep moving
+  - id: M02
+    label: heavier_falls_faster
+    description: Believes heavier objects fall faster in vacuum or ignoring drag
+    confusable_group: null
+    correct_concept: Without air resistance all objects fall with the same acceleration g regardless of mass.
+    forbidden_claims:
+      - heavier objects fall faster
+      - the heavier one lands first
+  - id: M03
+    label: zero_v_zero_a_at_apex
+    description: Believes acceleration is zero at the top of a throw
+    confusable_group: CG1
+    correct_concept: At the top of a throw the velocity is zero for an instant but the acceleration is still g downward.
+    forbidden_claims:
+      - the acceleration is zero at the top
+  - id: M04
+    label: velocity_acceleration_conflation
+    description: Treats velocity and acceleration as the same idea
+    confusable_group: CG1
+    correct_concept: Acceleration is the rate of change of velocity, not the velocity itself; a fast object can have zero acceleration.
+    forbidden_claims:
+      - acceleration is the same as velocity
+  - id: M05
+    label: action_reaction_same_object
+    description: Believes action-reaction forces act on the same object
+    confusable_group: CG3
+    correct_concept: Newton's third law pairs act on two different objects, so they never cancel each other.
+    forbidden_claims:
+      - action and reaction cancel
+  - id: M06
+    label: normal_equals_weight
+    description: Believes normal force always equals weight
+    confusable_group: CG4
+    correct_concept: The normal force is whatever the surface must push to satisfy Newton's second law perpendicular to the surface; it equals weight only in special cases.
+    forbidden_claims:
+      - the normal force always equals the weight
+  - id: M07
+    label: mass_weight_conflation
+    description: Treats mass and weight as the same quantity
+    confusable_group: CG4
+    correct_concept: Mass is the amount of matter in kilograms; weight is the gravitational force m g in newtons.
+    forbidden_claims:
+      - mass and weight are the same
+  - id: M08
+    label: centripetal_extra_force
+    description: Treats centripetal force as an additional separate force
+    confusable_group: null
+    correct_concept: Centripetal force is the name for the net inward force; it is provided by real forces like tension, friction or gravity, not added on top of them.
+    forbidden_claims:
+      - centripetal force is an extra force
+  - id: M09
+    label: impetus
+    description: Believes a thrown object carries a force from the hand
+    confusable_group: CG2
+    correct_concept: Once an object leaves the hand, the hand exerts no force on it; it keeps moving because of inertia.
+    forbidden_claims:
+      - the force from the hand stays in the object
+  - id: M10
+    label: energy_used_up
+    description: Believes energy is consumed rather than transformed
+    confusable_group: null
+    correct_concept: Energy is never used up; it is transformed into other forms such as thermal energy and sound.
+    forbidden_claims:
+      - the energy is destroyed
+  - id: M11
+    label: bigger_object_bigger_force
+    description: Believes the larger object exerts the larger force in a collision
+    confusable_group: CG3
+    correct_concept: In any interaction the two objects exert equal and opposite forces on each other, whatever their sizes.
+    forbidden_claims:
+      - the bigger object exerts the bigger force
+  - id: M12
+    label: net_force_along_velocity
+    description: Believes net force direction always matches velocity direction
+    confusable_group: CG2
+    correct_concept: Net force points along the acceleration, which can differ from the direction of the velocity.
+    forbidden_claims:
+      - net force always points along the velocity
+confusable_groups:
+  CG1: [M03, M04]
+  CG2: [M01, M09, M12]
+  CG3: [M05, M11]
+  CG4: [M06, M07]

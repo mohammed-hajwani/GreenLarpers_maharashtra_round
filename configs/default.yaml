@@ -1,0 +1,50 @@
+seed: 42
+paths:
+  content_dir: content
+  data_dir: data
+  artifacts_dir: artifacts
+  reports_dir: reports
+data:
+  samples_per_template_label: 12
+  val_templates_per_misconception: 1
+  test_templates_per_misconception: 1
+  min_total_samples: 1500
+  max_class_imbalance: 2.0
+baseline:
+  word_ngram_max: 2
+  char_ngram_min: 3
+  char_ngram_max: 5
+  C: 4.0
+  max_iter: 2000
+  min_macro_f1: 0.6
+transformer:
+  model_name: distilbert-base-uncased
+  max_length: 256
+  epochs: 4
+  batch_size: 16
+  lr: 5.0e-5
+diagnosis:
+  tau: 0.2
+  top_k: 3
+  confident_threshold: 0.5
+disambiguation:
+  max_probes: 2
+  match_likelihood: 0.85
+  mismatch_likelihood: 0.1
+intervention:
+  max_words: 250
+  llm_personalize: false
+assessment:
+  transfer_count: 3
+  trap_count: 1
+  transfer_pass_min: 2
+  retest_gap: 3
+  resolved_posterior_max: 0.25
+learner:
+  prior_alpha: 1.0
+  prior_beta: 1.0
+  pass_beta_increment: 1.0
+  fail_alpha_increment: 1.0
+app:
+  db_env: RELEARN_DB
+  db_filename: relearn.db

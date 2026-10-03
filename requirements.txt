@@ -1,0 +1,11 @@
+pydantic>=2
+pyyaml
+numpy
+pandas
+scikit-learn
+joblib
+matplotlib
+streamlit
+huggingface_hub
+pytest
+ruff
