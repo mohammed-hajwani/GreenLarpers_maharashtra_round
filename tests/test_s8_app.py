@@ -1,4 +1,5 @@
 import pytest
+from conftest import insights_app
 from streamlit.testing.v1 import AppTest
 
 from relearn.config import ROOT
@@ -29,8 +30,7 @@ def test_health() -> None:
 def test_practice_flow_trap_fail_escalates() -> None:
     t = next(t for t in load_content().templates if t.template_id == "m01_car_cruise_02")
     q = make_question(t, {"v": 80})
-    at = AppTest.from_file(APP, default_timeout=60)
-    at.run()
+    at = insights_app("AI practice console")
     at.session_state["question"] = q
     at.session_state["phase"] = "answer"
     at.run()
@@ -58,10 +58,7 @@ def test_practice_flow_trap_fail_escalates() -> None:
 
 
 def test_demo_page_runs() -> None:
-    at = AppTest.from_file(APP, default_timeout=60)
-    at.run()
-    at.sidebar.radio[0].set_value("Demo mode")
-    at.run()
+    at = insights_app("AI demo walkthrough")
     _click(at, "Start demo")
     _click(at, "Show all")
     assert not at.exception

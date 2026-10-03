@@ -155,7 +155,7 @@ def render_profile(data: dict) -> None:
 
 
 def render_trace_step(data: dict) -> None:
-    from relearn.app.trace_view import render_practice_trace
+    from relearn.app.insights.trace_view import render_practice_trace
 
     m = data.get("mastery")
     if m:

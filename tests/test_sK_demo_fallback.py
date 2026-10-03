@@ -27,8 +27,9 @@ def test_full_flow_without_api_key_on_baseline_fallback(tmp_path) -> None:
 
 
 def _start_demo(at: AppTest) -> None:
+    at.query_params["view"] = "insights"
     at.run()
-    at.sidebar.radio[0].set_value("Demo mode")
+    at.sidebar.radio[0].set_value("AI demo walkthrough")
     at.run()
     next(b for b in at.button if b.label == "Start demo").click()
     at.run()

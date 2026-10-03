@@ -1,8 +1,7 @@
 import pytest
-from streamlit.testing.v1 import AppTest
+from conftest import insights_app
 
-from relearn.app.trace_view import assessment_rows, pct, practice_rows
-from relearn.config import ROOT
+from relearn.app.insights.trace_view import assessment_rows, pct, practice_rows
 from relearn.content import load_content
 from relearn.data.generator import make_question
 from relearn.diagnosis.explain import explain
@@ -87,8 +86,7 @@ def test_explanations_come_from_models() -> None:
 def test_app_renders_stored_trace(tmp_path, monkeypatch) -> None:
     monkeypatch.setenv("RELEARN_DB", str(tmp_path / "app.db"))
     q = _question()
-    at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120)
-    at.run()
+    at = insights_app("AI practice console")
     at.session_state["question"] = q
     at.session_state["phase"] = "answer"
     at.run()

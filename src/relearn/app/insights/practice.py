@@ -1,8 +1,8 @@
 import streamlit as st
 
 from relearn import services as svc
-from relearn.app.trace_view import render_assessment_trace, render_practice_trace
-from relearn.app.views import (
+from relearn.app.insights.trace_view import render_assessment_trace, render_practice_trace
+from relearn.app.insights.views import (
     label_name,
     render_assessment,
     render_diagnosis,

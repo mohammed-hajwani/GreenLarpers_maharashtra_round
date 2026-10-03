@@ -1,7 +1,6 @@
 import pytest
-from streamlit.testing.v1 import AppTest
+from conftest import insights_app
 
-from relearn.config import ROOT
 from relearn.diagnosis.diagnoser import finalize
 from relearn.diagnosis.screening import NEEDS_REASONING_MESSAGE, NON_ANSWER_MESSAGE, screen_response
 from relearn.schemas import LearnerResponse, Question, QuestionType
@@ -41,8 +40,7 @@ def test_low_confidence_none_is_not_correct() -> None:
 
 def test_app_screens_idk_on_custom_question(tmp_path, monkeypatch) -> None:
     monkeypatch.setenv("RELEARN_DB", str(tmp_path / "s.db"))
-    at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120)
-    at.run()
+    at = insights_app("AI practice console")
     at.session_state["question"] = CUSTOM
     at.session_state["phase"] = "answer"
     at.run()

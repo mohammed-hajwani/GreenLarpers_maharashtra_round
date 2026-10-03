@@ -1,7 +1,7 @@
 import json
 
 import pytest
-from streamlit.testing.v1 import AppTest
+from conftest import insights_app
 
 from relearn.analytics import dashboard_data, evaluation_data
 from relearn.app.demo import run_demo
@@ -52,10 +52,7 @@ def test_evaluation_reads_real_file() -> None:
 @pytest.mark.parametrize("page", ["Dashboard", "Model Evaluation"])
 def test_pages_render(page: str, tmp_path, monkeypatch) -> None:
     monkeypatch.setenv("RELEARN_DB", str(tmp_path / "p.db"))
-    at = AppTest.from_file(APP, default_timeout=120)
-    at.run()
-    at.sidebar.radio[0].set_value(page)
-    at.run()
+    at = insights_app(page)
     assert not at.exception
 
 

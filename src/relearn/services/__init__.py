@@ -127,6 +127,16 @@ def trace(tutor: Tutor, trace_id: int) -> dict:
     return tutor.store.trace(trace_id)
 
 
+def traces(tutor: Tutor, learner_id: str) -> list[dict]:
+    return tutor.store.traces(learner_id)
+
+
+def passages_by_id() -> dict[str, str]:
+    from relearn.rag.retriever import build_corpus
+
+    return {p.passage_id: p.text for p in build_corpus()}
+
+
 def reset(tutor: Tutor, learner_id: str) -> None:
     tutor.store.reset(learner_id)
 
