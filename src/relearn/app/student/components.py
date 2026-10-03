@@ -18,6 +18,9 @@ STATUS_TITLES = {
     "needs_more": ("!", "neutral"),
     "deferred": ("↺", "neutral"),
     "exhausted": ("✓", "neutral"),
+    "explain_clear": ("✓", "correct"),
+    "explain_partly": ("→", "neutral"),
+    "explain_tricky": ("↺", "neutral"),
 }
 STATUS_CHIPS = {
     "not_started": ("Not started", ""),
@@ -166,6 +169,28 @@ def visual_card(modality: str, mix_up: str) -> None:
             html(f'<p class="rl-visual-caption">{escape(svc.simulation_caption(mix_up))}</p>')
 
 
+def explain_card(flow: LessonFlow, on_check, on_skip, disabled: bool = False) -> None:
+    prompt = svc.explain_prompt(flow.explain_for)
+    with st.container(key="rl-question-card"):
+        html('<span class="rl-chip accent">Explain it in your own words</span>')
+        html(f'<p class="rl-question">{escape(prompt)}</p>')
+        if flow.feedback is not None and flow.feedback.status != "needs_more":
+            return
+        with st.form(key=f"explain-{flow.explain_for}", border=False):
+            text = st.text_area(
+                "Your explanation",
+                key=f"exp-{flow.explain_for}",
+                height=110,
+                disabled=disabled,
+                placeholder="Explain it as if to a friend.",
+            )
+            cols = st.columns(2)
+            if cols[0].form_submit_button("Check my explanation", type="primary", disabled=disabled, width="stretch"):
+                on_check(text or "")
+            if cols[1].form_submit_button("Skip for now", disabled=disabled, width="stretch"):
+                on_skip()
+
+
 def lesson_navigation(status: str, flow: LessonFlow, actions: dict, disabled: bool) -> None:
     if status == "needs_more":
         return
@@ -179,6 +204,9 @@ def lesson_navigation(status: str, flow: LessonFlow, actions: dict, disabled: bo
         "incorrect_item": [("Continue", "continue", "primary")],
         "deferred": [("Continue", "continue", "primary")],
         "exhausted": [("Continue", "continue", "primary")],
+        "explain_clear": [("Continue", "continue", "primary")],
+        "explain_partly": [("Continue", "continue", "primary")],
+        "explain_tricky": [("Continue", "continue", "primary")],
     }.get(status, [])
     cols = st.columns(len(buttons)) if buttons else []
     for col, (label, action, kind) in zip(cols, buttons, strict=True):

@@ -2450,5 +2450,198 @@
       }
     },
     "selected_score": "msp"
+  },
+  "explain_back": {
+    "provenance": "hand-written by the project team, 1 sound and 1 misconception-holding explanation per misconception",
+    "bands": {
+      "clear_below": 0.5,
+      "tricky_from": 0.75
+    },
+    "counts": {
+      "holds": {
+        "tricky": 9,
+        "partly": 2,
+        "clear": 1
+      },
+      "sound": {
+        "tricky": 1,
+        "partly": 2,
+        "clear": 9
+      }
+    },
+    "holding_caught_as_tricky": 0.75,
+    "holding_not_cleared": 0.9166666666666666,
+    "sound_accepted_as_clear": 0.75,
+    "sound_wrongly_tricky": 0.08333333333333333,
+    "details": [
+      {
+        "misconception": "M01",
+        "holds": false,
+        "text": "No. If nothing slows it down it keeps going at the same speed by itself, so no force is needed.",
+        "status": "partly",
+        "probability": 0.532
+      },
+      {
+        "misconception": "M01",
+        "holds": true,
+        "text": "Yes, you always need a force pushing it forward or it will slow down and stop.",
+        "status": "tricky",
+        "probability": 0.933
+      },
+      {
+        "misconception": "M02",
+        "holds": false,
+        "text": "No, without air everything falls with the same acceleration g, so they land together.",
+        "status": "clear",
+        "probability": 0.081
+      },
+      {
+        "misconception": "M02",
+        "holds": true,
+        "text": "Yes, heavier things fall faster because gravity pulls harder on them.",
+        "status": "tricky",
+        "probability": 0.964
+      },
+      {
+        "misconception": "M03",
+        "holds": false,
+        "text": "At the top the speed is zero but gravity still pulls it down, so the acceleration is still g.",
+        "status": "clear",
+        "probability": 0.012
+      },
+      {
+        "misconception": "M03",
+        "holds": true,
+        "text": "At the top it stops for a moment so the acceleration is zero there.",
+        "status": "tricky",
+        "probability": 0.938
+      },
+      {
+        "misconception": "M04",
+        "holds": false,
+        "text": "Acceleration is how quickly the velocity changes, so a fast car at a steady speed has no acceleration.",
+        "status": "tricky",
+        "probability": 0.786
+      },
+      {
+        "misconception": "M04",
+        "holds": true,
+        "text": "Acceleration is basically how fast you are going, so faster means more acceleration.",
+        "status": "tricky",
+        "probability": 0.989
+      },
+      {
+        "misconception": "M05",
+        "holds": false,
+        "text": "Because they act on two different objects, so they can't cancel each other.",
+        "status": "clear",
+        "probability": 0.474
+      },
+      {
+        "misconception": "M05",
+        "holds": true,
+        "text": "They do cancel because they are equal and opposite forces on the same thing.",
+        "status": "partly",
+        "probability": 0.592
+      },
+      {
+        "misconception": "M06",
+        "holds": false,
+        "text": "No, the normal force is whatever the surface needs to push, so on a ramp or with an extra push it changes.",
+        "status": "clear",
+        "probability": 0.217
+      },
+      {
+        "misconception": "M06",
+        "holds": true,
+        "text": "Yes, the normal force is always the same as the weight of the object.",
+        "status": "partly",
+        "probability": 0.516
+      },
+      {
+        "misconception": "M07",
+        "holds": false,
+        "text": "Mass is how much stuff something has in kg, weight is the gravity force on it in newtons.",
+        "status": "partly",
+        "probability": 0.633
+      },
+      {
+        "misconception": "M07",
+        "holds": true,
+        "text": "Mass and weight are the same thing, both measured in kilograms.",
+        "status": "tricky",
+        "probability": 0.959
+      },
+      {
+        "misconception": "M08",
+        "holds": false,
+        "text": "A real force like tension or friction does the job, centripetal is just the name for that inward force.",
+        "status": "clear",
+        "probability": 0.006
+      },
+      {
+        "misconception": "M08",
+        "holds": true,
+        "text": "There is the tension plus an extra centripetal force that keeps it in the circle.",
+        "status": "clear",
+        "probability": 0.34
+      },
+      {
+        "misconception": "M09",
+        "holds": false,
+        "text": "Nothing is pushing it anymore, it keeps moving because of inertia and only gravity acts on it.",
+        "status": "clear",
+        "probability": 0.042
+      },
+      {
+        "misconception": "M09",
+        "holds": true,
+        "text": "The force from my hand stays in the ball and keeps pushing it until it runs out.",
+        "status": "tricky",
+        "probability": 0.967
+      },
+      {
+        "misconception": "M10",
+        "holds": false,
+        "text": "It turns into heat from friction and sound, the total energy stays the same.",
+        "status": "clear",
+        "probability": 0.098
+      },
+      {
+        "misconception": "M10",
+        "holds": true,
+        "text": "The energy gets used up by friction and is gone.",
+        "status": "tricky",
+        "probability": 0.789
+      },
+      {
+        "misconception": "M11",
+        "holds": false,
+        "text": "They push on each other equally hard, the small one just accelerates more because it has less mass.",
+        "status": "clear",
+        "probability": 0.057
+      },
+      {
+        "misconception": "M11",
+        "holds": true,
+        "text": "The big one pushes harder because it is heavier and stronger.",
+        "status": "tricky",
+        "probability": 0.772
+      },
+      {
+        "misconception": "M12",
+        "holds": false,
+        "text": "No, the net force shows how the velocity changes, like gravity pointing down while a ball rises.",
+        "status": "clear",
+        "probability": 0.129
+      },
+      {
+        "misconception": "M12",
+        "holds": true,
+        "text": "Yes, the net force always points in the same direction the object is moving.",
+        "status": "tricky",
+        "probability": 0.92
+      }
+    ]
   }
 }

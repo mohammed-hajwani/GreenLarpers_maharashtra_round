@@ -4,6 +4,7 @@ from relearn import services as svc
 from relearn.app.student.components import (
     answer_feedback,
     concept_card,
+    explain_card,
     html,
     inject_theme,
     lesson_header,
@@ -91,7 +92,19 @@ def render_lesson_body(engine: LessonEngine, flow: LessonFlow, disabled: bool = 
             engine.check(flow, answer, working)
         st.rerun()
 
-    question_card(flow, on_check, disabled)
+    if flow.phase == "explain":
+
+        def on_explain(text: str) -> None:
+            engine.check_explanation(flow, text)
+            st.rerun()
+
+        def on_skip() -> None:
+            engine.skip_explanation(flow)
+            st.rerun()
+
+        explain_card(flow, on_explain, on_skip, disabled)
+    else:
+        question_card(flow, on_check, disabled)
     answer_feedback(flow, lesson_actions(engine, flow), disabled)
 
 

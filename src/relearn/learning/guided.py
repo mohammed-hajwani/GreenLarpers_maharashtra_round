@@ -40,6 +40,16 @@ def _item_right(engine: LessonEngine, flow: LessonFlow) -> None:
     engine.check(flow, flow.item.answer_display)
 
 
+DEMO_EXPLANATION = (
+    "Once it is moving it keeps a steady speed on its own because of inertia. "
+    "The forces are balanced so the net force is zero."
+)
+
+
+def _explain(engine: LessonEngine, flow: LessonFlow) -> None:
+    engine.check_explanation(flow, DEMO_EXPLANATION)
+
+
 STEPS = [
     GuidedStep("A student answers with the idea that the kick keeps pushing the ball.", _wrong),
     GuidedStep("A quick check helps pin down the student's thinking.", _answer_quick_checks),
@@ -58,5 +68,7 @@ STEPS = [
     GuidedStep("Lock-in question 3.", _item_right),
     GuidedStep("Next.", lambda e, f: e.continue_(f)),
     GuidedStep("Lock-in question 4: the idea is locked in for now.", _item_right),
+    GuidedStep("Continue: explain the idea back in your own words.", lambda e, f: e.continue_(f)),
+    GuidedStep("The student explains it in their own words.", _explain),
     GuidedStep("Continue the lesson with the next question.", lambda e, f: e.continue_(f)),
 ]

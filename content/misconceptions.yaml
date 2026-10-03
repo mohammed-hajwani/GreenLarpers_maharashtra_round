@@ -9,6 +9,7 @@ misconceptions:
   - id: M01
     label: force_for_constant_velocity
     description: Believes a net force is needed to keep constant velocity
+    explain_prompt: "In your own words: does something moving at a steady speed need a force to keep it going? Why?"
     confusable_group: CG2
     correct_concept: An object moving at constant velocity has zero net force; no force is needed to keep it moving.
     forbidden_claims:
@@ -17,6 +18,7 @@ misconceptions:
   - id: M02
     label: heavier_falls_faster
     description: Believes heavier objects fall faster in vacuum or ignoring drag
+    explain_prompt: "In your own words: with no air, does a heavy object fall faster than a light one? Why?"
     confusable_group: null
     correct_concept: Without air resistance all objects fall with the same acceleration g regardless of mass.
     forbidden_claims:
@@ -25,6 +27,7 @@ misconceptions:
   - id: M03
     label: zero_v_zero_a_at_apex
     description: Believes acceleration is zero at the top of a throw
+    explain_prompt: "In your own words: what is a ball's acceleration at the very top of a throw, and why?"
     confusable_group: CG1
     correct_concept: At the top of a throw the velocity is zero for an instant but the acceleration is still g downward.
     forbidden_claims:
@@ -32,6 +35,7 @@ misconceptions:
   - id: M04
     label: velocity_acceleration_conflation
     description: Treats velocity and acceleration as the same idea
+    explain_prompt: "In your own words: how is acceleration different from speed?"
     confusable_group: CG1
     correct_concept: Acceleration is the rate of change of velocity, not the velocity itself; a fast object can have zero acceleration.
     forbidden_claims:
@@ -39,6 +43,7 @@ misconceptions:
   - id: M05
     label: action_reaction_same_object
     description: Believes action-reaction forces act on the same object
+    explain_prompt: "In your own words: why don't the two forces in an action-reaction pair cancel out?"
     confusable_group: CG3
     correct_concept: Newton's third law pairs act on two different objects, so they never cancel each other.
     forbidden_claims:
@@ -46,6 +51,7 @@ misconceptions:
   - id: M06
     label: normal_equals_weight
     description: Believes normal force always equals weight
+    explain_prompt: "In your own words: is the normal force always equal to an object's weight? Why or why not?"
     confusable_group: CG4
     correct_concept: The normal force is whatever the surface must push to satisfy Newton's second law perpendicular to the surface; it equals weight only in special cases.
     forbidden_claims:
@@ -53,6 +59,7 @@ misconceptions:
   - id: M07
     label: mass_weight_conflation
     description: Treats mass and weight as the same quantity
+    explain_prompt: "In your own words: what is the difference between mass and weight?"
     confusable_group: CG4
     correct_concept: Mass is the amount of matter in kilograms; weight is the gravitational force m g in newtons.
     forbidden_claims:
@@ -60,6 +67,7 @@ misconceptions:
   - id: M08
     label: centripetal_extra_force
     description: Treats centripetal force as an additional separate force
+    explain_prompt: "In your own words: what provides the centripetal force when something moves in a circle?"
     confusable_group: null
     correct_concept: Centripetal force is the name for the net inward force; it is provided by real forces like tension, friction or gravity, not added on top of them.
     forbidden_claims:
@@ -67,6 +75,7 @@ misconceptions:
   - id: M09
     label: impetus
     description: Believes a thrown object carries a force from the hand
+    explain_prompt: "In your own words: what keeps a thrown ball moving after it leaves your hand?"
     confusable_group: CG2
     correct_concept: Once an object leaves the hand, the hand exerts no force on it; it keeps moving because of inertia.
     forbidden_claims:
@@ -74,6 +83,7 @@ misconceptions:
   - id: M10
     label: energy_used_up
     description: Believes energy is consumed rather than transformed
+    explain_prompt: "In your own words: when a sliding box stops, where does its energy go?"
     confusable_group: null
     correct_concept: Energy is never used up; it is transformed into other forms such as thermal energy and sound.
     forbidden_claims:
@@ -81,6 +91,7 @@ misconceptions:
   - id: M11
     label: bigger_object_bigger_force
     description: Believes the larger object exerts the larger force in a collision
+    explain_prompt: "In your own words: in a collision between a big and a small object, which pushes harder?"
     confusable_group: CG3
     correct_concept: In any interaction the two objects exert equal and opposite forces on each other, whatever their sizes.
     forbidden_claims:
@@ -88,6 +99,7 @@ misconceptions:
   - id: M12
     label: net_force_along_velocity
     description: Believes net force direction always matches velocity direction
+    explain_prompt: "In your own words: does the net force always point the way an object is moving?"
     confusable_group: CG2
     correct_concept: Net force points along the acceleration, which can differ from the direction of the velocity.
     forbidden_claims:

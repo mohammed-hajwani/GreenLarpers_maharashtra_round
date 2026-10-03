@@ -23,6 +23,7 @@ class MisconceptionInfo(BaseModel):
     description: str
     confusable_group: str | None = None
     correct_concept: str
+    explain_prompt: str = ""
     forbidden_claims: list[str] = Field(default_factory=list)
 
 

@@ -202,3 +202,11 @@
   - The deck should say this plainly: an unseen mistake that resembles a known one is mistaken for it.
 - At runtime, `Diagnosis.novelty` uses the same raw score and `unfamiliar` is set for wrong answers above the threshold. Measured on the deployed model: 153/573 known-misconception wrong answers in the synthetic test split are flagged (false flags), 2/60 in the hand-written set. A clearly novel answer ("the Moon's magnetism holds it") scored 0.578, below the 0.783 threshold, so it was not flagged.
 - Because of these rates, the flag never changes the student flow. It only feeds the "Teacher review queue" in Insights.
+
+## Final push: Explain it back
+- After a lock-in round passes, the student is asked to explain the idea in their own words (`explain_prompt` per misconception in `misconceptions.yaml`), with a "Skip for now" option.
+- Scoring: the explanation is fed as working under that misconception's explanation template (the closest match to the training data). The probability of the old misconception gives three bands: below 0.50 clear, 0.50 to 0.75 "almost there" (shows the key idea), 0.75 or more "still leans on the tricky idea" (shows the key idea).
+  - Feeding it as the answer under the prompt was tried first and was unreliable: a sound M01 explanation scored 0.62 and a holding M02 explanation was missed.
+- Evidence: clear gives +1.5 to mastery alpha, tricky gives +1.0 to beta, "almost there" gives none. Each check is logged as an `explain_back` event.
+- Explain-back is an extra signal and never a resolution gate; resolution is unchanged.
+- Evaluation (`scripts/explain_eval.py`, 24 hand-written explanations, 1 sound and 1 holding per misconception): 11/12 holding explanations not cleared (9 tricky, 2 almost); 9/12 sound explanations accepted as clear; 1/12 sound wrongly marked tricky (M04). The bands were picked from a 6-pair pilot that overlaps this set, which is noted in the report.

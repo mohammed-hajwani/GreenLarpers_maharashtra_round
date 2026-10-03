@@ -45,6 +45,7 @@ class LessonFlow:
     pending: dict = field(default_factory=dict)
     seed: int = 0
     last_answer: str = ""
+    explain_for: str | None = None
 
     @property
     def concept_name(self) -> str:
@@ -215,6 +216,25 @@ class LessonEngine:
         if flow.lockin:
             self._present(flow, flow.lockin.pop(0))
             return
+        if flow.explain_for and flow.phase != "explain":
+            flow.phase, flow.feedback = "explain", None
+            return
+        flow.explain_for = None
+        self._next(flow)
+
+    def check_explanation(self, flow: LessonFlow, text: str) -> Feedback:
+        status, _ = svc.check_explanation(self.tutor, flow.learner_id, flow.explain_for, text)
+        key = key_idea(flow.explain_for)
+        flow.feedback = {
+            "needs_more": Feedback("needs_more", "Write a sentence or two in your own words."),
+            "clear": Feedback("explain_clear", "Nice, that's the idea in your own words."),
+            "partly": Feedback("explain_partly", "Almost there. Make sure it says this:", hint=key),
+            "tricky": Feedback("explain_tricky", "Part of that still leans on the tricky idea.", hint=key),
+        }[status]
+        return flow.feedback
+
+    def skip_explanation(self, flow: LessonFlow) -> None:
+        flow.explain_for = None
         self._next(flow)
 
     def _needs_lockin(self, flow: LessonFlow) -> bool:
@@ -249,6 +269,7 @@ class LessonEngine:
         _, record = svc.submit_assessment(self.tutor, flow.learner_id, item.mix_up, items, flow.lockin_answers)
         if record.state.value == "intervened":
             flow.feedback.message += " Locked in for now. We'll check back on this later."
+            flow.explain_for = item.mix_up
         else:
             flow.feedback.message += " Almost there. Let's look at this idea once more."
         flow.lockin_answers = {}

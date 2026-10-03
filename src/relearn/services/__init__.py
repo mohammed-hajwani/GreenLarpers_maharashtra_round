@@ -195,6 +195,43 @@ def review_queue(tutor: Tutor) -> list[dict]:
     return tutor.store.review_queue()
 
 
+def explain_prompt(misconception: str) -> str:
+    from relearn.content import load_content
+
+    return load_content().misconceptions[misconception].explain_prompt
+
+
+def check_explanation(tutor: Tutor, learner_id: str, misconception: str, text: str) -> tuple[str, float]:
+    from relearn.content import load_content
+    from relearn.learner.mastery import update
+    from relearn.learning.explain import score_explanation
+
+    status, prob = score_explanation(tutor.model, misconception, text)
+    if status == "needs_more":
+        return status, prob
+    tutor.store.log(
+        learner_id,
+        "explain_back",
+        misconception,
+        misconception,
+        status == "clear",
+        {"status": status, "probability": prob, "text": text},
+    )
+    m = load_config().mastery
+    evidence = {"clear": (m.transfer_correct, 0.0), "tricky": (0.0, m.transfer_wrong)}.get(status, (0.0, 0.0))
+    concept = load_content().concept_of(misconception)
+    if concept:
+        state, record = update(
+            tutor.store.mastery(learner_id, concept),
+            concept,
+            "explain_back",
+            misconception,
+            (*evidence, {"status": status, "probability": prob}),
+        )
+        tutor.store.save_mastery(learner_id, state, record)
+    return status, prob
+
+
 def reset(tutor: Tutor, learner_id: str) -> None:
     tutor.store.reset(learner_id)
 

@@ -82,7 +82,7 @@ def main() -> None:
         **{
             k: v
             for k, v in previous.items()
-            if k in ("probing", "simulation", "progress_model", "modality_simulation", "open_set")
+            if k in ("probing", "simulation", "progress_model", "modality_simulation", "open_set", "explain_back")
         },
         "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "data_provenance": "synthetic",
