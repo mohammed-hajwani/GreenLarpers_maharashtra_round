@@ -216,6 +216,10 @@ class LearnerStore:
         ]
         return [{**dict(zip(keys, r[:11], strict=True)), "detail": json.loads(r[11])} for r in rows]
 
+    def all_records(self) -> list[LearnerRecord]:
+        rows = self.conn.execute("SELECT record FROM learner_state").fetchall()
+        return [LearnerRecord.model_validate_json(r[0]) for r in rows]
+
     def review_queue(self, limit: int = 50) -> list[dict]:
         rows = self.conn.execute(
             "SELECT learner_id, ts, ref_id, payload FROM attempts WHERE kind = 'practice' "

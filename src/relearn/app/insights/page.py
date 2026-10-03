@@ -16,7 +16,15 @@ MODEL_NAMES = {
     "replay": "no model loaded (labeled replay only)",
 }
 BADGE_COLOR = {"v1_embedding": "green", "baseline": "orange", "replay": "red"}
-PAGES = ["Student decisions", "AI practice console", "Dashboard", "Profile", "Model Evaluation", "AI demo walkthrough"]
+PAGES = [
+    "Misconception map",
+    "Student decisions",
+    "AI practice console",
+    "Dashboard",
+    "Profile",
+    "Model Evaluation",
+    "AI demo walkthrough",
+]
 
 
 def model_badge() -> None:
@@ -124,7 +132,16 @@ def render_insights(tutor: Tutor, learner: str) -> None:
         st.caption(f"Active model: **{MODEL_NAMES[svc.active_model().source]}**")
         st.markdown(f'<a href="?learner={learner}" target="_self">Back to the student view</a>', unsafe_allow_html=True)
     model_badge()
-    if page == "Student decisions":
+    if page == "Misconception map":
+        st.header("Class misconception map")
+        st.caption("Every learner in this store. Bubble size is how many learners showed each misconception.")
+        st.markdown(f'<div style="background:#0F0D1A">{svc.class_map(tutor)}</div>', unsafe_allow_html=True)
+        data = svc.class_map_data(tutor)
+        if data:
+            st.dataframe(pd.DataFrame(data).T, width="stretch")
+        else:
+            st.info("No misconceptions recorded yet.")
+    elif page == "Student decisions":
         who = st.radio("Show decisions for", ["this learner", "guided demo learner"], horizontal=True)
         student_decisions(tutor, learner if who == "this learner" else DEMO_LEARNER)
     elif page == "AI practice console":

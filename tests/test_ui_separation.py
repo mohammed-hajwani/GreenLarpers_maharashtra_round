@@ -101,6 +101,8 @@ def test_insights_shows_every_moved_element() -> None:
     at.query_params["view"] = "insights"
     at.query_params["learner"] = learner
     at.run()
+    at.sidebar.radio[0].set_value("Student decisions")
+    at.run()
     assert not at.exception and not first.exception
     expanders = [e.label for e in at.expander]
     assert "Why did the AI make this prediction?" in expanders

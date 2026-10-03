@@ -232,6 +232,39 @@ def check_explanation(tutor: Tutor, learner_id: str, misconception: str, text: s
     return status, prob
 
 
+def concept_map(tutor: Tutor, learner_id: str) -> str:
+    from relearn.content import load_content
+    from relearn.multimodal.maps import concept_map_svg
+
+    return concept_map_svg({c: concept_status(tutor, learner_id, c) for c in load_content().concepts})
+
+
+def class_map_data(tutor: Tutor) -> dict[str, dict]:
+    from relearn.multimodal.policy import modality_stats as stats
+
+    rows: dict[str, dict] = {}
+    for record in tutor.store.all_records():
+        if record.state.value == "unseen":
+            continue
+        row = rows.setdefault(record.misconception, {"held": 0, "resolved": 0, "best_modality": None})
+        row["held"] += 1
+        row["resolved"] += record.state.value == "resolved"
+    for m, mods in stats(tutor.store).items():
+        tried = {
+            k: v["success"] / (v["success"] + v["failure"]) for k, v in mods.items() if v["success"] + v["failure"]
+        }
+        if tried and m in rows:
+            best = max(tried, key=tried.get)
+            rows[m]["best_modality"] = f"{best} ({tried[best]:.0%})"
+    return rows
+
+
+def class_map(tutor: Tutor) -> str:
+    from relearn.multimodal.maps import class_map_svg
+
+    return class_map_svg(class_map_data(tutor))
+
+
 def reset(tutor: Tutor, learner_id: str) -> None:
     tutor.store.reset(learner_id)
 

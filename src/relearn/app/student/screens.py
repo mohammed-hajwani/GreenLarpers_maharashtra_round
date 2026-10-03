@@ -50,6 +50,8 @@ def render_landing(engine: LessonEngine, tutor: Tutor, learner: str) -> None:
         st.session_state.rl_flow = start_demo(engine)
         st.session_state.rl_guided = 0
         go("guided")
+    html('<p class="rl-eyebrow" style="margin-top:1.5rem">Your learning journey</p>')
+    html(f'<div class="rl-visual rl-map">{svc.concept_map(tutor, learner)}</div>')
     html('<p class="rl-eyebrow" style="margin-top:1.5rem">Lessons</p>')
     concepts = list(load_content().concepts.values())
     for i in range(0, len(concepts), 2):
