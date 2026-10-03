@@ -73,3 +73,17 @@
   - "Random" picks a random unused probe that covers the top-1 label, which is a stronger baseline than any random probe.
   - Caveat: simulated learners answer using the same expected-answer map the likelihood assumes, so these lifts are optimistic upper bounds.
 - The demo learner now holds M01 and answers whatever probe is selected the way an M01 holder would, instead of using hardcoded answers per probe id.
+
+## Upgrade stage E: concept mastery
+- There are 7 concepts in `content/misconceptions.yaml`. Each groups the templates' concept tags and owns a set of misconceptions: Force vs Motion (M01, M09, M12), Free Fall (M02), Velocity vs Acceleration (M03, M04), Newton's Third Law (M05, M11), Weight and Normal Force (M06, M07), Circular Motion (M08), Energy Conservation (M10). A question maps to the concept of its template's primary misconception; a custom question maps to the concept of its diagnosed misconception.
+- Mastery per (learner, concept) is a Beta posterior, starting at Beta(1, 1), and mastery is its mean. Before each update, existing evidence decays toward the prior by 0.97 so recent attempts weigh more.
+- Mastery updates:
+  - correct practice: +1.0 × difficulty weight (easy 0.6, medium 1.0, hard 1.4) to alpha
+  - wrong practice: +1.0 + 1.0 × misconception confidence to beta
+  - probe answer matching the misconception: +0.5 to beta; matching the correct concept: +0.5 to alpha
+  - transfer: +1.5 alpha if correct, +1.0 beta if wrong
+  - trap: +2.0 alpha if passed, +2.0 beta if failed
+  - retest: +2.0 alpha if passed, +2.0 beta if failed
+- Every update writes a `mastery_log` row with alpha, beta and mean before and after.
+- Mastery never changes misconception states. Resolution still requires transfer, trap and delayed retest (tested in `test_high_mastery_never_resolves_after_trap_failure`).
+- `Tutor.confirm` now takes the question and returns `(record, mastery_update)`. The mastery update happens after probing, so it uses the final diagnosis.

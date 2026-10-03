@@ -53,3 +53,21 @@ embedding:
   max_iter: 3000
   try_gradient_boosting: true
   exemplars_per_class: 25
+mastery:
+  prior_alpha: 1.0
+  prior_beta: 1.0
+  decay: 0.97
+  correct: 1.0
+  wrong: 1.0
+  misconception_weight: 1.0
+  probe: 0.5
+  transfer_correct: 1.5
+  transfer_wrong: 1.0
+  trap_pass: 2.0
+  trap_fail: 2.0
+  retest_pass: 2.0
+  retest_fail: 2.0
+  difficulty_weight:
+    easy: 0.6
+    medium: 1.0
+    hard: 1.4

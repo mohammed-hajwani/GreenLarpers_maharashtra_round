@@ -3,6 +3,7 @@ import sqlite3
 import threading
 from pathlib import Path
 
+from relearn.learner.mastery import MasteryState, MasteryUpdate, prior
 from relearn.learner.state import new_record, now
 from relearn.schemas import LearnerRecord
 
@@ -23,6 +24,17 @@ SCHEMA = [
         "PRIMARY KEY (misconception, strategy))"
     ),
     "CREATE TABLE IF NOT EXISTS llm_cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+    (
+        "CREATE TABLE IF NOT EXISTS concept_mastery (learner_id TEXT NOT NULL, concept TEXT NOT NULL, "
+        "alpha REAL NOT NULL, beta REAL NOT NULL, updated TEXT NOT NULL, PRIMARY KEY (learner_id, concept))"
+    ),
+    (
+        "CREATE TABLE IF NOT EXISTS mastery_log (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "learner_id TEXT NOT NULL, "
+        "ts TEXT NOT NULL, concept TEXT NOT NULL, event TEXT NOT NULL, ref_id TEXT NOT NULL, "
+        "before REAL NOT NULL, after REAL NOT NULL, alpha_before REAL NOT NULL, beta_before REAL NOT NULL, "
+        "alpha_after REAL NOT NULL, beta_after REAL NOT NULL, detail TEXT NOT NULL)"
+    ),
 ]
 
 COUNTED_KINDS = ("practice", "transfer", "trap", "retest")
@@ -139,8 +151,71 @@ class LearnerStore:
             )
             self.conn.commit()
 
+    def mastery(self, learner_id: str, concept: str) -> MasteryState:
+        row = self.conn.execute(
+            "SELECT alpha, beta FROM concept_mastery WHERE learner_id = ? AND concept = ?",
+            (learner_id, concept),
+        ).fetchone()
+        return MasteryState(row[0], row[1]) if row else prior()
+
+    def all_mastery(self, learner_id: str) -> dict[str, MasteryState]:
+        rows = self.conn.execute(
+            "SELECT concept, alpha, beta FROM concept_mastery WHERE learner_id = ?", (learner_id,)
+        ).fetchall()
+        return {r[0]: MasteryState(r[1], r[2]) for r in rows}
+
+    def save_mastery(self, learner_id: str, state: MasteryState, record: MasteryUpdate) -> int:
+        with self.lock:
+            self.conn.execute(
+                "INSERT OR REPLACE INTO concept_mastery (learner_id, concept, alpha, beta, updated) "
+                "VALUES (?, ?, ?, ?, ?)",
+                (learner_id, record.concept, state.alpha, state.beta, now()),
+            )
+            cursor = self.conn.execute(
+                "INSERT INTO mastery_log (learner_id, ts, concept, event, ref_id, before, after, "
+                "alpha_before, "
+                "beta_before, alpha_after, beta_after, detail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    learner_id,
+                    now(),
+                    record.concept,
+                    record.event,
+                    record.ref_id,
+                    record.before,
+                    record.after,
+                    record.alpha_before,
+                    record.beta_before,
+                    record.alpha_after,
+                    record.beta_after,
+                    json.dumps(record.detail),
+                ),
+            )
+            self.conn.commit()
+            return int(cursor.lastrowid)
+
+    def mastery_history(self, learner_id: str) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT id, ts, concept, event, ref_id, before, after, alpha_before, beta_before, alpha_after, "
+            "beta_after, detail FROM mastery_log WHERE learner_id = ? ORDER BY id",
+            (learner_id,),
+        ).fetchall()
+        keys = [
+            "id",
+            "ts",
+            "concept",
+            "event",
+            "ref_id",
+            "before",
+            "after",
+            "alpha_before",
+            "beta_before",
+            "alpha_after",
+            "beta_after",
+        ]
+        return [{**dict(zip(keys, r[:11], strict=True)), "detail": json.loads(r[11])} for r in rows]
+
     def reset(self, learner_id: str) -> None:
         with self.lock:
-            self.conn.execute("DELETE FROM attempts WHERE learner_id = ?", (learner_id,))
-            self.conn.execute("DELETE FROM learner_state WHERE learner_id = ?", (learner_id,))
+            for table in ("attempts", "learner_state", "concept_mastery", "mastery_log"):
+                self.conn.execute(f"DELETE FROM {table} WHERE learner_id = ?", (learner_id,))
             self.conn.commit()

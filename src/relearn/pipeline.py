@@ -7,11 +7,12 @@ from relearn.diagnosis.disambiguator import ProbeChoice, ProbeStep, apply_probe,
 from relearn.intervention.builder import build_intervention
 from relearn.intervention.checker import check_intervention
 from relearn.intervention.selector import EXHAUSTED, select_strategy
+from relearn.learner.mastery import MasteryUpdate, item_evidence, practice_evidence, probe_evidence, update
 from relearn.learner.state import on_assessment, on_diagnosis, on_intervention, on_retest, posterior_mean
 from relearn.learner.store import LearnerStore
 from relearn.llm.base import LLMClient
 from relearn.llm.stub import StubLLMClient
-from relearn.models.baseline import BaselineModel
+from relearn.models.base import TextClassifier
 from relearn.schemas import (
     AssessmentItem,
     AssessmentResult,
@@ -25,7 +26,7 @@ from relearn.schemas import (
 
 
 class Tutor:
-    def __init__(self, store: LearnerStore, model: BaselineModel | None = None, llm: LLMClient | None = None):
+    def __init__(self, store: LearnerStore, model: TextClassifier | None = None, llm: LLMClient | None = None):
         self.store = store
         self.model = model
         self.llm = llm or StubLLMClient()
@@ -42,6 +43,26 @@ class Tutor:
         )
         return d
 
+    def _mastery(
+        self, learner_id: str, concept: str | None, event: str, ref_id: str, evidence: tuple
+    ) -> MasteryUpdate | None:
+        if concept is None:
+            return None
+        state, record = update(self.store.mastery(learner_id, concept), concept, event, ref_id, evidence)
+        record.detail["log_id"] = self.store.save_mastery(learner_id, state, record)
+        return record
+
+    def question_concept(self, question: Question, diagnosis: Diagnosis) -> str | None:
+        content = load_content()
+        concept = content.concept_of_template(question.template_id)
+        if concept is None and not diagnosis.is_correct:
+            concept = content.concept_of(diagnosis.top_labels[0][0])
+        return concept
+
+    def question_difficulty(self, question: Question) -> str:
+        t = next((t for t in load_content().templates if t.template_id == question.template_id), None)
+        return t.difficulty if t else "medium"
+
     def next_probe(self, diagnosis: Diagnosis, used: set[str]) -> ProbeChoice | None:
         return choose_probe(diagnosis, used)
 
@@ -49,6 +70,16 @@ class Tutor:
         self, learner_id: str, diagnosis: Diagnosis, choice: ProbeChoice, answer: str
     ) -> tuple[Diagnosis, ProbeStep]:
         updated, step = apply_probe(diagnosis, choice, answer)
+        top = diagnosis.top_labels[0][0]
+        expected = choice.probe.expected_answer_by_label
+        step_mastery = self._mastery(
+            learner_id,
+            load_content().concept_of(top),
+            "probe",
+            choice.probe.probe_id,
+            probe_evidence(answer == expected.get(top), answer == expected.get("none")),
+        )
+        step.mastery = step_mastery
         self.store.log(
             learner_id,
             "probe",
@@ -64,14 +95,25 @@ class Tutor:
         )
         return updated, step
 
-    def confirm(self, learner_id: str, diagnosis: Diagnosis) -> LearnerRecord | None:
+    def confirm(
+        self, learner_id: str, diagnosis: Diagnosis, question: Question | None = None
+    ) -> tuple[LearnerRecord | None, MasteryUpdate | None]:
+        mastery = None
+        if question is not None:
+            mastery = self._mastery(
+                learner_id,
+                self.question_concept(question, diagnosis),
+                "practice",
+                question.question_id,
+                practice_evidence(diagnosis.is_correct, self.question_difficulty(question), diagnosis),
+            )
         if diagnosis.is_correct:
-            return None
+            return None, mastery
         label, confidence = diagnosis.top_labels[0]
         record = on_diagnosis(self.store.get(learner_id, label), confidence)
         self.store.put(record)
         self.store.log(learner_id, "state", label, label, payload={"state": record.state.value})
-        return record
+        return record, mastery
 
     def intervene(
         self, learner_id: str, misconception: str, response: LearnerResponse
@@ -99,8 +141,18 @@ class Tutor:
 
     def _log_items(
         self, learner_id: str, items: list[AssessmentItem], result: AssessmentResult, answers: dict
-    ):
+    ) -> list[MasteryUpdate]:
+        updates = []
         for i in items:
+            m = self._mastery(
+                learner_id,
+                load_content().concept_of(i.misconception),
+                i.kind,
+                i.item_id,
+                item_evidence(i.kind, result.item_correct[i.item_id]),
+            )
+            if m is not None:
+                updates.append(m)
             self.store.log(
                 learner_id,
                 i.kind,
@@ -109,6 +161,7 @@ class Tutor:
                 result.item_correct[i.item_id],
                 {"answer": answers.get(i.item_id, "")},
             )
+        return updates
 
     def submit_assessment(
         self, learner_id: str, misconception: str, items: list[AssessmentItem], answers: dict[str, str]

@@ -26,6 +26,7 @@ class ProbeStep:
     confidence_after: float
     top_before: list[tuple[str, float]]
     top_after: list[tuple[str, float]]
+    mastery: object = None
 
     @property
     def information_gain(self) -> float:

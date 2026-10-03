@@ -93,7 +93,7 @@ def _advance_probe(tutor: Tutor, learner: str) -> None:
     choice = tutor.next_probe(st.session_state.diagnosis, st.session_state.probes_used)
     st.session_state.probe = choice
     if choice is None:
-        tutor.confirm(learner, st.session_state.diagnosis)
+        tutor.confirm(learner, st.session_state.diagnosis, st.session_state.question)
         st.session_state.phase = "diagnosed"
     else:
         st.session_state.phase = "probe"

@@ -36,6 +36,7 @@ class TemplateSpec(BaseModel):
     template_id: str
     primary: str
     question_type: QuestionType
+    difficulty: str = "medium"
     confusable_group: str | None = None
     concept_tags: list[str] = Field(default_factory=list)
     stem: str
@@ -43,6 +44,13 @@ class TemplateSpec(BaseModel):
     options: list[str] = Field(default_factory=list)
     correct: AnswerRule
     wrong: dict[str, AnswerRule]
+
+
+class ConceptInfo(BaseModel):
+    id: str
+    name: str
+    misconceptions: list[str]
+    tags: list[str]
 
 
 class StrategySpec(BaseModel):
@@ -54,6 +62,7 @@ class StrategySpec(BaseModel):
 class Content(BaseModel):
     working_prefixes: list[str]
     misconceptions: dict[str, MisconceptionInfo]
+    concepts: dict[str, ConceptInfo]
     confusable_groups: dict[str, list[str]]
     templates: list[TemplateSpec]
     probes: list[Probe]
@@ -63,6 +72,15 @@ class Content(BaseModel):
     def group_of(self, label: str) -> str | None:
         info = self.misconceptions.get(label)
         return info.confusable_group if info else None
+
+    def concept_of(self, misconception: str) -> str | None:
+        return next((c.id for c in self.concepts.values() if misconception in c.misconceptions), None)
+
+    def concept_of_template(self, template_id: str) -> str | None:
+        t = next((t for t in self.templates if t.template_id == template_id), None)
+        if t is not None:
+            return self.concept_of(t.primary)
+        return None
 
     def labels(self) -> list[str]:
         return sorted(self.misconceptions) + ["none"]
@@ -83,6 +101,7 @@ def load_content() -> Content:
     return Content(
         working_prefixes=tax["working_prefixes"],
         misconceptions={m["id"]: MisconceptionInfo.model_validate(m) for m in tax["misconceptions"]},
+        concepts={c["id"]: ConceptInfo.model_validate(c) for c in tax["concepts"]},
         confusable_groups=tax["confusable_groups"],
         templates=templates,
         probes=[Probe.model_validate(p) for p in _load(root / "probes.yaml")["probes"]],

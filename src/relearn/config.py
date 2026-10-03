@@ -80,6 +80,23 @@ class LearnerConfig(BaseModel):
     fail_alpha_increment: float
 
 
+class MasteryConfig(BaseModel):
+    prior_alpha: float
+    prior_beta: float
+    decay: float
+    correct: float
+    wrong: float
+    misconception_weight: float
+    probe: float
+    transfer_correct: float
+    transfer_wrong: float
+    trap_pass: float
+    trap_fail: float
+    retest_pass: float
+    retest_fail: float
+    difficulty_weight: dict[str, float]
+
+
 class AppConfig(BaseModel):
     db_env: str
     db_filename: str
@@ -98,6 +115,7 @@ class Config(BaseModel):
     assessment: AssessmentConfig
     learner: LearnerConfig
     app: AppConfig
+    mastery: MasteryConfig
     loops: dict
 
     def path(self, name: str) -> Path:

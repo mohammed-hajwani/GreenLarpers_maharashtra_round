@@ -92,7 +92,7 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
                 },
             }
         )
-    tutor.confirm(learner, d)
+    tutor.confirm(learner, d, q)
     m = d.top_labels[0][0]
     iv = tutor.intervene(learner, m, response)
     steps.append({"kind": "intervention", "title": "3. Targeted intervention", "data": iv.model_dump()})
@@ -110,6 +110,7 @@ def run_demo(tutor: Tutor, script: dict | None = None) -> list[dict]:
     for f in script["filler_practice"]:
         fq = _question(f["template_id"], f["params"])
         fd = tutor.submit(learner, fq, LearnerResponse(question_id=fq.question_id, answer=fq.correct_answer))
+        tutor.confirm(learner, fd, fq)
         fillers.append({"stem": fq.stem, "answer": fq.correct_answer, "correct": fd.is_correct})
     steps.append(
         {"kind": "practice", "title": "7. Other practice in between (spacing)", "data": {"rows": fillers}}
