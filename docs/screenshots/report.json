@@ -40,6 +40,16 @@
       "small_buttons": [],
       "banned": []
     },
+    "08b_explain": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "08c_explain_feedback": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
     "09_live_lesson": {
       "horizontal_scroll": false,
       "small_buttons": [],
@@ -87,6 +97,16 @@
       "small_buttons": [],
       "banned": []
     },
+    "08b_explain": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "08c_explain_feedback": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
     "09_live_lesson": {
       "horizontal_scroll": false,
       "small_buttons": [],
@@ -130,6 +150,16 @@
       "banned": []
     },
     "08_lock_in": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "08b_explain": {
+      "horizontal_scroll": false,
+      "small_buttons": [],
+      "banned": []
+    },
+    "08c_explain_feedback": {
       "horizontal_scroll": false,
       "small_buttons": [],
       "banned": []

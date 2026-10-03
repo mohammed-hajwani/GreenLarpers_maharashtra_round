@@ -79,6 +79,11 @@ def run(base: str) -> dict:
             shot(page, "07_correct", width, report)
             click(page, "Next step")
             shot(page, "08_lock_in", width, report)
+            for _ in range(8):
+                click(page, "Next step")
+            shot(page, "08b_explain", width, report)
+            click(page, "Next step")
+            shot(page, "08c_explain_feedback", width, report)
             click(page, "Exit demo")
             click(page, "Continue learning")
             shot(page, "09_live_lesson", width, report)

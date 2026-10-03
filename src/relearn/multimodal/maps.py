@@ -69,6 +69,18 @@ def cy_label(y: float) -> float:
     return y + 52
 
 
+def concept_map_list(statuses: dict[str, str]) -> str:
+    content = load_content()
+    rows = ""
+    for cid in POSITIONS:
+        color, icon, label = STATUS[statuses.get(cid, "not_started")]
+        rows += (
+            f'<li><span class="rl-map-name">{escape(content.concepts[cid].name)}</span>'
+            f'<span class="rl-map-status" style="color:{color}">{icon} {escape(label)}</span></li>'
+        )
+    return f'<ul class="rl-map-list">{rows}</ul>'
+
+
 def class_map_svg(rows: dict[str, dict]) -> str:
     content = load_content()
     groups = list(POSITIONS)

@@ -190,7 +190,12 @@ class LessonEngine:
         )
         flow.revealed, flow.phase = True, "feedback"
         flow.feedback = Feedback(
-            "revealed", "Here's the answer.", answer=item.answer_display, explanation=item.explanation
+            "revealed",
+            "Here's the answer.",
+            answer=item.answer_display,
+            explanation=item.explanation,
+            modality="diagram",
+            visual_for=flow.mix_up or item.mix_up,
         )
         return flow.feedback
 

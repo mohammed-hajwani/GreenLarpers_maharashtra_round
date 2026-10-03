@@ -149,6 +149,8 @@ def answer_feedback(flow: LessonFlow, actions: dict, disabled: bool = False) -> 
             visual_card(feedback.modality, feedback.visual_for)
         if feedback.status in ("correct", "revealed", "incorrect_item"):
             explanation_card(feedback, show_answer=feedback.status != "correct")
+        if feedback.status == "revealed" and feedback.visual_for:
+            visual_card("diagram", feedback.visual_for)
         lesson_navigation(feedback.status, flow, actions, disabled)
 
 

@@ -42,6 +42,9 @@ def render_landing(engine: LessonEngine, tutor: Tutor, learner: str) -> None:
         '<p class="rl-eyebrow">Re:Learn</p><p class="rl-title">Learn physics by doing</p>'
         '<p class="rl-subtitle">Short interactive questions that help you spot tricky ideas, fix them, '
         "and lock in what you've learned.</p>"
+        '<div class="rl-chips"><span class="rl-chip accent">Spot the tricky idea</span>'
+        '<span class="rl-chip accent">See it, try it, explain it</span>'
+        '<span class="rl-chip accent">Lock it in</span></div>'
     )
     cols = st.columns(2)
     if cols[0].button("Continue learning", key="continue-learning", type="primary", width="stretch"):
@@ -123,6 +126,7 @@ def render_complete(engine: LessonEngine, flow: LessonFlow, disabled: bool) -> N
             "review": "We've marked this idea to come back to later.",
         }.get(status, "Keep practising to lock this idea in. We'll check back on it in a later lesson.")
         html(f'<p class="rl-card-sub">You worked through {flow.completed} questions. {note}</p>')
+        html(f'<div class="rl-visual rl-map">{svc.concept_map(engine.tutor, flow.learner_id)}</div>')
         cols = st.columns(2)
         if cols[0].button(
             "Next suggested lesson", key="next-lesson", type="primary", disabled=disabled, width="stretch"

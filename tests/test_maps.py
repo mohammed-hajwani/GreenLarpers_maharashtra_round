@@ -13,8 +13,8 @@ BANNED = ["misconception", "confidence", "probability", "strategy"]
 def test_concept_map_reflects_backend_status(tmp_path) -> None:
     tutor = Tutor(LearnerStore(tmp_path / "m.db"))
     svg = svc.concept_map(tutor, "L")
-    ET.fromstring(svg)
-    assert svg.count(f"{STATUS['not_started'][1]} {STATUS['not_started'][2]}") == len(load_content().concepts)
+    ET.fromstring(f"<root>{svg}</root>")
+    assert svg.count(f"{STATUS['not_started'][1]} {STATUS['not_started'][2]}") == 2 * len(load_content().concepts)
     tutor.store.put(on_diagnosis(new_record("L", "M01"), 0.9))
     svg = svc.concept_map(tutor, "L")
     assert "Force vs Motion: In progress" in svg

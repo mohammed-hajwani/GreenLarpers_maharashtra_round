@@ -234,9 +234,13 @@ def check_explanation(tutor: Tutor, learner_id: str, misconception: str, text: s
 
 def concept_map(tutor: Tutor, learner_id: str) -> str:
     from relearn.content import load_content
-    from relearn.multimodal.maps import concept_map_svg
+    from relearn.multimodal.maps import concept_map_list, concept_map_svg
 
-    return concept_map_svg({c: concept_status(tutor, learner_id, c) for c in load_content().concepts})
+    statuses = {c: concept_status(tutor, learner_id, c) for c in load_content().concepts}
+    return (
+        f'<div class="rl-map-wide">{concept_map_svg(statuses)}</div>'
+        f'<div class="rl-map-narrow">{concept_map_list(statuses)}</div>'
+    )
 
 
 def class_map_data(tutor: Tutor) -> dict[str, dict]:
