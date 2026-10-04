@@ -18,6 +18,7 @@ from relearn.pipeline import Tutor
 
 INSIGHTS_LINK = (
     '<p class="rl-footer">Prototype for learning introductory mechanics · '
+    '<a href="./" target="_self">About Re:Learn</a> · '
     '<a href="?view=insights&learner={learner}" target="_self">Insights (for judges and teachers)</a></p>'
 )
 

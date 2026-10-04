@@ -132,7 +132,8 @@ def render_insights(tutor: Tutor, learner: str) -> None:
             st.rerun()
         st.divider()
         st.caption(f"Active model: **{MODEL_NAMES[svc.active_model().source]}**")
-        st.markdown(f'<a href="?learner={learner}" target="_self">Back to the student view</a>', unsafe_allow_html=True)
+        back = f'<a href="?view=learn&learner={learner}" target="_self">Back to the student view</a>'
+        st.markdown(back, unsafe_allow_html=True)
     model_badge()
     if page == "Misconception map":
         st.header("Class misconception map")

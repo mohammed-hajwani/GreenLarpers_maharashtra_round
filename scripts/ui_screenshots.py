@@ -59,7 +59,7 @@ def run(base: str) -> dict:
         browser = p.chromium.launch()
         for width in WIDTHS:
             page = browser.new_page(viewport={"width": width, "height": 900}, color_scheme="dark")
-            page.goto(base)
+            page.goto(base + "?view=learn")
             page.get_by_role("button", name="Start guided demo").wait_for(timeout=120000)
             settle(page)
             shot(page, "01_landing", width, report)

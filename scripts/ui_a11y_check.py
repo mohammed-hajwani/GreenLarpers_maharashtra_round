@@ -32,7 +32,7 @@ def run(base: str) -> dict:
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1280, "height": 900}, color_scheme="dark")
-        page.goto(base)
+        page.goto(base + "?view=learn")
         page.get_by_role("button", name="Start guided demo").wait_for(timeout=120000)
         settle(page)
         page.keyboard.press("Tab")
@@ -60,7 +60,7 @@ def run(base: str) -> dict:
         result["icon_plus_text"] = any(ch in result["live_region_text"] for ch in "✓✗→!↺")
         page.close()
         reduced = browser.new_page(viewport={"width": 1280, "height": 900}, reduced_motion="reduce")
-        reduced.goto(base)
+        reduced.goto(base + "?view=learn")
         reduced.get_by_role("button", name="Start guided demo").wait_for(timeout=120000)
         settle(reduced)
         result["reduced_motion_animation"] = reduced.evaluate(

@@ -73,6 +73,7 @@ def test_student_modules_never_import_insights() -> None:
 def test_student_landing_is_clean(tmp_path, monkeypatch) -> None:
     monkeypatch.setenv("RELEARN_DB", str(tmp_path / "s.db"))
     at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=180)
+    at.query_params["view"] = "learn"
     at.run()
     assert not at.exception
     assert_clean(at)
@@ -116,3 +117,13 @@ def test_insights_shows_every_moved_element() -> None:
     at.sidebar.radio[0].set_value("Dashboard")
     at.run()
     assert at.metric and not at.exception
+
+
+def test_root_opens_landing_page(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("RELEARN_DB", str(tmp_path / "l.db"))
+    at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=180)
+    at.run()
+    assert not at.exception
+    assert not any(b.label == "Start guided demo" for b in at.button)
+    landing = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
+    assert 'href="?view=learn"' in landing and 'href="?view=insights"' in landing

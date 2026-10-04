@@ -13,6 +13,7 @@ APP = str(ROOT / "app.py")
 def at(tmp_path, monkeypatch) -> AppTest:
     monkeypatch.setenv("RELEARN_DB", str(tmp_path / "ui.db"))
     app = AppTest.from_file(APP, default_timeout=180)
+    app.query_params["view"] = "learn"
     app.run()
     return app
 

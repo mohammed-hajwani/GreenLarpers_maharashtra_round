@@ -36,7 +36,7 @@ def main() -> None:
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1280, "height": 860}, color_scheme="dark", device_scale_factor=2)
-        page.goto(BASE)
+        page.goto(BASE + "?view=learn")
         page.get_by_role("button", name="Start guided demo").wait_for(timeout=120000)
         settle(page)
         page.screenshot(path=str(OUT / "landing.png"))

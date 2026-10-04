@@ -22,8 +22,11 @@ python -m venv .venv
 
 On macOS or Linux use `.venv/bin/python`. Then open:
 
-- Student view: http://localhost:8501 (press **Start guided demo**, then **Next step**)
+- Landing page: http://localhost:8501 (press **Start learning** to open the tutor)
+- Student view: http://localhost:8501/?view=learn (press **Start guided demo**, then **Next step**)
 - Insights for judges and teachers: http://localhost:8501/?view=insights&learner=guided-demo
+
+The landing page is `docs/index.html`; the app shows it full-screen at the root URL, and it also works on its own (for example on GitHub Pages).
 
 The first answer loads the MiniLM encoder (about 90 MB, downloaded once on first use, then cached), so start the app a couple of minutes before a demo and answer one question. **Reset demo** in the Insights sidebar clears the demo learner.
 
@@ -156,7 +159,7 @@ make test
 
 `make eval` rewrites `reports/metrics.json`; `scripts/open_set_eval.py`, `scripts/simulate_modality.py` and `scripts/explain_eval.py` add their own sections. `python scripts/gate.py` runs ruff and the full test suite. On machines without `make`, run the scripts named in the `Makefile` directly.
 
-The app opens on the **student view**, a learning-first lesson flow: Check answer, Quick check, hints, Try again, Reveal answer, Try another question, and "One more to lock it in". Press **Start guided demo** for a scripted walkthrough. All AI internals (why panel, decision trace, strategy and sources, model evaluation, dashboards) are in the **Insights** view, linked from the footer ("Insights (for judges and teachers)") or opened with `/?view=insights`. Health check: `/?health=1`. The UI design is documented in `DESIGN.md`, and measured UI test results are in `TEST_READINGS.md`.
+The app opens on the landing page; **Start learning** opens the **student view** (`?view=learn`), a learning-first lesson flow: Check answer, Quick check, hints, Try again, Reveal answer, Try another question, and "One more to lock it in". Press **Start guided demo** for a scripted walkthrough. All AI internals (why panel, decision trace, strategy and sources, model evaluation, dashboards) are in the **Insights** view, linked from the footer ("Insights (for judges and teachers)") or opened with `/?view=insights`. Health check: `/?health=1`. The UI design is documented in `DESIGN.md`, and measured UI test results are in `TEST_READINGS.md`.
 
 ## Deploy to Hugging Face Spaces
 

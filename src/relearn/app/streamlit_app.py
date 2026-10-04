@@ -36,10 +36,16 @@ def main() -> None:
         health()
     learner = current_learner()
     tutor = get_tutor()
-    if st.query_params.get("view") == "insights":
+    view = st.query_params.get("view")
+    if view == "insights":
         from relearn.app.insights.page import render_insights
 
         render_insights(tutor, learner)
+        return
+    from relearn.app.landing import landing_available, render_landing
+
+    if view != "learn" and "learner" not in st.query_params and landing_available():
+        render_landing()
         return
     from relearn.app.student.screens import render_student
 

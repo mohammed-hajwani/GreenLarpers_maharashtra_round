@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Re:Learn: an adaptive tutor that finds the misconception behind a wrong answer, teaches against it, and verifies it is fixed.">
 <title>Re:Learn</title>
+<script>try{if(window.self!==window.top&&window.parent.document.querySelector('.stApp'))document.documentElement.classList.add('in-app')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -71,7 +72,7 @@ nav.top .wrap { display: flex; align-items: center; justify-content: space-betwe
 .links { display: flex; align-items: center; gap: clamp(0.75rem, 2.5vw, 1.75rem); font-weight: 600; font-size: 0.95rem; }
 .links a { text-decoration: none; color: var(--ink-2); transition: color 160ms var(--ease); }
 .links a:hover { color: var(--ink); }
-.links .gh { color: var(--ink); border: 1px solid var(--line); padding: 0.45rem 0.85rem; border-radius: 10px; }
+.links .gh { white-space: nowrap; color: var(--ink); border: 1px solid var(--line); padding: 0.45rem 0.85rem; border-radius: 10px; }
 .links .gh:hover { border-color: var(--lilac); }
 
 .hero { padding-block: clamp(3rem, 8vw, 6rem) clamp(3rem, 6vw, 4.5rem); }
@@ -264,6 +265,11 @@ section { padding-block: clamp(3.5rem, 8vw, 6rem); }
 footer { border-top: 1px solid var(--line); padding-block: 2.5rem; color: var(--muted); font-size: 0.92rem; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: center; }
 
+.app-only { display: none !important; }
+html.in-app .app-only { display: inline-flex !important; }
+html.in-app .web-only { display: none !important; }
+.app-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+
 @media (max-width: 960px) {
   .hero .wrap, .split, .probe, .proof, .run { grid-template-columns: minmax(0, 1fr); }
   .loop { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
@@ -300,7 +306,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: 
       <a href="#how">How it works</a>
       <a href="#results">Results</a>
       <a href="#run">Run it</a>
-      <a class="gh" href="https://github.com/mohammed-hajwani/GreenLarpers_maharashtra_round">GitHub</a>
+      <a class="gh app-only" href="?view=learn" target="_top" data-app>Open the tutor</a>
+      <a class="gh web-only" href="https://github.com/mohammed-hajwani/GreenLarpers_maharashtra_round" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 </nav>
@@ -312,8 +319,10 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: 
       <h1>Fix the <span class="strike">wrong answer</span><br><em>wrong idea.</em></h1>
       <p class="lede">Re:Learn reads a student's answer and their reasoning, works out which misconception produced it, teaches against that exact idea with words, diagrams or a simulation, and only calls it fixed when the evidence says so.</p>
       <div class="cta">
-        <a class="btn primary" href="#run">Run it locally →</a>
-        <a class="btn ghost" href="https://github.com/mohammed-hajwani/GreenLarpers_maharashtra_round">View the code</a>
+        <a class="btn primary app-only" href="?view=learn" target="_top" data-app>Start learning →</a>
+        <a class="btn ghost app-only" href="?view=insights" target="_top" data-app>Insights for judges</a>
+        <a class="btn primary web-only" href="#run">Run it locally →</a>
+        <a class="btn ghost web-only" href="https://github.com/mohammed-hajwani/GreenLarpers_maharashtra_round" target="_blank" rel="noopener">View the code</a>
       </div>
       <div class="hero-meta">
         <span class="tag">12 misconceptions</span>
@@ -497,8 +506,13 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: 
       <h2>Up in five commands.</h2>
       <p class="lede">The trained models ship with the repo, so there is nothing to train. Python 3.11, any laptop CPU.</p>
       <div class="urls">
-        <div><code>http://localhost:8501</code><span>Student view. Press Start guided demo.</span></div>
+        <div><code>http://localhost:8501</code><span>This landing page. Press Start learning to open the tutor.</span></div>
+        <div><code>http://localhost:8501/?view=learn</code><span>The tutor. Press Start guided demo for a scripted walkthrough.</span></div>
         <div><code>http://localhost:8501/?view=insights</code><span>Insights for teachers and judges: decision traces, class map, evaluation.</span></div>
+      </div>
+      <div class="app-cta">
+        <a class="btn primary app-only" href="?view=learn" target="_top" data-app>Start learning →</a>
+        <a class="btn ghost app-only" href="?view=insights" target="_top" data-app>Open Insights</a>
       </div>
     </div>
     <div class="term">
@@ -700,6 +714,29 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: 
     }, { threshold: 0.35 });
     ["split", "loop", "stats"].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
     io.observe(document.querySelector(".typed"));
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var target = document.querySelector(a.getAttribute("href"));
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    });
+  });
+  if (document.documentElement.classList.contains("in-app")) {
+    try {
+      var loc = window.parent.location, base = loc.origin + loc.pathname;
+      document.querySelectorAll("a[data-app]").forEach(function (a) {
+        a.href = base + a.getAttribute("href");
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          var doc = window.parent.document, link = doc.createElement("a");
+          link.href = a.href; link.target = "_self"; link.style.display = "none";
+          doc.body.appendChild(link); link.click();
+        });
+      });
+    } catch (e) {}
   }
 
   var copy = document.getElementById("copy");
