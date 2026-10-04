@@ -9,3 +9,5 @@ data/
 *.egg-info/
 models_out/
 .cache/
+docs/deck/ReLearn_pitch.pptx
+docs/deck/DEMO_SCRIPT.md

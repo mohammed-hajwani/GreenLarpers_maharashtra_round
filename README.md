@@ -25,7 +25,7 @@ On macOS or Linux use `.venv/bin/python`. Then open:
 - Student view: http://localhost:8501 (press **Start guided demo**, then **Next step**)
 - Insights for judges and teachers: http://localhost:8501/?view=insights&learner=guided-demo
 
-The first answer loads the MiniLM encoder (about 90 MB, downloaded once on first use, then cached), so start the app a couple of minutes before a demo and answer one question. **Reset demo** in the Insights sidebar clears the demo learner. The pitch deck is `docs/deck/ReLearn_pitch.pptx` and the demo run order is `docs/deck/DEMO_SCRIPT.md`.
+The first answer loads the MiniLM encoder (about 90 MB, downloaded once on first use, then cached), so start the app a couple of minutes before a demo and answer one question. **Reset demo** in the Insights sidebar clears the demo learner.
 
 ## Problem
 
