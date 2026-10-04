@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Re:Learn: an adaptive tutor that finds the misconception behind a wrong answer, teaches against it, and verifies it is fixed.">
+<title>Re:Learn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a dark ice rink as the page ground, force vectors as the graphic language, one violet accent with green for real forces and red for forces that are not there */
+:root {
+  --rink: #0F0D1A;
+  --rink-2: #161325;
+  --panel: #1D1930;
+  --line: #2E2A45;
+  --ink: #F4F2FF;
+  --ink-2: #B9B3D1;
+  --muted: #8A84A6;
+  --violet: #7C5CFF;
+  --lilac: #A78BFA;
+  --real: #3DD68C;
+  --phantom: #FF6B7A;
+  --amber: #F5B544;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--rink);
+  color: var(--ink);
+  font: 400 1.0625rem/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.wrap { max-width: 1160px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--lilac); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; text-wrap: balance; margin: 0; letter-spacing: -0.02em; }
+p { margin: 0; }
+.eyebrow { font: 600 0.78rem/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--lilac); }
+.lede { color: var(--ink-2); max-width: 62ch; font-size: 1.15rem; }
+.tag { font: 600 0.72rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 0.35rem 0.6rem; white-space: nowrap; }
+
+.ice {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(1100px 520px at 80% -8%, rgba(124, 92, 255, 0.20), transparent 62%),
+    radial-gradient(800px 480px at -10% 40%, rgba(167, 139, 250, 0.08), transparent 60%),
+    var(--rink);
+}
+.ice::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(115deg, rgba(244, 242, 255, 0.018) 0 2px, transparent 2px 22px);
+}
+
+nav.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  backdrop-filter: blur(12px); background: rgba(15, 13, 26, 0.72);
+  border-bottom: 1px solid rgba(46, 42, 69, 0.6);
+}
+nav.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.85rem; }
+.mark { display: inline-flex; align-items: center; gap: 0.55rem; font: 800 1.2rem/1 var(--display); text-decoration: none; letter-spacing: -0.01em; }
+.mark svg { flex: none; }
+.links { display: flex; align-items: center; gap: clamp(0.75rem, 2.5vw, 1.75rem); font-weight: 600; font-size: 0.95rem; }
+.links a { text-decoration: none; color: var(--ink-2); transition: color 160ms var(--ease); }
+.links a:hover { color: var(--ink); }
+.links .gh { color: var(--ink); border: 1px solid var(--line); padding: 0.45rem 0.85rem; border-radius: 10px; }
+.links .gh:hover { border-color: var(--lilac); }
+
+.hero { padding-block: clamp(3rem, 8vw, 6rem) clamp(3rem, 6vw, 4.5rem); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+.hero h1 { font-size: clamp(2.6rem, 6.4vw, 5.2rem); font-weight: 800; margin-block: 1rem 1.25rem; }
+.hero h1 .strike { position: relative; color: var(--ink-2); white-space: nowrap; }
+.hero h1 .strike::after {
+  content: ""; position: absolute; left: -2%; right: -2%; top: 54%; height: 0.09em; border-radius: 999px;
+  background: var(--phantom); transform-origin: left center; transform: scaleX(1);
+  animation: strike 700ms 900ms var(--ease) both;
+}
+.hero h1 em { font-style: normal; background: linear-gradient(100deg, var(--lilac), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@keyframes strike { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem; min-height: 46px; padding: 0.7rem 1.2rem; border-radius: 12px;
+  font: 700 1rem/1 var(--body); text-decoration: none; border: 1px solid transparent; cursor: pointer;
+  transition: transform 160ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease);
+}
+.btn.primary { background: var(--violet); color: #fff; }
+.btn.primary:hover { background: #6A4BEF; transform: translateY(-2px); }
+.btn.ghost { border-color: var(--line); color: var(--ink); background: transparent; }
+.btn.ghost:hover { border-color: var(--lilac); transform: translateY(-2px); }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+
+.rink-card {
+  position: relative; border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+  background: linear-gradient(180deg, var(--panel), var(--rink-2));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: rise 800ms 200ms var(--ease) both;
+}
+.rink-card canvas { display: block; width: 100%; height: auto; aspect-ratio: 52 / 32; }
+.rink-head { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.9rem 1.1rem 0; }
+.rink-head p { font: 600 0.78rem/1.3 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
+.readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.readout div { padding: 0.8rem 1.1rem; border-right: 1px solid var(--line); min-width: 0; }
+.readout div:last-child { border-right: 0; }
+.readout span { display: block; font: 600 0.7rem/1 var(--mono); color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.readout b { font: 600 1.05rem/1 var(--mono); font-variant-numeric: tabular-nums; }
+.readout b.zero { color: var(--real); }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+.section-head { display: grid; gap: 0.9rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.section-head h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); font-weight: 800; }
+
+.split { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+.answer {
+  border: 1px solid rgba(255, 107, 122, 0.35); background: var(--panel); border-radius: 18px; padding: 1.5rem;
+  display: grid; gap: 0.75rem;
+}
+.answer .q { color: var(--ink-2); }
+.answer .val { font: 800 clamp(2.4rem, 5vw, 3.4rem)/1 var(--display); color: var(--phantom); }
+.answer .ok { font: 600 0.9rem/1.3 var(--mono); color: var(--real); }
+.branches { position: relative; display: grid; gap: 1rem; }
+.branch {
+  position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; align-items: start;
+  border: 1px solid var(--line); background: rgba(29, 25, 48, 0.7); border-radius: 16px; padding: 1.1rem 1.2rem;
+  transition: border-color 200ms var(--ease), transform 200ms var(--ease);
+}
+.branch:hover { border-color: var(--lilac); transform: translateX(4px); }
+.branch .code { font: 600 0.8rem/1 var(--mono); color: var(--rink); background: var(--lilac); border-radius: 8px; padding: 0.45rem 0.5rem; }
+.branch blockquote { margin: 0; font-style: italic; font-size: 1.1rem; }
+.branch p { color: var(--lilac); font-weight: 600; font-size: 0.95rem; margin-top: 0.3rem; }
+.branch::before {
+  content: ""; position: absolute; right: 100%; top: 50%; width: clamp(1.5rem, 4vw, 3rem); height: 2px;
+  background: linear-gradient(90deg, rgba(255, 107, 122, 0.6), var(--lilac)); transform-origin: right; transform: scaleX(1);
+}
+.seen .branch::before { animation: draw 700ms var(--ease) both; }
+.seen .branch:nth-child(2)::before { animation-delay: 150ms; }
+.seen .branch:nth-child(3)::before { animation-delay: 300ms; }
+@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.split-note { margin-top: 1.5rem; color: var(--ink-2); max-width: 70ch; }
+
+.loop { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; position: relative; counter-reset: step; }
+.loop::before {
+  content: ""; position: absolute; top: 22px; left: 22px; right: 22px; height: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--lilac), var(--real)); transform-origin: left; transform: scaleX(1);
+}
+.seen.loop::before { animation: draw 1400ms var(--ease) both; }
+.step { position: relative; display: grid; gap: 0.6rem; align-content: start; min-width: 0; }
+.step .dot {
+  width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--rink); border: 2px solid var(--violet); font: 700 1rem/1 var(--mono); color: var(--ink);
+  position: relative; z-index: 1;
+}
+.step:last-child .dot { border-color: var(--real); }
+.step h3 { font-size: 1.3rem; margin-top: 0.4rem; }
+.step p { color: var(--ink-2); font-size: 0.98rem; }
+.learner {
+  margin-top: 2rem; border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.3rem; background: rgba(29, 25, 48, 0.6);
+  display: flex; flex-wrap: wrap; gap: 0.6rem 1.25rem; align-items: center; color: var(--ink-2);
+}
+.learner b { color: var(--real); font-weight: 700; }
+.states { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; font: 600 0.8rem/1 var(--mono); }
+.states span { padding: 0.35rem 0.55rem; border-radius: 8px; border: 1px solid var(--line); color: var(--ink-2); }
+.states span.res { border-color: rgba(61, 214, 140, 0.5); color: var(--real); }
+.states i { color: var(--muted); font-style: normal; }
+
+.probe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+.probe-card { border: 1px solid var(--line); border-radius: 18px; background: var(--panel); padding: 1.5rem; display: grid; gap: 1rem; }
+.chip { display: inline-block; justify-self: start; font: 700 0.75rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 0.45rem 0.7rem; border-radius: 999px; background: rgba(124, 92, 255, 0.22); color: var(--ink); }
+.probe-card h3 { font: 600 1.25rem/1.4 var(--body); letter-spacing: 0; }
+.options { display: grid; gap: 0.55rem; }
+.opt {
+  text-align: left; width: 100%; min-height: 48px; padding: 0.7rem 0.9rem; border-radius: 12px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--rink-2); color: var(--ink); font: 400 1rem/1.35 var(--body);
+  transition: border-color 160ms var(--ease), background 160ms var(--ease);
+}
+.opt:hover { border-color: var(--lilac); }
+.opt[aria-pressed="true"] { border-color: var(--violet); background: rgba(124, 92, 255, 0.16); }
+.bars { display: grid; gap: 0.85rem; }
+.bar { display: grid; grid-template-columns: minmax(7.5rem, 38%) minmax(0, 1fr) 3.6rem; gap: 0.75rem; align-items: center; font-size: 0.95rem; }
+.bar .name { color: var(--ink-2); }
+.bar.lead .name { color: var(--ink); font-weight: 700; }
+.track { height: 12px; border-radius: 999px; background: var(--rink-2); border: 1px solid var(--line); overflow: hidden; }
+.fill { height: 100%; border-radius: 999px; background: var(--muted); transition: width 700ms var(--ease), background 300ms var(--ease); }
+.bar.lead .fill { background: linear-gradient(90deg, var(--violet), var(--lilac)); }
+.bar.none .fill { background: var(--real); }
+.bar .pct { font: 600 0.9rem/1 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+.entropy { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font: 600 0.85rem/1.4 var(--mono); color: var(--ink-2); }
+.entropy b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.fine { color: var(--muted); font-size: 0.88rem; }
+.reset { justify-self: start; background: none; border: 0; color: var(--lilac); font: 600 0.9rem/1 var(--body); cursor: pointer; padding: 0.3rem 0; text-decoration: underline; text-underline-offset: 3px; }
+
+.modes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+.mode { border: 1px solid var(--line); border-radius: 18px; background: var(--panel); overflow: hidden; display: grid; grid-template-rows: auto 1fr; transition: border-color 200ms var(--ease), transform 200ms var(--ease); }
+.mode:hover { border-color: rgba(167, 139, 250, 0.6); transform: translateY(-4px); }
+.mode .stage { background: var(--rink-2); border-bottom: 1px solid var(--line); aspect-ratio: 16 / 10; display: grid; place-items: center; position: relative; }
+.mode .stage svg, .mode .stage canvas { width: 100%; height: 100%; display: block; }
+.mode .body { padding: 1.2rem 1.25rem 1.4rem; display: grid; gap: 0.45rem; align-content: start; }
+.mode h3 { font-size: 1.35rem; }
+.mode p { color: var(--ink-2); font-size: 0.98rem; }
+.ctrl { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.4rem; font: 600 0.82rem/1 var(--mono); color: var(--ink-2); }
+.ctrl input[type="range"] { accent-color: var(--violet); flex: 1 1 7rem; min-width: 0; }
+.ctrl button { border: 1px solid var(--line); background: var(--rink-2); color: var(--ink); border-radius: 9px; padding: 0.45rem 0.75rem; font: 700 0.85rem/1 var(--body); cursor: pointer; }
+.ctrl button:hover { border-color: var(--lilac); }
+.typed { position: absolute; inset: 0; padding: 1rem 1.1rem; display: grid; align-content: start; gap: 0.7rem; }
+.typed .label { font: 600 0.7rem/1 var(--mono); color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.typed .text { font-size: 0.98rem; line-height: 1.5; min-height: 4.5em; }
+.typed .text::after { content: "▍"; color: var(--lilac); animation: blink 1s steps(1) infinite; }
+.typed .verdict { justify-self: start; font: 700 0.8rem/1 var(--mono); color: var(--real); border: 1px solid rgba(61, 214, 140, 0.45); border-radius: 999px; padding: 0.4rem 0.65rem; opacity: 1; transition: opacity 300ms var(--ease); }
+.typed .verdict.wait { opacity: 0.25; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.proof { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+.chain { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.link {
+  display: grid; gap: 0.3rem; justify-items: center; min-width: 5.4rem; padding: 0.8rem 0.7rem; border-radius: 14px;
+  border: 1px solid var(--line); background: var(--panel); font: 600 0.75rem/1 var(--mono); color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.05em;
+}
+.link b { font: 800 1.4rem/1 var(--display); }
+.link.pass b { color: var(--real); }
+.link.fail b { color: var(--phantom); }
+.link.done { border-color: rgba(61, 214, 140, 0.55); background: rgba(61, 214, 140, 0.1); color: var(--real); }
+.link.pulse { animation: pulse 2.4s var(--ease) infinite; }
+.chain .link:nth-child(2) { animation-delay: 0.3s; }
+.chain .link:nth-child(3) { animation-delay: 0.6s; }
+.chain .link:nth-child(4) { animation-delay: 0.9s; }
+.chain .link:nth-child(5) { animation-delay: 1.2s; }
+.chain .link:nth-child(6) { animation-delay: 1.5s; }
+@keyframes pulse { 0%, 70%, 100% { transform: translateY(0); box-shadow: none; } 15% { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(124, 92, 255, 0.25); } }
+.arrow { color: var(--muted); font: 600 1rem/1 var(--mono); }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+.stat { border-top: 2px solid var(--line); padding-top: 1.1rem; display: grid; gap: 0.5rem; align-content: start; min-width: 0; }
+.stat .num { font: 800 clamp(2.4rem, 4.5vw, 3.4rem)/1 var(--display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.stat:nth-child(1) .num { color: var(--lilac); }
+.stat:nth-child(2) .num { color: var(--real); }
+.stat:nth-child(3) .num { color: var(--real); }
+.stat:nth-child(4) .num { color: var(--lilac); }
+.stat p { color: var(--ink-2); font-size: 0.98rem; }
+.stat .tag { justify-self: start; }
+.honest { margin-top: 2rem; color: var(--muted); max-width: 80ch; font-size: 0.95rem; }
+
+.run { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+.term { border: 1px solid var(--line); border-radius: 16px; background: #0B0A14; overflow: hidden; min-width: 0; }
+.term-head { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--line); }
+.dots { display: flex; gap: 0.4rem; }
+.dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.copy { border: 1px solid var(--line); background: transparent; color: var(--ink-2); border-radius: 8px; padding: 0.35rem 0.7rem; font: 600 0.8rem/1 var(--mono); cursor: pointer; }
+.copy:hover { color: var(--ink); border-color: var(--lilac); }
+.term pre { margin: 0; padding: 1.1rem 1.2rem; overflow-x: auto; font: 400 0.9rem/1.75 var(--mono); color: var(--ink-2); }
+.term pre .p { color: var(--lilac); user-select: none; }
+.urls { display: grid; gap: 0.75rem; margin-top: 1.5rem; }
+.urls div { display: grid; gap: 0.2rem; }
+.urls code { font: 600 0.9rem/1.4 var(--mono); color: var(--ink); overflow-wrap: anywhere; }
+.urls span { color: var(--muted); font-size: 0.9rem; }
+
+footer { border-top: 1px solid var(--line); padding-block: 2.5rem; color: var(--muted); font-size: 0.92rem; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: center; }
+
+@media (max-width: 960px) {
+  .hero .wrap, .split, .probe, .proof, .run { grid-template-columns: minmax(0, 1fr); }
+  .loop { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
+  .loop::before { top: 22px; bottom: 22px; left: 22px; right: auto; width: 2px; height: auto; transform-origin: top; }
+  .step { grid-template-columns: 46px minmax(0, 1fr); column-gap: 1rem; }
+  .step .dot { grid-row: span 2; }
+  .step h3 { margin-top: 0.6rem; }
+  .modes, .stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .branch::before { display: none; }
+}
+@media (max-width: 620px) {
+  .links a:not(.gh) { display: none; }
+  .modes, .stats { grid-template-columns: minmax(0, 1fr); }
+  .readout b { font-size: 0.9rem; }
+  .bar { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bar .track { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<div class="ice" aria-hidden="true"></div>
+
+<nav class="top" aria-label="Main">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Re:Learn home">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="7" fill="#7C5CFF"/><path d="M7 15h9" stroke="#F4F2FF" stroke-width="2.4" stroke-linecap="round"/><path d="M13 11l4 4-4 4" fill="none" stroke="#F4F2FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 7l4 4M12 7l-4 4" stroke="#FF6B7A" stroke-width="2" stroke-linecap="round"/></svg>
+      Re:Learn
+    </a>
+    <div class="links">
+      <a href="#how">How it works</a>
+      <a href="#results">Results</a>
+      <a href="#run">Run it</a>
+      <a class="gh" href="https://github.com/mohammed-hajwani/GreenLarpers_maharashtra_round">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Adaptive tutor · introductory mechanics</p>
+      <h1>Fix the <span class="strike">wrong answer</span><br><em>wrong idea.</em></h1>
+      <p class="lede">Re:Learn reads a student's answer and their reasoning, works out which misconception produced it, teaches against that exact idea with words, diagrams or a simulation, and only calls it fixed when the evidence says so.</p>
+      <div class="cta">
+        <a class="btn primary" href="#run">Run it locally →</a>
+        <a class="btn ghost" href="https://github.com/mohammed-hajwani/GreenLarpers_maharashtra_round">View the code</a>
+      </div>
+      <div class="hero-meta">
+        <span class="tag">12 misconceptions</span>
+        <span class="tag">Free CPU, no API key</span>
+        <span class="tag">178 tests</span>
+      </div>
+    </div>
+    <figure class="rink-card" style="margin:0">
+      <div class="rink-head">
+        <p>0.5 kg puck · frictionless ice</p>
+        <span class="tag">live</span>
+      </div>
+      <canvas id="rink" width="1040" height="640" role="img" aria-label="A puck slides at constant velocity. Weight and normal force cancel. A forward push appears and is crossed out because no forward force is needed."></canvas>
+      <div class="readout" aria-live="off">
+        <div><span>velocity</span><b>8.0 m/s</b></div>
+        <div><span>acceleration</span><b>0 m/s²</b></div>
+        <div><span>net force</span><b class="zero">0 N</b></div>
+      </div>
+    </figure>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The problem</p>
+      <h2>One wrong answer can hide three different wrong ideas.</h2>
+    </div>
+    <div class="split" id="split">
+      <div class="answer">
+        <p class="q">A 0.5 kg puck slides across frictionless ice at a constant 8 m/s. What is the net force on it?</p>
+        <p class="fine">Three students all answer</p>
+        <p class="val">4.0 N forward</p>
+        <p class="ok">correct answer: 0 N</p>
+      </div>
+      <div class="branches">
+        <div class="branch"><span class="code">M01</span><div><blockquote>"Something has to keep pushing it, or it would stop."</blockquote><p>A force is needed to keep moving</p></div></div>
+        <div class="branch"><span class="code">M09</span><div><blockquote>"The hit put a force into the puck that it still carries."</blockquote><p>Impetus: the force is stored inside</p></div></div>
+        <div class="branch"><span class="code">M12</span><div><blockquote>"It moves forward, so the net force points forward."</blockquote><p>Net force always follows the motion</p></div></div>
+      </div>
+    </div>
+    <p class="split-note">Marking it wrong fixes none of them, and showing the right answer doesn't either. Each student needs a different explanation, so the tutor has to find the idea first.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2>From mistake to verified understanding, in five steps.</h2>
+    </div>
+    <div class="loop" id="loop">
+      <div class="step"><span class="dot">1</span><h3>Diagnose</h3><p>A classifier reads the question, answer and reasoning and names one of 12 misconceptions, with a calibrated confidence.</p></div>
+      <div class="step"><span class="dot">2</span><h3>Quick check</h3><p>When two look-alike ideas are close, it asks the one question that best separates them.</p></div>
+      <div class="step"><span class="dot">3</span><h3>Teach</h3><p>A targeted hint in the mode most likely to work: explanation, force diagram or interactive simulation.</p></div>
+      <div class="step"><span class="dot">4</span><h3>Reassess</h3><p>New transfer questions plus a trap built to catch the old idea. One right answer is never enough.</p></div>
+      <div class="step"><span class="dot">5</span><h3>Lock in</h3><p>A delayed retest a few questions later, then the student explains the idea back in their own words.</p></div>
+    </div>
+    <div class="learner">
+      <span><b>Learner model underneath:</b> per-concept mastery and a state for every misconception</span>
+      <span class="states" aria-label="Misconception states"><span>active</span><i>→</i><span>intervened</span><i>→</i><span class="res">resolved</span><i>→</i><span>relapsed</span></span>
+    </div>
+  </div>
+</section>
+
+<section id="quick-check">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Try the quick check</p>
+      <h2>One question can tell look-alikes apart.</h2>
+      <p class="lede">After "4.0 N forward", the tutor is unsure which idea the student holds. Answer the quick check the way one of them would and watch the belief update.</p>
+    </div>
+    <div class="probe">
+      <div class="probe-card">
+        <span class="chip">Quick check</span>
+        <h3>Halfway across the ice, nothing is touching the puck. What is happening to the forces on it?</h3>
+        <div class="options" id="options" role="group" aria-label="Quick check answers">
+          <button class="opt" type="button" id="opt-M01" data-label="M01" aria-pressed="false">A forward force is still needed, or it would slow down.</button>
+          <button class="opt" type="button" id="opt-M09" data-label="M09" aria-pressed="false">The force from the hit is still inside it, wearing off.</button>
+          <button class="opt" type="button" id="opt-M12" data-label="M12" aria-pressed="false">The net force points forward because that is where it moves.</button>
+          <button class="opt" type="button" id="opt-none" data-label="none" aria-pressed="false">Weight and normal force cancel, so the net force is zero.</button>
+        </div>
+        <button class="reset" type="button" id="reset">Reset belief</button>
+      </div>
+      <div class="probe-card">
+        <span class="chip" id="belief-chip">Belief before the quick check</span>
+        <div class="bars" id="bars"></div>
+        <div class="entropy"><span>uncertainty <b id="h">0.00</b> bits</span><span id="gain"></span></div>
+        <p class="fine">A worked illustration of the Bayes update the app performs, with 10% answer noise. In the app the question itself is chosen by expected information gain across all 12 misconceptions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="modes">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Multimodal teaching</p>
+      <h2>See it, try it, explain it.</h2>
+      <p class="lede">Most adaptive tutors change how hard the next question is. Re:Learn changes how the idea is taught, and a Thompson-sampling policy learns which mode works best for each misconception.</p>
+    </div>
+    <div class="modes">
+      <article class="mode">
+        <div class="stage">
+          <svg viewBox="0 0 320 200" role="img" aria-label="Force diagram: weight down and normal force up, velocity to the right, and a crossed-out forward push.">
+            <line x1="20" y1="132" x2="300" y2="132" stroke="#2E2A45" stroke-width="2"/>
+            <rect x="120" y="102" width="56" height="30" rx="7" fill="#211D33" stroke="#A78BFA" stroke-width="2"/>
+            <g class="vec up"><line x1="148" y1="102" x2="148" y2="48" stroke="#3DD68C" stroke-width="3"/><path d="M141 56l7-12 7 12z" fill="#3DD68C"/></g>
+            <text x="156" y="54" fill="#3DD68C" font-family="JetBrains Mono, monospace" font-size="11">normal 4.9 N</text>
+            <g class="vec down"><line x1="148" y1="132" x2="148" y2="184" stroke="#3DD68C" stroke-width="3"/><path d="M141 176l7 12 7-12z" fill="#3DD68C"/></g>
+            <text x="156" y="184" fill="#3DD68C" font-family="JetBrains Mono, monospace" font-size="11">weight 4.9 N</text>
+            <line x1="186" y1="80" x2="244" y2="80" stroke="#A78BFA" stroke-width="2.5" stroke-dasharray="6 5"/><path d="M242 74l12 6-12 6z" fill="#A78BFA"/>
+            <text x="196" y="70" fill="#A78BFA" font-family="JetBrains Mono, monospace" font-size="11">v 8 m/s</text>
+            <line x1="182" y1="117" x2="240" y2="117" stroke="#FF6B7A" stroke-width="2.5" stroke-dasharray="5 4"/><path d="M238 111l12 6-12 6z" fill="#FF6B7A"/>
+            <path class="cross" d="M203 108l14 18M217 108l-14 18" stroke="#FF6B7A" stroke-width="3" stroke-linecap="round"/>
+            <text x="20" y="28" fill="#FF6B7A" font-family="JetBrains Mono, monospace" font-size="11">✗ no forward push is acting</text>
+          </svg>
+        </div>
+        <div class="body"><h3>Picture it</h3><p>A force diagram drawn for each misconception, with the force the student imagines crossed out.</p></div>
+      </article>
+      <article class="mode">
+        <div class="stage"><canvas id="sim" width="640" height="400" role="img" aria-label="Simulation: a puck slides along a surface and slows down according to the friction setting."></canvas></div>
+        <div class="body">
+          <h3>Try it</h3><p>An interactive simulation. Set friction to zero and the puck keeps going with no forward force.</p>
+          <div class="ctrl"><label for="mu">friction μ</label><input id="mu" type="range" min="0" max="0.3" step="0.01" value="0.12"><output id="mu-out" for="mu">0.12</output><button type="button" id="push">Push once</button></div>
+        </div>
+      </article>
+      <article class="mode">
+        <div class="stage">
+          <div class="typed">
+            <span class="label">Explain it in your own words</span>
+            <p class="text" id="typed">Once it is moving it keeps a steady speed on its own because of inertia. The forces are balanced so the net force is zero.</p>
+            <span class="verdict" id="verdict">✓ Clear: that's the idea</span>
+          </div>
+        </div>
+        <div class="body"><h3>Explain it</h3><p>After the idea is locked in, the student explains it back and the model checks whether the old idea is still there.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="wrap proof">
+    <div class="section-head" style="margin:0">
+      <p class="eyebrow">Resolution is earned</p>
+      <h2>One right answer is never proof.</h2>
+      <p class="lede">A misconception counts as fixed only after at least two of three transfer questions, a trap aimed at the old idea, and a delayed retest. Passing the first follow-up and failing the trap stays unresolved, and a test makes sure of it.</p>
+    </div>
+    <div class="chain" aria-label="Resolution sequence">
+      <div class="link pass pulse"><b>✓</b>transfer</div>
+      <div class="link pass pulse"><b>✓</b>transfer</div>
+      <div class="link fail pulse"><b>✗</b>transfer</div>
+      <div class="link pass pulse"><b>✓</b>trap</div>
+      <div class="link pass pulse"><b>✓</b>retest</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="link done pulse"><b>✓</b>resolved</div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Results</p>
+      <h2>Measured, with the caveats on the label.</h2>
+    </div>
+    <div class="stats" id="stats">
+      <div class="stat"><span class="num" data-to="0.83" data-dec="2">0.83</span><p>macro-F1 on hand-written answers in new phrasing, vs 0.78 for a TF-IDF baseline</p><span class="tag">hand-written test</span></div>
+      <div class="stat"><span class="num" data-to="15" data-dec="0" data-pre="+" data-suf=" pts">+15 pts</span><p>accuracy on look-alike misconceptions after information-gain quick checks</p><span class="tag">simulated learners</span></div>
+      <div class="stat"><span class="num" data-to="0.93" data-dec="2">0.93</span><p>AUROC spotting an unseen look-alike (M03) by matching reasoning to written definitions, up from 0.20</p><span class="tag">leave-one-out test</span></div>
+      <div class="stat"><span class="num" data-to="0.53" data-dec="2">0.53</span><p>misconceptions resolved by the first intervention with the adaptive teaching mode, vs 0.38 text only</p><span class="tag">simulated learners</span></div>
+    </div>
+    <p class="honest">Training data is synthetic, generated from 48 hand-written templates, and test questions come from templates the model never saw. The definition-matching score is not live yet because it scored lower on validation. Nothing has been validated on real students; a classroom pilot is the next step.</p>
+  </div>
+</section>
+
+<section id="run">
+  <div class="wrap run">
+    <div class="section-head" style="margin:0">
+      <p class="eyebrow">Run it</p>
+      <h2>Up in five commands.</h2>
+      <p class="lede">The trained models ship with the repo, so there is nothing to train. Python 3.11, any laptop CPU.</p>
+      <div class="urls">
+        <div><code>http://localhost:8501</code><span>Student view. Press Start guided demo.</span></div>
+        <div><code>http://localhost:8501/?view=insights</code><span>Insights for teachers and judges: decision traces, class map, evaluation.</span></div>
+      </div>
+    </div>
+    <div class="term">
+      <div class="term-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><button class="copy" type="button" id="copy">Copy</button></div>
+<pre id="cmds"><span class="p">$ </span>git clone https://github.com/mohammed-hajwani/GreenLarpers_maharashtra_round.git
+<span class="p">$ </span>cd GreenLarpers_maharashtra_round
+<span class="p">$ </span>python -m venv .venv
+<span class="p">$ </span>.venv/Scripts/python -m pip install -r requirements.txt -e .
+<span class="p">$ </span>.venv/Scripts/python -m streamlit run app.py</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><b style="color:var(--ink)">Re:Learn</b> · Team GreenLarpers</span>
+    <span>Prototype for introductory mechanics. All training data is synthetic.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var C = { line: "#2E2A45", real: "#3DD68C", phantom: "#FF6B7A", lilac: "#A78BFA", violet: "#7C5CFF", ink: "#F4F2FF", muted: "#8A84A6", panel: "#211D33" };
+
+  function arrow(ctx, x1, y1, x2, y2, color, width, dash) {
+    var a = Math.atan2(y2 - y1, x2 - x1), h = 14 + width * 2;
+    ctx.save();
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = "round";
+    ctx.setLineDash(dash || []);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - Math.cos(a) * h * 0.6, y2 - Math.sin(a) * h * 0.6); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - h * Math.cos(a - 0.45), y2 - h * Math.sin(a - 0.45));
+    ctx.lineTo(x2 - h * Math.cos(a + 0.45), y2 - h * Math.sin(a + 0.45));
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+  function label(ctx, s, x, y, color, align) {
+    ctx.fillStyle = color; ctx.font = "600 22px 'JetBrains Mono', Consolas, monospace"; ctx.textAlign = align || "left"; ctx.fillText(s, x, y);
+  }
+
+  var rink = document.getElementById("rink");
+  if (rink) {
+    var rc = rink.getContext("2d"), W = rink.width, H = rink.height, ground = 430, t0 = performance.now();
+    function frame(now) {
+      var t = reduce ? 3.2 : ((now - t0) / 1000) % 7;
+      rc.clearRect(0, 0, W, H);
+      for (var i = 0; i < 14; i++) {
+        rc.strokeStyle = "rgba(244,242,255,0.04)"; rc.lineWidth = 2;
+        rc.beginPath(); rc.moveTo(i * 90 - ((t * 80) % 90), ground + 8); rc.lineTo(i * 90 - 40 - ((t * 80) % 90), H); rc.stroke();
+      }
+      rc.strokeStyle = C.line; rc.lineWidth = 3; rc.beginPath(); rc.moveTo(0, ground); rc.lineTo(W, ground); rc.stroke();
+      var px = 180 + (reduce ? 260 : ((now - t0) * 0.09) % (W + 240) - 120);
+      if (reduce) px = 420;
+      var pw = 120, ph = 62, top = ground - ph;
+      rc.fillStyle = "rgba(124,92,255,0.12)"; rc.beginPath(); rc.ellipse(px, ground + 6, pw * 0.6, 8, 0, 0, Math.PI * 2); rc.fill();
+      for (var k = 1; k <= 4; k++) { rc.fillStyle = "rgba(167,139,250," + (0.08 - k * 0.015) + ")"; rc.fillRect(px - pw / 2 - k * 26, top + 14, 18, ph - 28); }
+      rc.fillStyle = C.panel; rc.strokeStyle = C.lilac; rc.lineWidth = 3;
+      rc.beginPath(); rc.roundRect ? rc.roundRect(px - pw / 2, top, pw, ph, 14) : rc.rect(px - pw / 2, top, pw, ph); rc.fill(); rc.stroke();
+      arrow(rc, px, top, px, top - 120, C.real, 5); label(rc, "normal 4.9 N", px + 16, top - 96, C.real);
+      arrow(rc, px, ground, px, ground + 110, C.real, 5); label(rc, "weight 4.9 N", px + 16, ground + 92, C.real);
+      arrow(rc, px + pw / 2 + 14, top - 34, px + pw / 2 + 140, top - 34, C.lilac, 4, [14, 10]); label(rc, "v = 8 m/s", px + pw / 2 + 20, top - 50, C.lilac);
+      var phase = t % 7;
+      if (phase > 1.2) {
+        var grow = Math.min((phase - 1.2) / 0.8, 1), fade = phase > 5.8 ? Math.max(1 - (phase - 5.8) / 0.8, 0) : 1;
+        rc.globalAlpha = fade;
+        var sx = px + pw / 2 + 14, sy = top + ph / 2;
+        arrow(rc, sx, sy, sx + 30 + 110 * grow, sy, C.phantom, 4, [10, 8]);
+        if (phase > 2.4) {
+          var c = Math.min((phase - 2.4) / 0.5, 1), cx = sx + 85, cy = sy;
+          rc.strokeStyle = C.phantom; rc.lineWidth = 6; rc.lineCap = "round";
+          rc.beginPath(); rc.moveTo(cx - 18, cy - 22); rc.lineTo(cx - 18 + 36 * c, cy - 22 + 44 * c); rc.stroke();
+          if (c >= 1) { var d = Math.min((phase - 2.9) / 0.4, 1); if (d > 0) { rc.beginPath(); rc.moveTo(cx + 18, cy - 22); rc.lineTo(cx + 18 - 36 * d, cy - 22 + 44 * d); rc.stroke(); } }
+          if (phase > 3.1) label(rc, "✗ no forward push needed", 40, 70, C.phantom);
+        } else {
+          label(rc, "\"something must keep pushing it\"", 40, 70, C.muted);
+        }
+        rc.globalAlpha = 1;
+      }
+      label(rc, "F_net = 0 N", W - 40, 70, C.real, "right");
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  var sim = document.getElementById("sim");
+  if (sim) {
+    var sc = sim.getContext("2d"), SW = sim.width, SH = sim.height, sg = 280;
+    var mu = document.getElementById("mu"), muOut = document.getElementById("mu-out");
+    var state = { x: 90, v: 0 }, last = null;
+    function draw() {
+      sc.clearRect(0, 0, SW, SH);
+      sc.strokeStyle = C.line; sc.lineWidth = 3; sc.beginPath(); sc.moveTo(20, sg); sc.lineTo(SW - 20, sg); sc.stroke();
+      var w = 80, h = 44, x = state.x;
+      sc.fillStyle = C.panel; sc.strokeStyle = C.lilac; sc.lineWidth = 3;
+      sc.beginPath(); sc.roundRect ? sc.roundRect(x - w / 2, sg - h, w, h, 10) : sc.rect(x - w / 2, sg - h, w, h); sc.fill(); sc.stroke();
+      var m = parseFloat(mu.value);
+      if (state.v > 0.5) {
+        arrow(sc, x + w / 2 + 8, sg - h - 22, x + w / 2 + 8 + Math.min(state.v * 0.35, 120), sg - h - 22, C.lilac, 3, [10, 8]);
+        if (m > 0) arrow(sc, x - w / 2 - 6, sg - h / 2, x - w / 2 - 6 - 30 - m * 200, sg - h / 2, C.real, 4);
+      }
+      sc.fillStyle = C.muted; sc.font = "600 20px 'JetBrains Mono', Consolas, monospace"; sc.textAlign = "left";
+      sc.fillText("speed " + (state.v / 40).toFixed(1) + " m/s", 30, 50);
+      sc.fillText(m === 0 ? "no friction: nothing slows it" : "friction slows it, nothing pushes it", 30, 84);
+    }
+    function step(now) {
+      if (last === null) last = now;
+      var dt = Math.min((now - last) / 1000, 0.05); last = now;
+      var m = parseFloat(mu.value);
+      state.v = Math.max(state.v - m * 9.8 * 40 * dt, 0);
+      state.x += state.v * dt;
+      if (state.x > SW + 60) state.x = -60;
+      draw();
+      if (state.v > 0) requestAnimationFrame(step); else last = null;
+    }
+    document.getElementById("push").addEventListener("click", function () {
+      var moving = state.v > 0; state.v = 320; if (!moving) requestAnimationFrame(step);
+    });
+    mu.addEventListener("input", function () { muOut.textContent = parseFloat(mu.value).toFixed(2); draw(); });
+    draw();
+  }
+
+  var labels = ["M01", "M09", "M12", "none"];
+  var names = { M01: "M01 · force needed to keep moving", M09: "M09 · impetus stored inside", M12: "M12 · net force follows motion", none: "Correct idea (none)" };
+  var prior = { M01: 0.42, M09: 0.3, M12: 0.23, none: 0.05 };
+  var belief = Object.assign({}, prior);
+  var bars = document.getElementById("bars");
+  labels.forEach(function (l) {
+    var row = document.createElement("div");
+    row.className = "bar" + (l === "none" ? " none" : ""); row.id = "bar-" + l;
+    row.innerHTML = '<span class="name">' + names[l] + '</span><span class="track"><span class="fill"></span></span><span class="pct"></span>';
+    bars.appendChild(row);
+  });
+  function entropy(p) { return -labels.reduce(function (s, l) { return s + (p[l] > 0 ? p[l] * Math.log2(p[l]) : 0); }, 0); }
+  function render(p) {
+    var top = labels.slice().sort(function (a, b) { return p[b] - p[a]; })[0];
+    labels.forEach(function (l) {
+      var row = document.getElementById("bar-" + l);
+      row.classList.toggle("lead", l === top && l !== "none");
+      row.querySelector(".fill").style.width = (p[l] * 100).toFixed(1) + "%";
+      row.querySelector(".pct").textContent = (p[l] * 100).toFixed(0) + "%";
+    });
+    document.getElementById("h").textContent = entropy(p).toFixed(2);
+  }
+  function update(answer) {
+    var noise = 0.1, before = entropy(belief), out = {}, total = 0;
+    labels.forEach(function (l) { out[l] = Math.max(belief[l], 0.01) * (l === answer ? 1 - noise : noise / 3); total += out[l]; });
+    labels.forEach(function (l) { out[l] /= total; });
+    belief = out; render(belief);
+    document.getElementById("belief-chip").textContent = "Belief after the quick check";
+    document.getElementById("gain").innerHTML = "information gained <b>" + Math.max(before - entropy(belief), 0).toFixed(2) + "</b> bits";
+  }
+  document.querySelectorAll(".opt").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".opt").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+      belief = Object.assign({}, prior); update(b.dataset.label);
+    });
+  });
+  document.getElementById("reset").addEventListener("click", function () {
+    belief = Object.assign({}, prior); render(belief);
+    document.querySelectorAll(".opt").forEach(function (o) { o.setAttribute("aria-pressed", "false"); });
+    document.getElementById("belief-chip").textContent = "Belief before the quick check";
+    document.getElementById("gain").textContent = "";
+  });
+  render(belief);
+
+  var typed = document.getElementById("typed"), verdict = document.getElementById("verdict"), full = typed.textContent, typedOnce = false;
+  function typeOut() {
+    if (reduce || typedOnce) return; typedOnce = true;
+    var i = 0; typed.textContent = ""; verdict.classList.add("wait");
+    (function tick() {
+      i += 2; typed.textContent = full.slice(0, i);
+      if (i < full.length) setTimeout(tick, 28); else verdict.classList.remove("wait");
+    })();
+  }
+
+  function countUp(el) {
+    if (reduce) return;
+    var to = parseFloat(el.dataset.to), dec = +el.dataset.dec, pre = el.dataset.pre || "", suf = el.dataset.suf || "", start = performance.now();
+    (function tick(now) {
+      var k = Math.min((now - start) / 1100, 1), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = pre + (to * e).toFixed(dec) + suf;
+      if (k < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+
+  if ("IntersectionObserver" in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        if (el.id === "split" || el.id === "loop") el.classList.add("seen");
+        if (el.id === "stats") el.querySelectorAll(".num").forEach(countUp);
+        if (el.classList.contains("typed")) typeOut();
+        io.unobserve(el);
+      });
+    }, { threshold: 0.35 });
+    ["split", "loop", "stats"].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    io.observe(document.querySelector(".typed"));
+  }
+
+  var copy = document.getElementById("copy");
+  copy.addEventListener("click", function () {
+    var text = document.getElementById("cmds").innerText.replace(/^\$ /gm, "");
+    var done = function () { copy.textContent = "Copied"; setTimeout(function () { copy.textContent = "Copy"; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { selectCmds(); });
+    } else { selectCmds(); }
+  });
+  function selectCmds() {
+    var r = document.createRange(); r.selectNodeContents(document.getElementById("cmds"));
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); copy.textContent = "Selected";
+  }
+})();
+</script>
+</body>
+</html>
