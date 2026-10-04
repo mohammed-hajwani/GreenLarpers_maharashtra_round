@@ -1,3 +1,5 @@
+from html import escape
+
 import streamlit as st
 
 from relearn import services as svc
@@ -53,6 +55,7 @@ def render_landing(engine: LessonEngine, tutor: Tutor, learner: str) -> None:
     if cols[1].button("Start guided demo", key="start-demo", width="stretch"):
         st.session_state.rl_flow = start_demo(engine)
         st.session_state.rl_guided = 0
+        st.session_state.rl_guided_last = []
         go("guided")
     html('<p class="rl-eyebrow" style="margin-top:1.5rem">Your learning journey</p>')
     html(f'<div class="rl-visual rl-map">{svc.concept_map(tutor, learner)}</div>')
@@ -147,20 +150,34 @@ def render_lesson(engine: LessonEngine, learner: str) -> None:
     render_lesson_body(engine, flow)
 
 
+def demo_entries(entries: list) -> str:
+    if not entries:
+        return ""
+    rows = "".join(
+        f'<li><span class="rl-demo-key">{escape(k)}</span><span class="rl-demo-val">{escape(v)}</span></li>'
+        for k, v in entries
+    )
+    return f'<p class="rl-demo-head">What the student just did</p><ul class="rl-demo-input">{rows}</ul>'
+
+
 def render_guided(engine: LessonEngine) -> None:
     flow = st.session_state.rl_flow
     index = st.session_state.get("rl_guided", 0)
     done = index >= len(STEPS)
     text = "That's the whole loop. Exit to try it yourself." if done else f"Next: {STEPS[index].label}"
     step = f"Guided demo · step {min(index + 1, len(STEPS))} of {len(STEPS)}"
-    html(f'<div class="rl-demo" role="status" aria-live="polite"><strong>{step}</strong><br>{text}</div>')
+    html(
+        f'<div class="rl-demo" role="status" aria-live="polite"><strong>{step}</strong><br>{text}'
+        f"{demo_entries(st.session_state.get('rl_guided_last', []))}</div>"
+    )
     cols = st.columns(2)
     if cols[0].button("Next step", key="demo-next", type="primary", disabled=done, width="stretch"):
-        STEPS[index].action(engine, flow)
+        st.session_state.rl_guided_last = STEPS[index].action(engine, flow) or []
         st.session_state.rl_guided = index + 1
         st.rerun()
     if cols[1].button("Exit demo", key="demo-exit", width="stretch"):
         st.session_state.pop("rl_flow", None)
+        st.session_state.pop("rl_guided_last", None)
         go("landing")
     render_lesson_body(engine, flow, disabled=True)
 

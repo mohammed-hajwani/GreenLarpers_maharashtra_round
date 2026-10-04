@@ -39,6 +39,10 @@ def test_guided_demo_screens_are_clean(at) -> None:
     for i in range(len(STEPS)):
         press(at, "demo-next")
         clean(at, f"demo step {i + 1}")
+        assert at.session_state["rl_guided_last"], f"step {i + 1} shows no student input"
+        if i == 0:
+            banner = next(m.value for m in at.markdown if "What the student just did" in m.value)
+            assert "2.7 N" in banner and "What the student just did" in banner
         locked = locked or any("Locked in for now" in m.value for m in at.markdown)
         flow = at.session_state["rl_flow"]
         statuses.append(flow.feedback.status if flow.feedback else flow.phase)
