@@ -8,6 +8,25 @@ pinned: false
 
 # Re:Learn: an adaptive misconception tutor for introductory mechanics
 
+## Quick start
+
+The trained models are committed, so no training is needed to run the app. Python 3.11:
+
+```bash
+git clone https://github.com/mohammed-hajwani/GreenLarpers_maharashtra_round.git
+cd GreenLarpers_maharashtra_round
+python -m venv .venv
+.venv/Scripts/python -m pip install -r requirements.txt -e .
+.venv/Scripts/python -m streamlit run app.py
+```
+
+On macOS or Linux use `.venv/bin/python`. Then open:
+
+- Student view: http://localhost:8501 (press **Start guided demo**, then **Next step**)
+- Insights for judges and teachers: http://localhost:8501/?view=insights&learner=guided-demo
+
+The first answer loads the MiniLM encoder (about 90 MB, downloaded once on first use, then cached), so start the app a couple of minutes before a demo and answer one question. **Reset demo** in the Insights sidebar clears the demo learner. The pitch deck is `docs/deck/ReLearn_pitch.pptx` and the demo run order is `docs/deck/DEMO_SCRIPT.md`.
+
 ## Problem
 
 Most practice tools only grade answers right or wrong. A student who answers "a 2.7 N force keeps the ball rolling" is not just wrong: they hold a specific misconception, and the right help depends on which one. A single correct follow-up answer also does not prove the student has learned anything.
@@ -18,9 +37,10 @@ Re:Learn reads the question, the answer and the learner's own reasoning, and the
 
 1. **Diagnoses** which of 12 classic misconceptions is behind the answer, with a calibrated confidence.
 2. **Disambiguates** look-alike misconceptions with the diagnostic probe that has the highest expected information gain.
-3. **Intervenes** with an explanation targeted at that misconception, grounded in retrieved passages from the content.
-4. **Reassesses** with transfer items, a trap item and a delayed retest. A misconception is resolved only when all three pass; mastery scores never shortcut this rule.
-5. **Tracks** per-concept mastery as a Beta posterior, adapts difficulty, and logs every decision to an inspectable **AI Decision Trace**.
+3. **Intervenes** with an explanation targeted at that misconception, grounded in retrieved passages from the content, and taught as text, a force diagram or an interactive simulation. A Thompson-sampling policy learns which mode works for each misconception.
+4. **Reassesses** with transfer items, a trap item and a delayed retest. A misconception is resolved only when all three pass; mastery scores never shortcut this rule. Afterwards the student explains the idea back in their own words.
+5. **Tracks** per-concept mastery as a Beta posterior, adapts difficulty, shows a learning-journey map, and logs every decision to an inspectable **AI Decision Trace**.
+6. **Flags unfamiliar mistakes** whose novelty score is above an open-set threshold to a teacher review queue, and shows a class misconception map in Insights.
 
 ## Architecture
 
@@ -84,12 +104,18 @@ Probe selection on simulated learners (confusable subset, mean accuracy over 5 s
 
 | Model / split | No probe | Random relevant probe | Information-gain probe |
 |---|---|---|---|
-| v1 / val | 0.628 | 0.831 | **0.876** |
-| v1 / test | 0.726 | 0.855 | **0.886** |
-| baseline / val | 0.831 | 0.963 | **0.965** |
-| baseline / test | 0.820 | 0.928 | **0.945** |
+| v1 / val | 0.628 | 0.833 | **0.874** |
+| v1 / test | 0.726 | 0.857 | **0.880** |
+| baseline / val | 0.831 | **0.967** | 0.965 |
+| baseline / test | 0.820 | 0.932 | **0.941** |
 
-Information gain beats random in all 4 settings. Simulated learners answer by the same expected-answer map the likelihood uses, so these lifts are upper bounds.
+Information gain beats random in 3 of 4 settings and is level with it on baseline validation. Simulated learners answer by the same expected-answer map the likelihood uses, so these lifts are upper bounds.
+
+Unseen misconceptions (leave-one-misconception-out: the v1 model is retrained 12 times, each time without one misconception). The live score, 1 minus the top misconception probability (MSP), reaches test AUROC 0.712 and flags 63.5% of unseen-misconception answers at a 28.2% false-flag rate. Distinct misconceptions score 0.90 to 1.00, but look-alikes are absorbed by their sibling (M03 0.20). Matching the student's working against the written misconception definitions reaches test AUROC 0.821 and lifts M03 to 0.93, but it scored lower on validation (0.729 vs 0.839), so the app keeps MSP. An energy score was also tried and does not help (test 0.474). Flags only feed the teacher review queue.
+
+Adaptive teaching mode (simulated learners, 3000 per seed × 5 seeds; assumptions stored in the report): misconception resolved by the first intervention 0.528 with the Thompson-sampling policy vs 0.439 random, 0.386 fixed rotation and 0.382 text only, with 1.74 vs 2.03 interventions on average compared with text only.
+
+Explain it back (24 hand-written explanations, one sound and one misconception-holding per misconception): 11 of 12 holding explanations are not cleared and 9 of 12 sound ones are accepted. The score bands were picked on a pilot that overlaps this set.
 
 Progress predictor (1000 held-out simulated learners): reach mastery AUC 0.974 (base rate 0.684); misconception persists AUC 0.885 (base rate 0.096, so its 0.90 accuracy is no better than always predicting "no").
 
@@ -116,18 +142,19 @@ More subjects; real interaction data and classroom pilots; multilingual and voic
 | `RELEARN_LLM_MODEL` | Optional Claude model override (default `claude-opus-5-5`) |
 | `HF_TOKEN` | Optional; for deploying the Space |
 
-## Train, evaluate and run
+## Develop, retrain and evaluate
+
+Only needed to change the models or reproduce the numbers; running the app needs just the Quick start.
 
 ```bash
-python -m venv .venv
-.venv/Scripts/python.exe -m pip install -r requirements.txt -e .
+.venv/Scripts/python -m pip install -r requirements-dev.txt -e .
+make data
 make train
 make eval
 make test
-make app
 ```
 
-On machines without `make`, run the scripts named in the `Makefile` directly.
+`make eval` rewrites `reports/metrics.json`; `scripts/open_set_eval.py`, `scripts/simulate_modality.py` and `scripts/explain_eval.py` add their own sections. `python scripts/gate.py` runs ruff and the full test suite. On machines without `make`, run the scripts named in the `Makefile` directly.
 
 The app opens on the **student view**, a learning-first lesson flow: Check answer, Quick check, hints, Try again, Reveal answer, Try another question, and "One more to lock it in". Press **Start guided demo** for a scripted walkthrough. All AI internals (why panel, decision trace, strategy and sources, model evaluation, dashboards) are in the **Insights** view, linked from the footer ("Insights (for judges and teachers)") or opened with `/?view=insights`. Health check: `/?health=1`. The UI design is documented in `DESIGN.md`, and measured UI test results are in `TEST_READINGS.md`.
 
